@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
-        
+            
     xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.rushis.sonarrules"
         version   = "1.0.0">
@@ -19,7 +19,7 @@
     -->
     <preference name="permissions" value="none"/>
     <!-- Customize your app and platform with the preference element. -->
-    <preference name="phonegap-version" value="3.4.0" />
+    <preference name="phonegap-version" value="cli-6.5.0" />
     <!-- all: current version of PhoneGap -->
     <preference name="orientation" value="default" />
     <!-- all: default means both landscape and portrait are enabled -->
