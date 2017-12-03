@@ -1,0 +1,1066 @@
+{
+  "types": {
+    "Code Smell": 3,
+    "Vulnerability": 6,
+    "Code Smell": 60,
+    "Bug": 8
+  },
+  "standards": [
+    {
+      "name": "CWE",
+      "count": 6
+    },
+    {
+      "name": "MISRA",
+      "count": 10
+    },
+    {
+      "name": "CERT",
+      "count": 9
+    }
+  ],
+  "tags": [
+    {
+      "name": "convention",
+      "count": 13
+    },
+    {
+      "name": "unpredictable",
+      "count": 1
+    },
+    {
+      "name": "obsolete",
+      "count": 2
+    },
+    {
+      "name": "cert",
+      "count": 9
+    },
+    {
+      "name": "suspicious",
+      "count": 7
+    },
+    {
+      "name": "redundant",
+      "count": 1
+    },
+    {
+      "name": "pitfall",
+      "count": 8
+    },
+    {
+      "name": "cwe",
+      "count": 6
+    },
+    {
+      "name": "tests",
+      "count": 1
+    },
+    {
+      "name": "performance",
+      "count": 3
+    },
+    {
+      "name": "brain-overload",
+      "count": 9
+    },
+    {
+      "name": "design",
+      "count": 3
+    },
+    {
+      "name": "misra",
+      "count": 10
+    },
+    {
+      "name": "bad-practice",
+      "count": 3
+    },
+    {
+      "name": "style",
+      "count": 1
+    },
+    {
+      "name": "unused",
+      "count": 6
+    },
+    {
+      "name": "confusing",
+      "count": 1
+    },
+    {
+      "name": "user-experience",
+      "count": 1
+    },
+    {
+      "name": "clumsy",
+      "count": 3
+    }
+  ],
+  "rules": [
+    {
+      "ruleKey": "RSPEC-1446",
+      "type": "Code Smell",
+      "summary": "Dynamic classes should not be used",
+      "description": "<p>A dynamic class defines an object that can be altered at run time by adding or changing properties and methods. This extremely powerful mechanism should be used very carefully, and only in very limited use cases. </p>\n\n<p>Indeed, by definition dynamic classes make refactoring difficult and prevent the compiler from raising potential errors at compile time. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ndynamic <span class=\"code-keyword\">public</span> class DynamicFoo \r\n{...}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo  <span class=\"code-comment\">//Note that the class has been renamed to avoid confusion \r\n</span>{...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1468",
+      "type": "Vulnerability",
+      "summary": "Security.allowDomain(...) should only be used in a tightly focused manner",
+      "description": "<p>Calling Security.allowDomain(\"*\") lets any domain cross-script into the domain of this SWF and exercise its functionality.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nSecurity.allowDomain(<span class=\"code-quote\">\"*\"</span>);\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nSecurity.allowDomain(<span class=\"code-quote\">\"www.myDomain.com\"</span>);\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-128",
+      "type": "Code Smell",
+      "summary": "Switch cases should end with an unconditional \"break\" statement",
+      "description": "<p>When the execution is not explicitly terminated at the end of a switch case, it continues to execute the statements of the following case. While this is sometimes intentional, it often is a mistake which leads to unexpected behavior. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (myVariable) {\r\n  <span class=\"code-keyword\">case</span> 1:                              \r\n    foo();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 2:  <span class=\"code-comment\">// Both 'doSomething()' and 'doSomethingElse()' will be executed. Is it on purpose ?\r\n</span>    doSomething();\r\n  <span class=\"code-keyword\">default</span>:                               \r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (myVariable) {\r\n  <span class=\"code-keyword\">case</span> 1:                              \r\n    foo();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>:                               \r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n\n<p>This rule is relaxed in the following cases:</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (myVariable) { \r\n  <span class=\"code-keyword\">case</span> 0: <span class=\"code-comment\">// Empty <span class=\"code-keyword\">case</span> used to specify the same behavior <span class=\"code-keyword\">for</span> a group of cases. \r\n</span>  <span class=\"code-keyword\">case</span> 1: \r\n    doSomething(); \r\n    <span class=\"code-keyword\">break</span>; \r\n  <span class=\"code-keyword\">case</span> 2: <span class=\"code-comment\">// Use of <span class=\"code-keyword\">return</span> statement \r\n</span>    <span class=\"code-keyword\">return</span>; \r\n  <span class=\"code-keyword\">case</span> 3: <span class=\"code-comment\">// Use of <span class=\"code-keyword\">throw</span> statement \r\n</span>    <span class=\"code-keyword\">throw</span> <span class=\"code-keyword\">new</span> IllegalStateException(); \r\n  <span class=\"code-keyword\">case</span> 4: <span class=\"code-comment\">// Use of <span class=\"code-keyword\">continue</span> statement \r\n</span>    <span class=\"code-keyword\">continue</span>; \r\n  <span class=\"code-keyword\">default</span>: <span class=\"code-comment\">// For the last <span class=\"code-keyword\">case</span>, use of <span class=\"code-keyword\">break</span> statement is optional \r\n</span>    doSomethingElse(); \r\n} \r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 15.0 - The MISRA C <em>switch</em> syntax shall be used.</li>\n\t<li>MISRA C:2004, 15.2 - An unconditional break statement shall terminate every non-empty switch clause</li>\n\t<li>MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.</li>\n\t<li>MISRA C++:2008, 6-4-5 - An unconditional throw or break statement shall terminate every non-empty switch-clause</li>\n\t<li>MISRA C:2012, 16.1 - All switch statements shall be well-formed</li>\n\t<li>MISRA C:2012, 16.3 - An unconditional break statement shall terminate every switch-clause</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/484.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-484</a> - Omitted Break Statement in Switch</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/YIFLAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC17-C.</a> - Finish every set of statements associated with a case label with a break statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/ZoFLAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC18-CPP.</a> - Finish every set of statements associated with a case label with a break statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/ewHAAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC52-J.</a> - Finish every set of statements associated with a case label with a break statement</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "misra",
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1466",
+      "type": "Vulnerability",
+      "summary": "The flash.system.Security.exactSettings property should never be set to false",
+      "description": "<p>The Security.exactSettings value should remain set at the default value of true. Setting this value to false could make the SWF vulnerable to cross-domain attacks.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nSecurity.exactSettings = <span class=\"code-keyword\">false</span>;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1465",
+      "type": "Vulnerability",
+      "summary": "\"LocalConnection\" should be configured to narrowly specify the domains with which local connections to other Flex application are allowed",
+      "description": "<p>A <tt>LocalConnection</tt> object is used to invoke a method in another <tt>LocalConnection</tt> object, either within a single SWF file or between multiple SWF files. This kind of local connection should be authorized only when the origin (domain) of the other Flex applications is perfectly defined. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlocalConnection.allowDomain(<span class=\"code-quote\">\"*\"</span>);\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlocalConnection.allowDomain(<span class=\"code-quote\">\"www.myDomain.com\"</span>);\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-131",
+      "type": "Code Smell",
+      "summary": "\"switch\" statements should end with \"default\" clauses",
+      "description": "<p>The requirement for a final <tt>default</tt> clause is defensive programming. The clause should either take appropriate action, or contain a suitable comment as to why no action is taken.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (param) { <span class=\"code-comment\">// Noncompliant - <span class=\"code-keyword\">default</span> clause is missing\r\n</span>  <span class=\"code-keyword\">case</span> 0:\r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 1:\r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n\r\n<span class=\"code-keyword\">switch</span> (param) {\r\n  <span class=\"code-keyword\">default</span>: <span class=\"code-comment\">// Noncompliant - <span class=\"code-keyword\">default</span> clause should be the last one\r\n</span>    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (param) {\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>:\r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 15.0 - The MISRA C <em>switch</em> syntax shall be used.</li>\n\t<li>MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause</li>\n\t<li>MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.</li>\n\t<li>MISRA C++:2008, 6-4-6 - The final clause of a switch statement shall be the default-clause</li>\n\t<li>MISRA C:2012, 16.1 - All switch statements shall be well-formed</li>\n\t<li>MISRA C:2012, 16.4 - Every <em>switch</em> statement shall have a <em>default</em> label</li>\n\t<li>MISRA C:2012, 16.5 - A <em>default</em> label shall appear as either the first or the last <em>switch label</em> of a <em>switch</em> statement</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/478.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-478</a> - Missing Default Case in Switch Statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/YgE\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-C.</a> - Strive for logical completeness</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/JoIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-CPP.</a> - Strive for logical completeness</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-115",
+      "type": "Code Smell",
+      "summary": "Constant names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all constant names match a provided regular expression.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;A-Z0-9&#93;</span><b>(_<span class=\"error\">&#91;A-Z0-9&#93;</span>+)</b>$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">const</span> first:<span class=\"code-object\">String</span> = <span class=\"code-quote\">\"first\"</span>;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">const</span> FIRST:<span class=\"code-object\">String</span> = <span class=\"code-quote\">\"first\"</span>;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1462",
+      "type": "Code Smell",
+      "summary": "Event names should not be hardcoded in event listeners",
+      "description": "<p>Using plain string event names in even listeners is an anti-pattern; if the event is renamed, the application can start behaving unexpectedly. A constant variable should be used instead.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">import</span> flash.display.Sprite; \r\n<span class=\"code-keyword\">import</span> flash.events.MouseEvent; \r\n \r\nclass ChildSprite <span class=\"code-keyword\">extends</span> Sprite \r\n{ \r\n    <span class=\"code-keyword\">public</span> function ChildSprite() \r\n    { \r\n        ...\r\n        addEventListener(<span class=\"code-quote\">\"CustomEvent\"</span>, clickHandler);   <span class=\"code-comment\">// Noncompliant\r\n</span>    } \r\n} \r\n \r\nfunction clickHandler(event:CustomEvent):void \r\n{ \r\n    trace(<span class=\"code-quote\">\"clickHandler detected an event of type: \"</span> + event.type); \r\n    trace(<span class=\"code-quote\">\"the <span class=\"code-keyword\">this</span> keyword refers to: \"</span> + <span class=\"code-keyword\">this</span>); \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">import</span> flash.display.Sprite; \r\n<span class=\"code-keyword\">import</span> flash.events.MouseEvent; \r\n \r\nclass ChildSprite <span class=\"code-keyword\">extends</span> Sprite \r\n{ \r\n   <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">const</span> CUSTOM_EVENT:<span class=\"code-object\">String</span> = <span class=\"code-quote\">\"CustomEvent\"</span>;\r\n\r\n    <span class=\"code-keyword\">public</span> function ChildSprite() \r\n    { \r\n        ...\r\n        addEventListener(CUSTOM_EVENT, clickHandler); \r\n    } \r\n} \r\n \r\nfunction clickHandler(event:CustomEvent):void \r\n{ \r\n    trace(<span class=\"code-quote\">\"clickHandler detected an event of type: \"</span> + event.type); \r\n    trace(<span class=\"code-quote\">\"the <span class=\"code-keyword\">this</span> keyword refers to: \"</span> + <span class=\"code-keyword\">this</span>); \r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "design"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1463",
+      "type": "Code Smell",
+      "summary": "Event types should be defined in metadata tags",
+      "description": "<p>According to the Flex documentation :</p>\n<blockquote>\n<p>In an ActionScript file, when you define component events or other aspects of a component that affect more than a single property, you add the metadata tag outside the class definition so that the metadata is bound to the entire class, as the following example shows:</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-comment\">// Add the [Event] metadata tag outside of the class file. \r\n</span>[Event(name=<span class=\"code-quote\">\"enableChange\"</span>, type=<span class=\"code-quote\">\"flash.events.Event\"</span>)] \r\n<span class=\"code-keyword\">public</span> class ModalText <span class=\"code-keyword\">extends</span> TextArea {\r\n\r\n    ...\r\n\r\n    <span class=\"code-comment\">// Define class properties/methods\r\n</span>    <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> _enableTA:<span class=\"code-object\">Boolean</span>;\r\n\r\n    <span class=\"code-comment\">// Add the [Inspectable] metadata tag before the individual property. \r\n</span>    [Inspectable(defaultValue=<span class=\"code-quote\">\"<span class=\"code-keyword\">false</span>\"</span>)] \r\n    <span class=\"code-keyword\">public</span> function set enableTA(val:<span class=\"code-object\">Boolean</span>):void {\r\n        _enableTA = val;\r\n        <span class=\"code-keyword\">this</span>.enabled = val;\r\n    \r\n        <span class=\"code-comment\">// Define event object, initialize it, then dispatch it. \r\n</span>        <span class=\"code-keyword\">var</span> eventObj:Event = <span class=\"code-keyword\">new</span> Event(<span class=\"code-quote\">\"enableChange\"</span>);\r\n        dispatchEvent(eventObj);\r\n    }\r\n}\r\n</pre>\n</div></div></blockquote>\n\n<p>In this example, the \"enableChange\" event must be considered part of the API. Therefore, it should be strongly typed. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n[Event(name=<span class=\"code-quote\">\"enableChange\"</span>)] \r\n<span class=\"code-keyword\">public</span> class ModalText <span class=\"code-keyword\">extends</span> TextArea {...}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n[Event(name=<span class=\"code-quote\">\"enableChange\"</span>, type=<span class=\"code-quote\">\"flash.events.Event\"</span>)] \r\n<span class=\"code-keyword\">public</span> class ModalText <span class=\"code-keyword\">extends</span> TextArea {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "design"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1186",
+      "type": "Code Smell",
+      "summary": "Methods should not be empty",
+      "description": "<p>There are several reasons for a method not to have a method body:</p>\n\n<ul>\n\t<li>It is an unintentional omission, and should be fixed to prevent an unexpected behavior in production.</li>\n\t<li>It is not yet, or never will be, supported. In this case an <tt>NotSupportedException</tt> should be thrown.</li>\n\t<li>The method is an intentionally-blank override. In this case a nested comment should explain the reason for the blank override.</li>\n</ul>\n\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> override function doSomething():void {\r\n}\r\n\r\n<span class=\"code-keyword\">public</span> function doSomethingElse():void {\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> override function doSomething():void {\r\n  <span class=\"code-keyword\">throw</span> <span class=\"code-keyword\">new</span> IllegalOperationError(<span class=\"code-quote\">\"doSomething cannot be performed because ...\"</span>);\r\n}\r\n\r\n<span class=\"code-keyword\">public</span> function doSomethingElse():void {\r\n  <span class=\"code-comment\">//This method is empty because ...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1477",
+      "type": "Code Smell",
+      "summary": "Source files should not have any duplicated blocks",
+      "description": "<p>An issue is created on a file as soon as there is at least one block of duplicated code on this file.</p>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1435",
+      "type": "Code Smell",
+      "summary": "The special \"star\" type should not be used",
+      "description": "<p>According to the ActionScript language reference, the star type:</p>\n<blockquote>\n<p>Specifies that a property is untyped. Use of the asterisk symbol for a type annotation is equivalent to using no type annotation. Expressions that read from untyped properties are considered untyped expressions. Use of untyped expressions or properties is recommended in the following circumstances:</p>\n<ul>\n\t<li>When you want to defer type checking to runtime. You can use an untyped property or expression to circumvent compile-time type checking in strict mode. Note, however, that runtime type checking of assignment statements occurs whether you use strict mode or not.</li>\n\t<li>When you want to store the value undefined in a property. Unlike previous versions of ActionScript, the value undefined is not a member of the Object data type. You must use an untyped property to store the value undefined.</li>\n</ul>\n</blockquote>\n\n<p>But deferring type checking to runtime can highly impact the robustness of the application because the compiler is unable to assist the developer.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> obj:*;  <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-keyword\">var</span> foo:* = <span class=\"code-keyword\">new</span> Something();  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div> \n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> obj:Something;\r\n<span class=\"code-keyword\">var</span> foo:Something = <span class=\"code-keyword\">new</span> Something();\r\n</pre>\n</div></div> ",
+      "standards": [],
+      "tags": [
+        "unpredictable"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1434",
+      "type": "Code Smell",
+      "summary": "Variables of the \"Object\" type should not be used",
+      "description": "<p>Creating a new variable with the type \"Object\" means that it may be used to store any kind of object. This feature may be required in some specific contexts, but it leaves the compiler unable to do any kind of type checking, and is therefore a hazardous practice.  </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> obj:<span class=\"code-object\">Object</span> = <span class=\"code-keyword\">new</span> <span class=\"code-object\">String</span>(); <span class=\"code-comment\">// Noncompliant; <span class=\"code-object\">Object</span> used explicitly\r\n</span><span class=\"code-keyword\">var</span> foo = <span class=\"code-keyword\">new</span> <span class=\"code-object\">Object</span>(); <span class=\"code-comment\">// Noncompliant; <span class=\"code-object\">Object</span> used explicitly\r\n</span><span class=\"code-keyword\">var</span> bar = {name:<span class=\"code-object\">String</span>, age:<span class=\"code-object\">int</span>};  <span class=\"code-comment\">// Noncompliant; <span class=\"code-object\">Object</span> implicitly created</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> obj:<span class=\"code-object\">String</span> = <span class=\"code-keyword\">new</span> <span class=\"code-object\">String</span>();\r\n<span class=\"code-keyword\">var</span> foo:IPortfolio = <span class=\"code-keyword\">new</span> Portfolio();\r\nclass Person {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> name:<span class=\"code-object\">String</span>;\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> age:<span class=\"code-object\">int</span>;\r\n}\r\n<span class=\"code-keyword\">var</span> bar:Person = <span class=\"code-keyword\">new</span> Person();\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1464",
+      "type": "Bug",
+      "summary": "\"ManagedEvents\" tags should have companion \"Event\" tags",
+      "description": "<p>The \"ManagedEvents\" metadata tag allows you to flag an event as being managed. By definition this \"ManagedEvents\" metadata tag should be used in pair with an \"Event\" metadata tag. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n[Event(name=<span class=\"code-quote\">\"message\"</span>, type=<span class=\"code-quote\">\"my.<span class=\"code-keyword\">package</span>.MyEvemt\"</span>)]\r\n[ManagedEvents(<span class=\"code-quote\">\"mes\"</span>)]       <span class=\"code-comment\">//This <span class=\"code-quote\">\"mes\"</span> event is not defined with the <span class=\"code-quote\">\"Event\"</span> metadata tag\r\n</span><span class=\"code-keyword\">public</span> class MyClass {...}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n[Event(name=<span class=\"code-quote\">\"message\"</span>, type=<span class=\"code-quote\">\"my.<span class=\"code-keyword\">package</span>.MyEvemt\"</span>)]\r\n[ManagedEvents(<span class=\"code-quote\">\"message\"</span>)]\r\n<span class=\"code-keyword\">public</span> class MyClass {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-127",
+      "type": "Code Smell",
+      "summary": "\"for\" loop stop conditions should be invariant",
+      "description": "<p>A <tt>for</tt> loop stop condition should test the loop counter against an invariant value (i.e. one that is true at both the beginning and ending of every loop iteration). Ideally, this means that the stop condition is set to a local variable just before the loop begins. </p>\n\n<p>Stop conditions that are not invariant are slightly less efficient, as well as being difficult to understand and maintain, and likely lead to the introduction of errors in the future.</p>\n\n<p>This rule tracks three types of non-invariant stop conditions:</p>\n<ul>\n\t<li>When the loop counters are updated in the body of the <tt>for</tt> loop</li>\n\t<li>When the stop condition depend upon a method call</li>\n\t<li>When the stop condition depends on an object property, since such properties could change during the execution of the loop.</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i = 0; i &lt; 10; i++) {\r\n  ...\r\n  i = i - 1; <span class=\"code-comment\">// Noncompliant \r\n</span>  ...\r\n} \r\n\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i = 0; i &lt; getMaximumNumber(); i++) {...} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-object\">int</span> stopCondition = getMaximumNumber();\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i = 0; i &lt; stopCondition; i++) {...} \r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 13.6 - Numeric variables being used within a <em>for</em> loop for iteration counting shall not be modified in the body of the loop.</li>\n\t<li>MISRA C++:2008, 6-5-3 - The <em>loop-counter</em> shall not be modified within <em>condition</em> or <em>statement</em>.</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "misra",
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1321",
+      "type": "Bug",
+      "summary": "\"with\" statements should not be used",
+      "description": "<p>Never use <tt>with</tt> statements, since they decrease readability. When you do not specify a variable's scope, you do not always know where you are setting properties, so your code can be confusing.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nwith (foo) { <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-keyword\">return</span> x;  <span class=\"code-comment\">// is it a property of foo or local variable ?\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">return</span> foo.x;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1470",
+      "type": "Bug",
+      "summary": "Classes that extend \"Event\" should override \"Event.clone()\"",
+      "description": "<p>Overriding Event.clone() is a required part of the API contract:</p>\n<blockquote>\n<p>You are required to override the Event.clone() method in your Event subclass. The clone() method returns a cloned copy of the event object by setting the type property and any new properties in the clone. Typically, you define the clone() method to return an event instance created with the new operator.</p></blockquote>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyEvent <span class=\"code-keyword\">extends</span> Event {...}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyEvent <span class=\"code-keyword\">extends</span> Event \r\n{\r\n...\r\n  override <span class=\"code-keyword\">public</span> function clone():Event {\r\n    <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">new</span> MyEvent(...);\r\n  }\r\n...\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1066",
+      "type": "Code Smell",
+      "summary": "Collapsible \"if\" statements should be merged",
+      "description": "<p>Merging collapsible <tt>if</tt> statements increases the code's readability.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (condition1) {\r\n  <span class=\"code-keyword\">if</span> (condition2) {             <span class=\"code-comment\">// NonCompliant\r\n</span>    ...\r\n  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (condition1 &amp;&amp; condition2) {\r\n  ...\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1447",
+      "type": "Code Smell",
+      "summary": "Constructor bodies should be as lightweight as possible",
+      "description": "<p>In ActionScript 3, constructor code is always interpreted rather than compiled by the JIT at runtime, which is why the body of a constructor should be as lightweight as possible. As soon as a constructor contains branches (\"if\", \"for\", \"switch\", ...) an issue is logged.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo\r\n{\r\n  <span class=\"code-keyword\">public</span> function Foo()\r\n  {\r\n    <span class=\"code-keyword\">if</span> (condition) {  <span class=\"code-comment\">// Noncompliant\r\n</span>      <span class=\"code-comment\">// ...\r\n</span>    }\r\n  }\r\n} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo\r\n{\r\n  <span class=\"code-keyword\">public</span> function Foo()\r\n  {\r\n    init()\r\n  }\r\n\r\n  <span class=\"code-keyword\">private</span> function init():void \r\n  {\r\n    <span class=\"code-keyword\">if</span> (condition) { \r\n      <span class=\"code-comment\">// ...\r\n</span>    }\r\n  }\r\n} \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "performance"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1467",
+      "type": "Bug",
+      "summary": "Constructors should not dispatch events",
+      "description": "<p>A listener can be attached to an object only after it has been constructed. So dispatching an event in a constructor is useless and error prone. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass \r\n{\r\n  <span class=\"code-keyword\">public</span> function MyClass()\r\n  { \r\n    dispatchEvent( <span class=\"code-keyword\">new</span> Event( <span class=\"code-quote\">\"uselessEvent\"</span> ) );\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-107",
+      "type": "Code Smell",
+      "summary": "Functions should not have too many parameters",
+      "description": "<p>A long parameter list can indicate that a new structure should be created to wrap the numerous parameters or that the function is doing too many things.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With a maximum number of 4 parameters:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function addData(p1 : <span class=\"code-object\">int</span>, p2 : <span class=\"code-object\">int</span>, p3 : <span class=\"code-object\">int</span>, p4 : <span class=\"code-object\">int</span>, p5 : <span class=\"code-object\">int</span>): void  { \r\n...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function addData(p1 : <span class=\"code-object\">int</span>, p2 : <span class=\"code-object\">int</span>, p3 : <span class=\"code-object\">int</span>, p4 : <span class=\"code-object\">int</span>): void  { \r\n...\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1117",
+      "type": "Code Smell",
+      "summary": "Local variables should not shadow class fields",
+      "description": "<p>Shadowing fields with a local variable is a bad practice that reduces code readability: it makes it confusing to know whether the field or the variable is being used.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass Foo {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myField:<span class=\"code-object\">int</span>;\r\n\r\n  <span class=\"code-keyword\">public</span> function doSomething():<span class=\"code-object\">String</span> {\r\n    <span class=\"code-keyword\">var</span> myField:<span class=\"code-object\">int</span> = 0;\r\n    ...\r\n  }\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/2ADEAw\" class=\"external-link\" rel=\"nofollow\">CERT, DCL51-J.</a> - Do not shadow or obscure identifiers in subscopes</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-108",
+      "type": "Code Smell",
+      "summary": "Nested blocks of code should not be left empty",
+      "description": "<p>Most of the time a block of code is empty when a piece of code is really missing. So such empty block must be either filled or removed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 42; i++){}  <span class=\"code-comment\">// Noncompliant\r\n</span>\r\n<span class=\"code-keyword\">try</span> {                               <span class=\"code-comment\">// Noncompliant\r\n</span>} <span class=\"code-keyword\">catch</span> (error)\r\n{\r\n    ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 42; i++);\r\n\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 42; i++) {\r\n  trace(i);\r\n}\r\n</pre>\n</div></div><h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>When a block contains a comment, this block is not considered to be empty.</p>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1952",
+      "type": "Code Smell",
+      "summary": "Objects should not be instantiated inside a loop",
+      "description": "<p>It can be expensive to instantiate a new object, and doing so inside a loop is typically an error. Instead, create the object once, before the loop.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 10; i++) {\r\n  <span class=\"code-keyword\">var</span> temp:MyObj = <span class=\"code-keyword\">new</span> MyObject();  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-comment\">//...  \r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> temp:MyObj = <span class=\"code-keyword\">new</span> MyObject();\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 10; i++) {\r\n  <span class=\"code-comment\">//...  \r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "performance"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1439",
+      "type": "Code Smell",
+      "summary": "Only \"while\", \"do\" and \"for\" statements should be labelled",
+      "description": "<p>Any statement or block of statements can be identified by a label, but those labels should be used only on <tt>while</tt>, <tt>do-while</tt> and <tt>for</tt> statements. Using labels in any other context leads to unstructured, confusing code. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nmyLabel:<span class=\"code-keyword\">if</span> (i % 2 == 0) {  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-keyword\">if</span> (i == 12) {\r\n    print(<span class=\"code-quote\">\"12\"</span>);\r\n    <span class=\"code-keyword\">break</span> myLabel;\r\n  }\r\n  print(<span class=\"code-quote\">\"Odd number, but not 12\"</span>);\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nmyLabel:<span class=\"code-keyword\">for</span> (i = 0; i &lt; 10; i++) {   <span class=\"code-comment\">// Compliant\r\n</span>  print(<span class=\"code-quote\">\"Loop\"</span>);\r\n  <span class=\"code-keyword\">break</span> myLabel;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-125",
+      "type": "Code Smell",
+      "summary": "Sections of code should not be \"commented out\"",
+      "description": "<p>Programmers should not comment out code as it bloats programs and reduces readability.<br/>\nUnused code should be deleted and can be retrieved from source control history if required.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 2.4 - Sections of code should not be \"commented out\".</li>\n\t<li>MISRA C++:2008, 2-7-2 - Sections of code shall not be \"commented out\" using C-style comments.</li>\n\t<li>MISRA C+<ins>:2008, 2-7-3 - Sections of code should not be \"commented out\" using C</ins>+ comments.</li>\n\t<li>MISRA C:2012, Dir. 4.4 - Sections of code should not be \"commented out\"</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1320",
+      "type": "Code Smell",
+      "summary": "Statements, operators and keywords specific to ActionScript 2 should not be used",
+      "description": "<p>Usage of statements, operators and keywords specific to ActionScript 2 does not allow to migrate to ActionScript 3. This includes \"intrinsic\" keyword, set variable statement and following list of operators:</p>\n<ul>\n\t<li><tt>&lt;&gt;</tt> (inequality) - use <tt>!=</tt> instead</li>\n\t<li><tt>add</tt> (concatenation (strings)) - use <tt>+</tt> instead</li>\n\t<li><tt>eq</tt> (equality (strings)) - use <tt>==</tt> instead</li>\n\t<li><tt>ne</tt> (not equal (strings)) - use <tt>!=</tt> instead</li>\n\t<li><tt>lt</tt> (less than (strings)) - use <tt>&lt;</tt> instead</li>\n\t<li><tt>le</tt> (less than or equal to (strings)) - use <tt>&lt;=</tt> instead</li>\n\t<li><tt>gt</tt> (greater than (strings)) - use <tt>&gt;</tt> instead</li>\n\t<li><tt>ge</tt> (greater than or equal to (strings)) - use <tt>&gt;=</tt> instead</li>\n\t<li><tt>and</tt> (logical and) - use <tt>&amp;&amp;</tt> instead</li>\n\t<li><tt>or</tt> (logical or) - use <tt>||</tt> instead</li>\n\t<li><tt>not</tt> (logical not) - use <tt>!</tt> instead</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">true</span> != <span class=\"code-keyword\">false</span>) { <span class=\"code-comment\">// Compliant\r\n</span>}\r\n\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">true</span> &lt;&gt; <span class=\"code-keyword\">false</span>) { <span class=\"code-comment\">// Noncompliant\r\n</span>}\r\n\r\nset(<span class=\"code-quote\">\"varName\"</span>, value); <span class=\"code-comment\">// Noncompliant\r\n</span>varName = value; <span class=\"code-comment\">// Compliant</span>\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "obsolete"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1871",
+      "type": "Code Smell",
+      "summary": "Two branches in a conditional structure should not have exactly the same implementation",
+      "description": "<p>Having two <tt>cases</tt> in a <tt>switch</tt> statement or two branches in an <tt>if</tt> chain  with the same implementation is at best duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then in an <tt>if</tt> chain they should be combined, or for a <tt>switch</tt>, one should fall through to the other. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (i) {\r\n  <span class=\"code-keyword\">case</span> 1: \r\n    doFirstThing();\r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 3:  <span class=\"code-comment\">// Noncompliant; duplicates <span class=\"code-keyword\">case</span> 1's implementation\r\n</span>    doFirstThing();\r\n    doSomething(); \r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest();\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> (a &gt;= 0 &amp;&amp; a &lt; 10) {\r\n  doFirstThing();\r\n  doTheThing();\r\n}\r\n<span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> (a &gt;= 10 &amp;&amp; a &lt; 20) {\r\n  doTheOtherThing();\r\n}\r\n<span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> (a &gt;= 20 &amp;&amp; a &lt; 50) {\r\n  doFirstThing();\r\n  doTheThing();  <span class=\"code-comment\">// Noncompliant; duplicates first condition\r\n</span>}\r\n<span class=\"code-keyword\">else</span> {\r\n  doTheRest(); \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (i) {\r\n  <span class=\"code-keyword\">case</span> 1: \r\n  <span class=\"code-keyword\">case</span> 3:\r\n    doFirstThing();\r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest();\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> ((a &gt;= 0 &amp;&amp; a &lt; 10) || (a &gt;= 20 &amp;&amp; a &lt; 50)) {\r\n  doFirstThing();\r\n  doTheThing();\r\n}\r\n<span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> (a &gt;= 10 &amp;&amp; a &lt; 20) {\r\n  doTheOtherThing();\r\n}\r\n<span class=\"code-keyword\">else</span> {\r\n  doTheRest(); \r\n}\r\n</pre>\n</div></div>\n<p>or </p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (i) {\r\n  <span class=\"code-keyword\">case</span> 1: \r\n    doFirstThing();\r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 3:\r\n    doFirstThing();\r\n    doThirdThing(); \r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest();\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> (a &gt;= 0 &amp;&amp; a &lt; 10) {\r\n  doFirstThing();\r\n  doTheThing();\r\n}\r\n<span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> (a &gt;= 10 &amp;&amp; a &lt; 20) {\r\n  doTheOtherThing();\r\n}\r\n<span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> (a &gt;= 20 &amp;&amp; a &lt; 50) {\r\n  doFirstThing();\r\n  doTheThirdThing();\r\n}\r\n<span class=\"code-keyword\">else</span> {\r\n  doTheRest(); \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Blocks in an <tt>if</tt> chain that contain a single line of code are ignored, as are blocks in a <tt>switch</tt> statement that contain a single line of code with or without a following <tt>break</tt>.</p>",
+      "standards": [],
+      "tags": [
+        "design",
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1068",
+      "type": "Code Smell",
+      "summary": "Unused \"private\" fields should be removed",
+      "description": "<p>If a <tt>private</tt> field is declared but not used in the program, it can be considered dead code and should therefore be removed. This will improve maintainability because developers will not wonder what the variable is used for.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n  <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> foo:<span class=\"code-object\">int</span> = 4;                       <span class=\"code-comment\">//foo is unused\r\n</span>\r\n  <span class=\"code-keyword\">public</span> function compute(a:<span class=\"code-object\">int</span>):<span class=\"code-object\">int</span>{\r\n    <span class=\"code-keyword\">return</span> a * 4;\r\n  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n\r\n  <span class=\"code-keyword\">public</span> function compute(a:<span class=\"code-object\">int</span>):<span class=\"code-object\">int</span>{\r\n    <span class=\"code-keyword\">return</span> a * 4;\r\n  }\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1144",
+      "type": "Code Smell",
+      "summary": "Unused \"private\" functions should be removed",
+      "description": "<p>Private functions that are never executed are dead code: unnecessary, inoperative code that should be removed. Cleaning out dead code decreases the size of the maintained codebase, making it easier to understand the program and preventing bugs from being introduced.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo\r\n{\r\n  <span class=\"code-keyword\">private</span> function Foo(){}   <span class=\"code-comment\">//Compliant, <span class=\"code-keyword\">private</span> empty constructor intentionally used to prevent any direct instantiation of a class.\r\n</span>  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> function doSomething():void \r\n  {\r\n    <span class=\"code-keyword\">var</span> foo:Foo = <span class=\"code-keyword\">new</span> Foo();\r\n    ...\r\n  }\r\n  <span class=\"code-keyword\">private</span> function unusedPrivateFunction():void {...}\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo\r\n{\r\n  <span class=\"code-keyword\">private</span> function Foo(){}   <span class=\"code-comment\">//Compliant, <span class=\"code-keyword\">private</span> empty constructor intentionally used to prevent any direct instantiation of a class.\r\n</span>  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> function doSomething():void \r\n  {\r\n    <span class=\"code-keyword\">var</span> foo:Foo = <span class=\"code-keyword\">new</span> Foo();\r\n    ...\r\n  }\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/OYIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC07-CPP.</a> - Detect and remove dead code</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1172",
+      "type": "Code Smell",
+      "summary": "Unused function parameters should be removed",
+      "description": "<p>Unused parameters are misleading. Whatever the value passed to such parameters is, the behavior will be the same.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction doSomething(a:<span class=\"code-object\">int</span>, b:<span class=\"code-object\">int</span>):void      <span class=\"code-comment\">// <span class=\"code-quote\">\"b\"</span> is unused\r\n</span>{\r\n  compute(a);\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction doSomething(a:<span class=\"code-object\">int</span>):void\r\n{\r\n  compute(a);\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>The following cases are ignored</p>\n<ul>\n\t<li>event handlers.</li>\n\t<li>overriding methods.</li>\n\t<li>all methods in classes implementing one or more interfaces.</li>\n\t<li>methods which are empty or where the body consists of a single comment or a single <tt>throw</tt> statement (i.e. where the intention is apparently to simulate an abstract class).</li>\n</ul>\n\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\noverride function doSomething(a:<span class=\"code-object\">int</span>):void {    <span class=\"code-comment\">// ignored\r\n</span>  compute(a);\r\n}\r\n\r\n...\r\n\r\nclass AbstractSomething {\r\n  <span class=\"code-keyword\">public</span> function doSomething(a:<span class=\"code-object\">int</span>) {  <span class=\"code-comment\">// ignored\r\n</span>    <span class=\"code-keyword\">throw</span> <span class=\"code-keyword\">new</span> IllegalOperationError(<span class=\"code-quote\">\"doSomething() is <span class=\"code-keyword\">abstract</span>\"</span>);\r\n  }\r\n\r\n...\r\n\r\n<span class=\"code-keyword\">interface</span> I {\r\n  function action(a:<span class=\"code-object\">int</span>, b:<span class=\"code-object\">int</span>);\r\n}\r\n\r\nclass C <span class=\"code-keyword\">extends</span> I {\r\n  function action(a:<span class=\"code-object\">int</span>, b:<span class=\"code-object\">int</span>) { <span class=\"code-comment\">// ignored\r\n</span>    <span class=\"code-keyword\">return</span> doSomethignWith(a);\r\n  }\r\n}\r\n\r\nfunction clickHandler(event:MouseEvent):void { <span class=\"code-comment\">// ignored\r\n</span>   trace(<span class=\"code-quote\">\"click\"</span>);\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C++:2008, 0-1-11 - There shall be no unused parameters (named or unnamed) in nonvirtual functions.</li>\n\t<li>MISRA C:2012, 2.7 - There should be no unused parameters in functions</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1442",
+      "type": "Vulnerability",
+      "summary": "\"Alert.show(...)\" should not be used",
+      "description": "<p><tt>Alert.show(...)</tt> can be useful for debugging during development, but in production mode this kind of pop-up could expose sensitive information to attackers, and should never be displayed. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span>(unexpectedCondition)\r\n{\r\n  Alert.show(<span class=\"code-quote\">\"Unexpected Condition\"</span>);\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/489.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-489</a> - Leftover Debug Code</li>\n</ul>\n",
+      "standards": [
+        "CWE"
+      ],
+      "tags": [
+        "cwe",
+        "user-experience"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1444",
+      "type": "Vulnerability",
+      "summary": "\"public static\" fields should be constant",
+      "description": "<p>There is no good reason to declare a field \"public\" and \"static\" without also declaring it \"const\". Most of the time this is a kludge to share a state among several objects. But with this approach, any object can do whatever it wants with the shared state, such as setting it to <tt>null</tt>. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Greeter {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">var</span> foo:Foo = <span class=\"code-keyword\">new</span> Foo(...);\r\n  ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Greeter {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">const</span> FOO:Foo = <span class=\"code-keyword\">new</span> Foo(...);\r\n  ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/500.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-500</a> - Public Static Field Not Marked Final</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/QQBqAQ\" class=\"external-link\" rel=\"nofollow\">CERT OBJ10-J.</a> - Do not use public static nonfinal fields</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE"
+      ],
+      "tags": [
+        "cert",
+        "cwe"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1301",
+      "type": "Code Smell",
+      "summary": "\"switch\" statements should have at least 3 \"case\" clauses",
+      "description": "<p><tt>switch</tt> statements are useful when there are many different cases depending on the value of the same expression.<br/>\nFor just one or two cases however, the code will be more readable with <tt>if</tt> statements.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (variable) {\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    doSomething();\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">default</span>:\r\n    doSomethingElse();\r\n    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (variable == 0) {\r\n  doSomething();\r\n} <span class=\"code-keyword\">else</span> {\r\n  doSomethingElse();\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 15.5 - Every switch statement shall have at least one case clause.</li>\n\t<li>MISRA C++:2008, 6-4-8 - Every switch statement shall have at least one case-clause.</li>\n\t<li>MISRA C:2012, 16.6 - Every switch statement shall have at least two switch-clauses</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "bad-practice",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1125",
+      "type": "Code Smell",
+      "summary": "Boolean literals should not be redundant",
+      "description": "<p>Redundant Boolean literals should be removed from expressions to improve readability.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (booleanMethod() == <span class=\"code-keyword\">true</span>) { /* ... */ }\r\n<span class=\"code-keyword\">if</span> (booleanMethod() == <span class=\"code-keyword\">false</span>) { /* ... */ }\r\n<span class=\"code-keyword\">if</span> (booleanMethod() || <span class=\"code-keyword\">false</span>) { /* ... */ }\r\ndoSomething(!<span class=\"code-keyword\">false</span>);\r\ndoSomething(booleanMethod() == <span class=\"code-keyword\">true</span>);\r\n\r\nbooleanVariable = booleanMethod() ? <span class=\"code-keyword\">true</span> : <span class=\"code-keyword\">false</span>;\r\nbooleanVariable = booleanMethod() ? <span class=\"code-keyword\">true</span> : exp;\r\nbooleanVariable = booleanMethod() ? <span class=\"code-keyword\">false</span> : exp;\r\nbooleanVariable = booleanMethod() ? exp : <span class=\"code-keyword\">true</span>;\r\nbooleanVariable = booleanMethod() ? exp : <span class=\"code-keyword\">false</span>;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (booleanMethod()) { /* ... */ }        \r\n<span class=\"code-keyword\">if</span> (!booleanMethod()) { /* ... */ }\r\n<span class=\"code-keyword\">if</span> (booleanMethod()) { /* ... */ }\r\ndoSomething(<span class=\"code-keyword\">true</span>);\r\ndoSomething(booleanMethod());\r\n\r\nbooleanVariable = booleanMethod();\r\nbooleanVariable = booleanMethod() || exp;\r\nbooleanVariable = !booleanMethod() &amp;&amp; exp;\r\nbooleanVariable = !booleanMethod() || exp;\r\nbooleanVariable = booleanMethod() &amp;&amp; exp;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-101",
+      "type": "Code Smell",
+      "summary": "Class names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate effectively. This rule allows to check that all class names match a provided regular expression.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With default provided regular expression <tt>^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class myClass {...}\r\n</pre>\n</div></div>\n\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1445",
+      "type": "Code Smell",
+      "summary": "Constructors should not have a \"void\" return type",
+      "description": "<p>Even though this is syntactically correct, the <tt>void</tt> return type should not be used in the signature of a constructor. Indeed some developers might be confused by this syntax, believing that the constructor is in fact a standard function. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo   \r\n{\r\n  <span class=\"code-keyword\">public</span> function Foo() : void\r\n  {...}      \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo   \r\n{\r\n  <span class=\"code-keyword\">public</span> function Foo()\r\n  {...}      \r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1116",
+      "type": "Code Smell",
+      "summary": "Empty statements should be removed",
+      "description": "<p>Empty statements, i.e. <tt>;</tt>, are usually introduced by mistake, for example because:</p>\n<ul>\n\t<li>It was meant to be replaced by an actual statement, but this was forgotten.</li>\n\t<li>There was a typo which lead the semicolon to be doubled, i.e. <tt>;;</tt>.</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction doSomething():void {\r\n  ;                                                       <span class=\"code-comment\">// Noncompliant - was used as a kind of TODO marker\r\n</span>}\r\n\r\nfunction doSomethingElse():void {\r\n  trace(<span class=\"code-quote\">\"Hello, world!\"</span>);;                     <span class=\"code-comment\">// Noncompliant - <span class=\"code-object\">double</span> ;\r\n</span>  ...\r\n  <span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 3; trace(i), i++);       <span class=\"code-comment\">// Noncompliant - Rarely, they are used on purpose as the body of a loop. It is a bad practice to have side-effects outside of the loop body\r\n</span>  ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction doSomething():void {}\r\n\r\nfunction doSomethingElse():void {\r\n  trace(<span class=\"code-quote\">\"Hello, world!\"</span>);\r\n  ...\r\n  <span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i:<span class=\"code-object\">int</span> = 0; i &lt; 3; i++){\r\n    trace(i);\r\n  }\r\n  ...\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character.</li>\n\t<li>MISRA C++:2008, 6-2-3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment, provided that the first character following the null statement is a white-space character.</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/7gCTAw\" class=\"external-link\" rel=\"nofollow\">CERT, MSC51-J.</a> - Do not place a semicolon immediately following an if, for, or while condition</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/i4FtAg\" class=\"external-link\" rel=\"nofollow\">CERT, EXP15-C.</a> - Do not place a semicolon on the same line as an if, for, or while statement</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-116",
+      "type": "Code Smell",
+      "summary": "Field names should comply with a naming convention",
+      "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that field names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;_a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass MyClass {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> my_field:<span class=\"code-object\">int</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n   <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myField:<span class=\"code-object\">int</span>;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-100",
+      "type": "Code Smell",
+      "summary": "Function names should comply with a naming convention",
+      "description": "<p>Shared naming conventions allow teams to collaborate efficiently. This rule checks that all function names match a provided regular expression.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With default provided regular expression: ^<span class=\"error\">&#91;a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction DoSomething(){...} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction doSomething(){...} \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-117",
+      "type": "Code Smell",
+      "summary": "Local variable and function parameter names should comply with a naming convention",
+      "description": "<p>Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a local variable or function parameter name does not match the provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;_a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function doSomething(my_param:<span class=\"code-object\">int</span>):void\r\n{  \r\n  <span class=\"code-keyword\">var</span> LOCAL:<span class=\"code-object\">int</span>;\r\n  ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function doSomething(myParam):void\r\n{  \r\n  <span class=\"code-keyword\">var</span> local;\r\n  ...\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1185",
+      "type": "Code Smell",
+      "summary": "Overriding methods should do more than simply call the same method in the super class ",
+      "description": "<p>Overriding a method just to call the same method from the super class without performing any other actions is useless and misleading.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\noverride <span class=\"code-keyword\">public</span> function doSomething() : void\r\n{ \r\n  <span class=\"code-keyword\">super</span>.doSomething(); \r\n}\r\n\r\noverride <span class=\"code-keyword\">public</span> function isLegal(action:Action) : <span class=\"code-object\">Boolean</span> \r\n{      \r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">super</span>.isLegal(action);\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\noverride <span class=\"code-keyword\">public</span> function doSomething() : void\r\n{ \r\n  <span class=\"code-keyword\">super</span>.doSomething();                             <span class=\"code-comment\">// Compliant - not simply forwarding the call\r\n</span>  doSomethingElse();\r\n}\r\n\r\noverride <span class=\"code-keyword\">public</span> function isLegal(action:Action) : <span class=\"code-object\">Boolean</span> \r\n{      \r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">super</span>.isLegal(<span class=\"code-keyword\">new</span> Action(...));   <span class=\"code-comment\">// Compliant - not simply forwarding the call\r\n</span>}\r\n\r\n[Deprecated(replacement=<span class=\"code-quote\">\"isAuthorized\"</span>)]\r\noverride <span class=\"code-keyword\">public</span> function isLegal(action:Action) : <span class=\"code-object\">Boolean</span> \r\n{      \r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">super</span>.isLegal(action);   <span class=\"code-comment\">// Compliant as there is a metadata\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy",
+        "redundant"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1455",
+      "type": "Code Smell",
+      "summary": "Package definition should be separate from Class definition",
+      "description": "<p>Declaring the package and class together has been deprecated since ActionScript 3. The package definition should be declared outside of the class definition even if the old syntax is still supported. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass P.A {...} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">package</span> P {    \r\n    class A {...}\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "obsolete"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-120",
+      "type": "Code Smell",
+      "summary": "Package names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all package names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;a-z&#93;</span>+(\\.<span class=\"error\">&#91;a-z&#93;</span><span class=\"error\">&#91;a-z0-9&#93;</span><b>)</b>$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">package</span> org.Example {  <span class=\"code-comment\">// Noncompliant\r\n</span>...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">package</span> org.example { \r\n...\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1170",
+      "type": "Code Smell",
+      "summary": "Public constants and fields initialized at declaration should be \"const static\" rather than merely \"const\"",
+      "description": "<p>Making a public constant just <tt>const</tt> as opposed to <tt>static const</tt> leads to duplicating its value for every instance of the class, uselessly increasing the amount of memory required to execute the application.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Myclass \r\n{\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">const</span> THRESHOLD:<span class=\"code-object\">int</span> = 3;   \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Myclass \r\n{\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">const</span> THRESHOLD:<span class=\"code-object\">int</span> = 3;   \r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1951",
+      "type": "Vulnerability",
+      "summary": "The \"trace\" function should not be used",
+      "description": "<p>The <tt>trace()</tt> function outputs debug statements, which can be read by anyone with a debug version of the Flash player. Because sensitive information could easily be exposed in this manner, <tt>trace()</tt> should never appear in production code.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n    <span class=\"code-keyword\">var</span> val:<span class=\"code-object\">Number</span> = doCalculation();\r\n    trace(<span class=\"code-quote\">\"Calculation result: \"</span> + val);  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n    <span class=\"code-keyword\">var</span> val:<span class=\"code-object\">Number</span> = doCalculation();\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/489.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-489</a> - Leftover Debug Code</li>\n</ul>\n",
+      "standards": [
+        "CWE"
+      ],
+      "tags": [
+        "cwe"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1481",
+      "type": "Code Smell",
+      "summary": "Unused local variables should be removed",
+      "description": "<p>If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will not wonder what the variable is used for.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function numberOfMinutes(hours:<span class=\"code-object\">int</span>):<span class=\"code-object\">int</span>\r\n{\r\n  <span class=\"code-keyword\">var</span> seconds:<span class=\"code-object\">int</span> = 0;  <span class=\"code-comment\">// seconds is never used \r\n</span>  <span class=\"code-keyword\">return</span> hours * 60;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function numberOfMinutes(hours:<span class=\"code-object\">int</span>):<span class=\"code-object\">int</span>\r\n{\r\n  <span class=\"code-keyword\">return</span> hours * 60;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1606",
+      "type": "Code Smell",
+      "summary": "Failed unit tests should be fixed",
+      "description": "<p>Test failures or errors generally indicate that regressions have been introduced. Those tests should be handled as soon as possible to reduce the cost to fix the corresponding regressions.</p>",
+      "standards": [],
+      "tags": [
+        "tests"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1314",
+      "type": "Code Smell",
+      "summary": "Octal values should not be used",
+      "description": "<p>Integer literals starting with a zero are octal rather than decimal values. While using octal values is fully supported, most developers do not have experience with them. They may not recognize octal values as such, mistaking them instead for decimal values.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> myNumber:<span class=\"code-object\">int</span> = 010;  <span class=\"code-comment\">// Noncompliant. myNumber will hold 8, not 10 - was <span class=\"code-keyword\">this</span> really expected?</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> myNumber:<span class=\"code-object\">int</span> = 8;\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 7.1 - Octal constants (other than zero) and octal escape sequences shall not be used.</li>\n\t<li>MISRA C++:2008, 2-13-2 - Octal constants (other than zero) and octal escape sequences (other than \"\\0\") shall not be used</li>\n\t<li>MISRA C:2012, 7.1 - Octal constants shall not be used</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/_QC7AQ\" class=\"external-link\" rel=\"nofollow\">CERT, DCL18-C.</a> - Do not begin integer constants with 0 when specifying a decimal value</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/hYClBg\" class=\"external-link\" rel=\"nofollow\">CERT, DCL50-J.</a> - Use visually distinct identifiers</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1469",
+      "type": "Code Smell",
+      "summary": "The element type of an array field should be specified",
+      "description": "<p>Quoted from the Flex documentation :</p>\n<blockquote>\n<p>When you define an Array variable in ActionScript, you specify Array as the data type of the variable. However, you cannot specify the data type of the elements of the Array.</p>\n\n<p>To allow the Flex MXML compiler to perform type checking on Array elements, you can use the <span class=\"error\">&#91;ArrayElementType&#93;</span> metadata tag to specify the allowed data type of the Array elements.</p></blockquote>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> newStringProperty:Array;\r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> newNumberProperty:Array;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n[ArrayElementType(<span class=\"code-quote\">\"<span class=\"code-object\">String</span>\"</span>)] \r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> newStringProperty:Array;\r\n\r\n[ArrayElementType(<span class=\"code-quote\">\"<span class=\"code-object\">Number</span>\"</span>)] \r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> newNumberProperty:Array;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1451",
+      "type": "Code Smell",
+      "summary": "Track lack of copyright and license headers",
+      "description": "<p>Each source file should start with a header stating file ownership and the license which must be used to distribute the application. <br/>\nThis rule must be fed with the header text that is expected at the beginning of every file.</p>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n/*\r\n * SonarQube, open source software quality management tool.\r\n * Copyright (C) 2008-2013 SonarSource\r\n * mailto:contact AT sonarsource DOT com\r\n *\r\n * SonarQube is free software; you can redistribute it and/or\r\n * modify it under the terms of the GNU Lesser General Public\r\n * License as published by the Free Software Foundation; either\r\n * version 3 of the License, or (at your option) any later version.\r\n *\r\n * SonarQube is distributed in the hope that it will be useful,\r\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\r\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\r\n * Lesser General Public License <span class=\"code-keyword\">for</span> more details.\r\n *\r\n * You should have received a copy of the GNU Lesser General Public License\r\n * along with <span class=\"code-keyword\">this</span> program; <span class=\"code-keyword\">if</span> not, write to the Free Software Foundation,\r\n * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\r\n */\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1821",
+      "type": "Code Smell",
+      "summary": "\"switch\" statements should not be nested",
+      "description": "<p>Nested <tt>switch</tt> structures are difficult to understand because you can easily confuse the cases of an inner <tt>switch</tt> as belonging to an outer statement. Therefore nested <tt>switch</tt> statements should be avoided.</p>\n\n<p>Specifically, you should structure your code to avoid the need for nested <tt>switch</tt> statements, but if you cannot, then consider moving the inner <tt>switch</tt> to another function.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function func(foo:<span class=\"code-object\">Number</span>, bar:<span class=\"code-object\">Number</span>):void\r\n{\r\n  <span class=\"code-keyword\">switch</span> (foo)\r\n  { \r\n    <span class=\"code-keyword\">case</span> 1:\r\n      <span class=\"code-comment\">// <span class=\"code-keyword\">do</span> something\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">case</span> 2:\r\n      <span class=\"code-keyword\">switch</span> (bar)  <span class=\"code-comment\">// Noncompliant\r\n</span>      {\r\n        <span class=\"code-keyword\">case</span> 89:  <span class=\"code-comment\">// It's easy to lose sight of what's being tested; is it foo or bar?\r\n</span>          <span class=\"code-comment\">// ...\r\n</span>          <span class=\"code-keyword\">break</span>;\r\n        <span class=\"code-keyword\">case</span> 90:\r\n          <span class=\"code-comment\">// ...\r\n</span>          <span class=\"code-keyword\">break</span>;\r\n      }\r\n      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">case</span> 3:\r\n      <span class=\"code-comment\">// <span class=\"code-keyword\">do</span> something\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">default</span>:\r\n      <span class=\"code-keyword\">break</span>;\r\n  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n\r\n<span class=\"code-keyword\">public</span> function func(foo:<span class=\"code-object\">Number</span>, bar:<span class=\"code-object\">Number</span>):void\r\n{\r\n  <span class=\"code-keyword\">switch</span> (foo)\r\n  { \r\n    <span class=\"code-keyword\">case</span> 1:\r\n      <span class=\"code-comment\">// ...\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">case</span> 2:\r\n      handleBar(bar);\r\n      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">case</span> 3:\r\n      <span class=\"code-comment\">// ...\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">default</span>:\r\n      <span class=\"code-keyword\">break</span>;\r\n  }\r\n}\r\n\r\n<span class=\"code-keyword\">public</span> function handleBar(bar:<span class=\"code-object\">Number</span>):void\r\n{\r\n  <span class=\"code-keyword\">switch</span> (bar)\r\n  {\r\n    <span class=\"code-keyword\">case</span> 89:\r\n      <span class=\"code-comment\">// ...\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n    <span class=\"code-keyword\">case</span> 90:\r\n      <span class=\"code-comment\">// ...\r\n</span>      <span class=\"code-keyword\">break</span>;\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1482",
+      "type": "Code Smell",
+      "summary": "Branches should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the branch coverage on this file is less than the required threshold. It gives the number of branches to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1311",
+      "type": "Code Smell",
+      "summary": "Classes should not be too complex",
+      "description": "<p>The cyclomatic complexity of a class should not exceed a defined threshold. Complex code can perform poorly and will in any case be difficult to understand and therefore to maintain.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-134",
+      "type": "Code Smell",
+      "summary": "Control flow statements \"if\", \"for\", \"while\" and \"switch\" should not be nested too deeply",
+      "description": "<p>Nested <tt>if</tt>, <tt>for</tt>, <tt>while</tt>, <tt>do while</tt> and <tt>switch</tt> statements is a key ingredient for making what's known as \"Spaghetti code\".<br/>\nSuch code is hard to read, refactor and therefore maintain.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  <span class=\"code-keyword\">if</span> (condition1) {                  <span class=\"code-comment\">// Compliant - depth = 1\r\n</span>    /* ... */\r\n    <span class=\"code-keyword\">if</span> (condition2) {                <span class=\"code-comment\">// Compliant - depth = 2\r\n</span>      /* ... */\r\n      <span class=\"code-keyword\">for</span>(<span class=\"code-object\">int</span> i = 0; i &lt; 10; i++) {  <span class=\"code-comment\">// Compliant - depth = 3, not exceeding the limit\r\n</span>        /* ... */\r\n        <span class=\"code-keyword\">if</span> (condition4) {            <span class=\"code-comment\">// Noncompliant - depth = 4\r\n</span>          <span class=\"code-keyword\">if</span> (condition5) {          <span class=\"code-comment\">// Depth = 5, exceeding the limit, but issues are only reported on depth = 4\r\n</span>            /* ... */\r\n          }\r\n          <span class=\"code-keyword\">return</span>;\r\n        }\r\n      }\r\n    }\r\n  }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1541",
+      "type": "Code Smell",
+      "summary": "Functions should not be too complex",
+      "description": "<p>The Cyclomatic Complexity of functions should not exceed a defined threshold. Complex code may perform poorly and can be difficult to test thoroughly.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1483",
+      "type": "Code Smell",
+      "summary": "Lines should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. It gives the number of lines to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1440",
+      "type": "Code Smell",
+      "summary": "\"===\" and \"!==\" should be used instead of \"==\" and \"!=\"",
+      "description": "<p>The <tt>==</tt> and <tt>!=</tt> operators do type coercion before comparing values. This is bad because it can mask type errors. For example, it evaluates <tt>' \\t\\r\\n' == 0</tt> as <tt>true</tt>.<br/>\nIt is best to always use the side-effect-less <tt>===</tt> and <tt>!==</tt> operators instead.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">var</span> == 'howdy') {...} <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">var</span> === 'howdy') {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1151",
+      "type": "Code Smell",
+      "summary": "\"switch case\" clauses should not have too many lines of code",
+      "description": "<p>The <tt>switch</tt> statement should be used only to clearly define some new branches in the control flow. As soon as a <tt>case</tt> clause contains too many statements this highly decreases the readability of the overall control flow statement. In such case, the content of the <tt>case</tt> clause should be extracted into a dedicated method.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 5:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (myVariable) {\r\n  <span class=\"code-keyword\">case</span> 0:       <span class=\"code-comment\">// Noncompliant - 6 lines till next <span class=\"code-keyword\">case</span> or <span class=\"code-keyword\">default</span> <span class=\"code-keyword\">case</span>\r\n</span>    trace(\"\");\r\n    trace(\"\");\r\n    trace(\"\");\r\n    trace(\"\");\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 1:\r\n  ...\r\n}\r\n</pre>\n</div></div> \n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (myVariable) {\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    printSomething()\r\n    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 1:\r\n  ...\r\n}\r\n...\r\n<span class=\"code-keyword\">private</span> function printSomething() {\r\n  trace(\"\");\r\n  trace(\"\");\r\n  trace(\"\");\r\n  trace(\"\");\r\n}\r\n</pre>\n</div></div> ",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1820",
+      "type": "Code Smell",
+      "summary": "Classes should not have too many fields",
+      "description": "<p>A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain, and having a lot of fields is an indication that a class has grown too large.</p>\n\n<p>Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1448",
+      "type": "Code Smell",
+      "summary": "Classes should not have too many methods",
+      "description": "<p>A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2260",
+      "type": "Code Smell",
+      "summary": "Flex parser failure",
+      "description": "<p>When the Flex parser fails, it is possible to record the failure as a violation on the file. This way, not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.</p>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1142",
+      "type": "Code Smell",
+      "summary": "Functions should not contain too many return statements",
+      "description": "<p>Having too many return statements in a function increases the function's essential complexity because the flow of execution is broken each time a return statement is encountered. This makes it harder to read and understand the logic of the function.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction myFunction():<span class=\"code-object\">boolean</span> { <span class=\"code-comment\">// Noncompliant as there are 4 <span class=\"code-keyword\">return</span> statements\r\n</span>  <span class=\"code-keyword\">if</span> (condition1) {\r\n    <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>;\r\n  } <span class=\"code-keyword\">else</span> {\r\n    <span class=\"code-keyword\">if</span> (condition2) {\r\n      <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">false</span>;\r\n    } <span class=\"code-keyword\">else</span> {\r\n      <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>;\r\n    }\r\n  }\r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">false</span>;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-138",
+      "type": "Code Smell",
+      "summary": "Functions should not have too many lines of code",
+      "description": "<p>A function that grows too large tends to aggregate too many responsibilities.<br/>\nSuch functions inevitably become harder to understand and therefore harder to maintain. </p>\n\n<p>Above a specific threshold, it is strongly advised to refactor into smaller functions which focus on well-defined tasks.<br/>\nThose smaller functions will not only be easier to understand, but also probably easier to test.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-103",
+      "type": "Code Smell",
+      "summary": "Lines should not be too long",
+      "description": "<p>Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1454",
+      "type": "Bug",
+      "summary": "Multiple \"++\" or \"--\" unary operators should not be used in a single arithmetic expression",
+      "description": "<p>Using several \"--\" or \"++\" unary operators in the same arithmetic expression can quickly make the expression unreadable. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> j:<span class=\"code-object\">int</span> = foo++ - --bar;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nbar--;\r\n<span class=\"code-keyword\">var</span> j:<span class=\"code-object\">int</span> = foo++ - bar;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1176",
+      "type": "Code Smell",
+      "summary": "Public classes, methods, properties and metadata should be documented with ASDoc",
+      "description": "<p>Try to imagine using the standard Flex API without ASDoc. It would be a nightmare, because ASDoc is the only way to understand of the contract of the API.<br/>\nDocumenting an API with ASDoc increases the productivity of the developers use it.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myLabel:<span class=\"code-object\">String</span>; \r\n\r\n  <span class=\"code-keyword\">public</span> function myMethod(param1:<span class=\"code-object\">String</span>):<span class=\"code-object\">Boolean</span> {...}\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n/**\r\n * my doc\r\n */\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n  /**\r\n   * my doc\r\n   */\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myLabel:<span class=\"code-object\">String</span>; \r\n\r\n  /**\r\n   * my doc\r\n   * @param param1 my doc\r\n   * @<span class=\"code-keyword\">return</span> my doc\r\n   */\r\n  <span class=\"code-keyword\">public</span> function myMethod(param1:<span class=\"code-object\">String</span>):<span class=\"code-object\">Boolean</span> {...}\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Classes or class elements with an ASDoc <tt>@private</tt> comment are ignored by this rule.</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n/** \r\n * @<span class=\"code-keyword\">private</span>  <span class=\"code-comment\">// This class and all its elements are ignored\r\n</span> */\r\n<span class=\"code-keyword\">public</span> class MyClass {  <span class=\"code-comment\">// Compliant\r\n</span>\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myLabel:<span class=\"code-object\">String</span>;   <span class=\"code-comment\">// Compliant\r\n</span>}\r\n\r\n<span class=\"code-keyword\">public</span> class AnotherClass {  <span class=\"code-comment\">// Noncompliant; class not @<span class=\"code-keyword\">private</span> and not documented\r\n</span>\r\n  /** \r\n   * @<span class=\"code-keyword\">private</span>\r\n   */\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> name:<span class=\"code-object\">String</span>;  <span class=\"code-comment\">// Compliant\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-122",
+      "type": "Code Smell",
+      "summary": "Statements should be on separate lines",
+      "description": "<p>For better readability, do not put more than one statement on a single line.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span>(someCondition) doSomething();\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span>(someCondition) {\r\n  doSomething();\r\n}\r\n</pre>\n</div></div>\n",
+      "standards": [],
+      "tags": [
+        "style"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1145",
+      "type": "Bug",
+      "summary": "Useless \"if(true) {...}\" and \"if(false){...}\" blocks should be removed",
+      "description": "<p><tt>if</tt> statements with conditions that are always false have the effect of making blocks of code non-functional. <tt>if</tt> statements with conditions that are always true are completely redundant, and make the code less readable.</p>\n\n<p>There are three possible causes for the presence of such code: </p>\n<ul>\n\t<li>An if statement was changed during debugging and that debug code has been committed.</li>\n\t<li>Some value was left unset.</li>\n\t<li>Some logic is not doing what the programmer thought it did.</li>\n</ul>\n\n\n<p>In any of these cases, unconditional <tt>if</tt> statements should be removed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">true</span>) {  \r\n  doSomething(); \r\n}\r\n...\r\n<span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">false</span>) {  \r\n  doSomethingElse(); \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ndoSomething(); \r\n...\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/489.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-489</a> - Leftover Debug Code</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/570.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-570</a> - Expression is Always False</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/571.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-571</a> - Expression is Always True</li>\n\t<li>MISRA C:2004, 13.7 - Boolean operations whose results are invariant shall not be permitted.</li>\n\t<li>MISRA C:2012, 14.3 - Controlling expressions shall not be invariant</li>\n</ul>\n",
+      "standards": [
+        "CWE",
+        "MISRA"
+      ],
+      "tags": [
+        "cwe",
+        "misra"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1982",
+      "type": "Code Smell",
+      "summary": "\"MovieClip.onEnterFrame\" event handler should not be used",
+      "description": "<p>The <tt>onEnterFrame</tt> event handler is continually invoked at the frame rate of the SWF file, regardless of which individual movie frame it is set for. Having too many <tt>onEnterFrame</tt> handlers can seriously degrade performance. </p>\n\n<p>If the use of this event handler cannot be avoided entirely, then it should be created as close to its use as possible, and then destroyed as soon as possible afterward.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nmovieClip.onEnterFrame = function () {   <span class=\"code-comment\">// Noncompliant\r\n</span>   <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "performance"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1005",
+      "type": "Code Smell",
+      "summary": "A function should have a single point of exit at the end of the function",
+      "description": "<p>This is required by IEC 61508, under good programming style.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction func1() { <span class=\"code-comment\">// Noncompliant - there are two points of exit\r\n</span>  <span class=\"code-keyword\">if</span> (<span class=\"code-keyword\">false</span>) {\r\n    <span class=\"code-keyword\">return</span>;\r\n  }\r\n}\r\n\r\nfunction func2() { <span class=\"code-comment\">// Noncompliant - there are two points of exit\r\n</span>  <span class=\"code-keyword\">if</span> (a &gt; 0) {\r\n    <span class=\"code-keyword\">return</span> 0;\r\n  }\r\n  <span class=\"code-keyword\">return</span> -1;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction func1() {\r\n  <span class=\"code-keyword\">return</span>;\r\n}\r\n\r\nfunction func2() {\r\n}\r\n\r\nfunction func3();\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.7 - A function shall have a single point of exit at the end of the function.</li>\n\t<li>MISRA C++:2008, 6-6-5 - A function shall have a single point of exit at the end of the function</li>\n\t<li>MISRA C:2012, 15.5 - A function should have a single point of exit at the end</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "brain-overload",
+        "misra"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1950",
+      "type": "Bug",
+      "summary": "Cases in a \"switch\" should not have the same condition",
+      "description": "<p>Having multiple cases in a <tt>switch</tt> with the same condition is confusing at best. At worst, it's a bug that is likely to induce further bugs as the code is maintained. </p>\n\n<p>If the first case ends with a break, the second case will never be executed, rendering it dead code. Worse there is the risk in this situation that future maintenance will be done on the dead case, rather than on the one that's actually used.</p>\n\n<p>On the other hand, if the first case does not end with a break, both cases will be executed, but future maintainers may not notice that.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span>(i) {\r\n  <span class=\"code-keyword\">case</span> 1:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 5:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 3:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 1:  <span class=\"code-comment\">// Noncompliant\r\n</span>    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span>(i) {\r\n  <span class=\"code-keyword\">case</span> 1:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 5:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n  <span class=\"code-keyword\">case</span> 3:\r\n    <span class=\"code-comment\">//...\r\n</span>    <span class=\"code-keyword\">break</span>;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1312",
+      "type": "Code Smell",
+      "summary": "Loggers should be \"private static const\" and should share naming convention",
+      "description": "<p>Loggers should be:</p>\n<ul>\n\t<li><tt>private</tt>: not accessible outside of their parent classes. If another class needs to log something, it should instantiate its own logger.</li>\n\t<li><tt>static</tt>: not dependent on an instance of a class (an object). When logging something, contextual information can of course be provided in the messages but the logger should be created at class level to prevent creating a logger along with each object.</li>\n\t<li><tt>const</tt>: created once and only once per class.</li>\n</ul>\n",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1784",
+      "type": "Bug",
+      "summary": "Method visibility should be explicitly declared",
+      "description": "<p>Access modifiers define which classes can access properties, variables, methods, and other classes. If an access modifier is not specified, the access level defaults to <tt>internal</tt>, which grants access to all classes in the same package. This may be what is intended, but it should be specified explicitly to avoid confusion.</p>\n\n<p>Available access modifiers are:</p>\n<ul>\n\t<li><tt>internal</tt> - access allowed within the same package</li>\n\t<li><tt>private</tt> - access allowed only within the same class</li>\n\t<li><tt>protected</tt> - access allowed to the class and its child classes</li>\n\t<li><tt>public</tt> - unfettered access by all</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction checkResources():<span class=\"code-object\">Boolean</span> { \r\n  ...\r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> function checkResources():<span class=\"code-object\">Boolean</span> { \r\n  ...\r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>;\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-3424",
+      "type": "Code Smell",
+      "summary": "Skipped unit tests should be either removed or fixed",
+      "description": "<p>Skipped unit tests are considered dead code. Either they should be activated again (and updated) or they should be removed.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1438",
+      "type": "Code Smell",
+      "summary": "Statements should end with semicolons",
+      "description": "<p>In Flex, the semicolon is optional as a statement separator, but omitting semicolons can be confusing.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction fun() {\r\n  <span class=\"code-keyword\">return</span>   <span class=\"code-comment\">// Noncompliant\r\n</span>       5   <span class=\"code-comment\">// Noncompliant\r\n</span>}\r\nprint(fun());  <span class=\"code-comment\">// prints <span class=\"code-quote\">\"undefined\"</span>, not <span class=\"code-quote\">\"5\"</span></span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunction fun() {\r\n  <span class=\"code-keyword\">return</span> 5;\r\n}\r\nprint(fun());\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1484",
+      "type": "Code Smell",
+      "summary": "Track instances of below-threshold comment line density",
+      "description": "<p>An issue is created on a file as soon as the density of comment lines on this file is less than the required threshold. The number of comment lines to be written in order to reach the required threshold is provided by each issue message.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    }
+  ]
+}

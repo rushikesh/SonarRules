@@ -1,0 +1,748 @@
+{
+  "types": {
+    "Vulnerability": 4,
+    "Code Smell": 65,
+    "Bug": 15
+  },
+  "standards": {},
+  "tags": [{
+    "name": "convention",
+    "count": 11
+  }, {
+    "name": "brain-overload",
+    "count": 7
+  }, {
+    "name": "clumsy",
+    "count": 1
+  }, {
+    "name": "confusing",
+    "count": 1
+  }, {
+    "name": "performance",
+    "count": 18
+  }, {
+    "name": "sql",
+    "count": 23
+  }, {
+    "name": "design",
+    "count": 2
+  }, {
+    "name": "style",
+    "count": 1
+  }, {
+    "name": "misra",
+    "count": 5
+  }, {
+    "name": "unused",
+    "count": 4
+  }, {
+    "name": "cert",
+    "count": 6
+  }, {
+    "name": "bad-practice",
+    "count": 1
+  }, {
+    "name": "cwe",
+    "count": 3
+  }, {
+    "name": "lock-in",
+    "count": 3
+  }, {
+    "name": "error-handling",
+    "count": 2
+  }, {
+    "name": "obsolete",
+    "count": 1
+  }, {
+    "name": "preprocessor",
+    "count": 2
+  }, {
+    "name": "suspicious",
+    "count": 2
+  }, {
+    "name": "pitfall",
+    "count": 2
+  }, {
+    "name": "owasp-a1",
+    "count": 1
+  }, {
+    "name": "sans-top25-insecure",
+    "count": 1
+  }, {
+    "name": "unpredictable",
+    "count": 1
+  }],
+  "rules": [{
+    "summary": "SQL \"SELECT\" statements should not contain dynamic clauses",
+    "type": "Vulnerability",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1493",
+    "tags": ["sql"],
+    "description": "<p>There are two main reasons to ban dynamic clauses in <code>SELECT</code> statements. </p>\n<p>The first relates to maintainability. One of the nice features of ABAP Design Time is the connection to the data dictionary; you get syntax errors\nif you try to address table fields that are not present anymore or that have typos. With dynamic SQL, the ability to statically check the code for\nthis type of error is lost. </p>\n<p>The other more critical reason relates to security. By definition, dynamic clauses make an application susceptible to SQL injection attacks.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT (select_clause)\n FROM (from_clause) CLIENT SPECIFIED INTO &lt;fs&gt;\n WHERE (where_clause)\n GROUP BY (groupby_clause) HAVING (having_clause)\n ORDER BY (orderby_clause).\n</pre>\n\n"
+  }, {
+    "summary": "SQL \"SELECT\" statements should have \"WHERE\" conditions",
+    "type": "Vulnerability",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1492",
+    "tags": ["performance", "sql"],
+    "description": "<p>Although the <code>WHERE</code> condition is optional in a <code>SELECT</code> statement, for performance and security reasons, a\n<code>WHERE</code> clause should always be specified to prevent reading the whole table.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT * FROM db_persons INTO us_persons.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT * FROM db_persons INTO us_persons WHERE country IS 'US'.\n</pre>\n<h2>Exceptions</h2>\n<p><code>SELECT SINGLE</code> and <code>UP TO 1 ROWS</code> result in only one record being read, so such <code>SELECT</code>s are ignored by this\nrule.</p>\n<pre>\nSELECT SINGLE * FROM db_persons INTO us_persons.\n\nSELECT * FROM db_persons UP TO 1 ROWS INTO us_persons.\n</pre>\n\n"
+  }, {
+    "summary": "SQL \"UPDATE dbtab SET ...\" statements should have a \"WHERE\" clause",
+    "type": "Bug",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1496",
+    "tags": ["sql"],
+    "description": "<p><code>UPDATE dbtab SET ...</code> without a <code>WHERE</code> condition changes all the entries of the table. Check whether dataset to be changed\ncan be limited by a suitable <code>WHERE</code> condition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nUPDATE COUNTRIES SET NAME=country_name.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nUPDATE COUNTRIES SET NAME=country_name WHERE CODE=country_code.\n</pre>\n\n"
+  }, {
+    "summary": "\"DELETE FROM dbtab\" statements should have a \"WHERE\" clause",
+    "type": "Bug",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1139",
+    "tags": ["sql"],
+    "description": "<p><code>DELETE FROM dbtab</code> without a <code>WHERE</code> condition deletes all the entries of the table. Check whether dataset to be deleted can\nbe limited by a suitable WHERE condition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDELETE FROM COUNTRIES.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDELETE FROM COUNTRIES WHERE CODE = country_code.\n</pre>\n\n"
+  }, {
+    "summary": "Keywords should not be used as variable names",
+    "type": "Code Smell",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1669",
+    "tags": ["pitfall"],
+    "description": "<p>Using keywords as variable names may yield incomprehensible code, and should be avoided.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDATA:  wa_struct TYPE struct,\n       name       TYPE string,\n       dob          TYPE string,\n       aliases     TYPE string,    \" ALIASES is a keyword\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDATA:  wa_struct TYPE struct,\n       name         TYPE string,\n       dob            TYPE string,\n       alt_names  TYPE string,\n</pre>\n\n"
+  }, {
+    "summary": "Internal source code processing statements should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Blocker",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1508",
+    "tags": ["lock-in"],
+    "description": "<p>ABAP provides the ability to manipulate programs dynamically during execution for instance with statements like <code>INSERT REPORT</code> and\n<code>GENERATE SUBROUTINE POOL</code>. Most of those statements are for internal use within SAP Technology Development and incompatible changes are\npossible at any time without prior warning or notice. </p>\n<p>This rule raises an issue when any of the following source code processing statements is used: <code>INSERT REPORT</code>, <code>READ\nREPORT</code>, <code>DELETE REPORT</code>, <code>EDITOR-CALL FOR REPORT</code>, <code>SYNTAX-CHECK FOR itab</code>, <code>GENERATE REPORT/SUBROUTINE\nPOOL</code>, <code>LOAD REPORT</code>, <code>SCAN</code>, <code>INSERT TEXTPOOL</code>, <code>READ TEXTPOOL</code>, <code>DELETE TEXTPOOL</code>,\n<code>EXPORT DYNPRO</code>, <code>IMPORT DYNPRO</code>, <code>DELETE DYNPRO</code>, <code>SYNTAX-CHECK FOR DYNPRO</code>, and <code>GENERATE\nDYNPRO</code>.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nGENERATE REPORT MY_PROG.\n</pre>\n\n"
+  }, {
+    "summary": "Cognitive Complexity of functions should not be too high",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-3776",
+    "tags": ["brain-overload"],
+    "description": "<p>Cognitive Complexity is a measure of how hard the control flow of a function is to understand. Functions with high Cognitive Complexity will be\ndifficult to maintain.</p>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"http://redirect.sonarsource.com/doc/cognitive-complexity.html\">Cognitive Complexity</a> </li>\n</ul>\n\n"
+  }, {
+    "summary": "\"CX_ROOT\" should not be caught",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1675",
+    "tags": ["error-handling"],
+    "description": "<p>Because <code>CX_ROOT</code> is the base exception type, catching it directly probably casts a wider net than you intended. Catching\n<code>CX_ROOT</code> could mask far more serious system errors that your <code>CATCH</code> logic was intended to deal with.</p>\n<p>Some smaller, more specific exception type should be caught instead.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\n  try.\n    if ABS( NUMBER ) &gt; 100.\n      write / 'Number is large'.\n    endif.\n  catch CX_ROOT into OREF.\n    write / OREF-&gt;GET_TEXT( ).\n  endtry.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n  try.\n    if ABS( NUMBER ) &gt; 100.\n      write / 'Number is large'.\n    endif.\n  catch CX_SY_ARITHMETIC_ERROR into OREF.\n    write / OREF-&gt;GET_TEXT( ).\n  endtry.\n</pre>\n\n"
+  }, {
+    "summary": "\"SY-SUBRC\" should be tested after each function call with exception handling",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1511",
+    "tags": ["error-handling"],
+    "description": "<p>When handling an exception thrown from a function call, the system field <code>SY-SUBRC</code> must be tested immediately after the function call.\nOtherwise handling exceptions is useless. This test must be done either with the <code>CASE</code>, <code>IF</code> or <code>CHECK</code>\nstatement.</p>\n<h2>Noncompliant Code Example</h2>\n<p>In the following case nothing happens if the exceptions <code>NOT_FOUND</code> or <code>OTHERS</code> are raised:</p>\n<p> </p>\n<pre>\nCALL FUNCTION 'STRING_SPLIT'\n  EXPORTING\n    DELIMITER = ':'\n    STRING = FELD\n  IMPORTING\n    HEAD =   HEAD\n    TAIL = TAIL\n  EXCEPTIONS\n    NOT_FOUND = 1\n    OTHERS = 2.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCALL FUNCTION 'STRING_SPLIT'\n  EXPORTING\n    DELIMITER = ':'\n    STRING = FELD\n  IMPORTING\n    HEAD =   HEAD\n    TAIL = TAIL\n  EXCEPTIONS\n    NOT_FOUND = 1\n    OTHERS = 2.\nCASE SY-SUBRC.\n  WHEN 1. ...\n  WHEN 2. ...\n  WHEN OTHER.\nENDCASE.\n</pre>\n\n"
+  }, {
+    "summary": "Control flow statements \"IF\", \"CASE\", \"DO\", \"LOOP\", \"SELECT\", \"WHILE\" and \"PROVIDE\" should not be nested too deeply",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-134",
+    "tags": ["brain-overload"],
+    "description": "<p>Nested <code>IF</code>, <code>CASE</code>, <code>DO</code>, <code>LOOP</code>, <code>SELECT</code>, <code>WHILE</code> and <code>PROVIDE</code>\nstatements is a key ingredient for making what's known as \"Spaghetti code\".</p>\n<p>Such code is hard to read, refactor and therefore maintain.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n<pre>\nIF param1 = 2.\n  IF param2 = 4.\n    DO 3 TIMES.    \"Compliant - depth = 3, not exceeding the limit\n      IF sy-index = 2.   \"Noncompliant - depth = 4\n        CONTINUE.\n      ENDIF.\n      WRITE sy-index.\n    ENDDO.\n  ENDIF.\nENDIF.\n</pre>\n\n"
+  }, {
+    "summary": "\"CASE\" statements should end with \"WHEN OTHERS\" clauses",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-131",
+    "tags": ["cwe", "misra", "cert"],
+    "description": "<p>The requirement for a final <code>OTHERS</code> clause is defensive programming. The clause should either take appropriate action, or contain a\nsuitable comment as to why no action is taken. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCASE SY-INDEX.   //missing WHEN OTHERS clause\n  WHEN ONE.\n    WRITE  'One'.\n  WHEN 2.\n    WRITE   'Two'.\nENDCASE.\n\nCASE SY-INDEX.\n  WHEN OTHERS.   //WHEN OTHERS clause should be the last one\n    WRITE 'Unexpected result'\n  WHEN ONE.\n    WRITE  'One'.\n  WHEN 2.\n    WRITE   'Two'.\nENDCASE.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCASE SY-INDEX.\n  WHEN ONE.\n    WRITE  'One'.\n  WHEN 2.\n    WRITE   'Two'.\n  WHEN OTHERS.\n    WRITE 'Unexpected result'\nENDCASE.\n</pre>\n<h2>See</h2>\n<ul>\n  <li> MISRA C:2004, 15.0 - The MISRA C <em>switch</em> syntax shall be used. </li>\n  <li> MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause </li>\n  <li> MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement. </li>\n  <li> MISRA C++:2008, 6-4-6 - The final clause of a switch statement shall be the default-clause </li>\n  <li> MISRA C:2012, 16.1 - All switch statements shall be well-formed </li>\n  <li> MISRA C:2012, 16.4 - Every <em>switch</em> statement shall have a <em>default</em> label </li>\n  <li> MISRA C:2012, 16.5 - A <em>default</em> label shall appear as either the first or the last <em>switch label</em> of a <em>switch</em> statement\n  </li>\n  <li> <a href=\"http://cwe.mitre.org/data/definitions/478.html\">MITRE, CWE-478</a> - Missing Default Case in Switch Statement </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/YgE\">CERT, MSC01-C.</a> - Strive for logical completeness </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/JoIyAQ\">CERT, MSC01-CPP.</a> - Strive for logical completeness </li>\n</ul>\n\n"
+  }, {
+    "summary": "String literals should not be duplicated",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1192",
+    "tags": ["design"],
+    "description": "<p>Duplicated string literals make the process of refactoring error-prone, since you must be sure to update all occurrences.</p>\n<p>On the other hand, constants can be referenced from many places, but only need to be updated in a single place.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n<pre>\nWRITE: / 'Firstname'.\n*...\nWRITE: / 'Firstname'.\n*...\nWRITE: / 'Firstname'.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCONSTANTS: fname    TYPE c LENGTH 9 VALUE 'Firstname',\n\nWRITE: / fname.\n*...\nWRITE: / fname.\n*...\nWRITE: / fname.\n</pre>\n<h2>Exceptions</h2>\n<p>To prevent generating some false-positives, literals having less than 5 characters are excluded.</p>\n\n"
+  }, {
+    "summary": "All branches in a conditional structure should not have exactly the same implementation",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-3923",
+    "tags": [],
+    "description": "<p>Having all branches in a case or if chain with the same implementation is an error. Either a copy-paste error was made and something different\nshould be executed, or there shouldn't be a case/if chain at all. Note that this rule does not apply to if chains without else-s, or to case-s without\ndefault clauses.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nIF a &gt;0.\n    doSomething.\nELSE IF b&gt; 0.\n    doSomething.\nENDIF.\n\nCASE i.\n  WHEN 1 OR 3.\n    doSomething.\n  WHEN 2.\n    doSomething.\n  WHEN OTHERS.\n        doSomething.\nENDCASE.\n</pre>\n\n"
+  }, {
+    "summary": "\"LIKE\" clauses should not be used without wildcards",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-3643",
+    "tags": ["sql"],
+    "description": "<p>The use of <code>LIKE</code> in a SQL query without one or more wildcards in the sought value is surely a typo. Either <code>=</code> was meant\ninstead, or the wildcard has been unintentionally omitted. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT name\nFROM product\nWHERE name LIKE 'choc'\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT name\nFROM product\nWHERE name LIKE 'choc%'\n</pre>\n<p>or </p>\n<pre>\nSELECT name\nFROM product\nWHERE name = 'choc'\n</pre>\n\n"
+  }, {
+    "summary": "\"WHERE\" clause conditions should not be contradictory",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-3633",
+    "tags": ["sql"],
+    "description": "<p>Queries with contradictory <code>WHERE</code> clauses will always return empty result sets. This is clearly a bug.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT *\nFROM fruit\nWHERE type='apple' AND type='orange'  -- Noncompliant\n</pre>\n\n"
+  }, {
+    "summary": "Related \"if/else if\" statements should not have the same condition",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1862",
+    "tags": ["cert", "unused", "pitfall"],
+    "description": "<p>A chain of <code>if</code>/<code>else if</code> statements is evaluated from top to bottom. At most, only one branch will be executed: the first\none with a condition that evaluates to <code>true</code>. </p>\n<p>Therefore, duplicating a condition automatically leads to dead code. Usually, this is due to a copy/paste error. At best, it's simply dead code and\nat worst, it's a bug that is likely to induce further bugs as the code is maintained, and obviously it could lead to unexpected behavior. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nif param = 1.\n  Statement.\nelseif param = 2.\n  Statement.\nelseif param = 1.  // Noncompliant\n Statement.\nendif.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nif param = 1.\n  Statement.\nelseif param = 2.\n  Statement.\nelseif param = 3.\n Statement.\nendif.\n</pre>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never\n  executed </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect </li>\n</ul>\n\n"
+  }, {
+    "summary": "Identical expressions should not be used on both sides of a binary operator",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1764",
+    "tags": ["cert"],
+    "description": "<p>Using the same value on either side of a binary operator is almost always a mistake. In the case of logical operators, it is either a copy/paste\nerror and therefore a bug, or it is simply wasted code, and should be simplified. In the case of bitwise operators and most binary mathematical\noperators, having the same value on both sides of an operator yields predictable results, and should be simplified.</p>\n<p>This rule ignores <code>*</code>, <code>+</code>, and <code>=</code>. </p>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never\n  executed </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect </li>\n  <li> {rule:abap:S1656} - Implements a check on <code>=</code>. </li>\n</ul>\n\n"
+  }, {
+    "summary": "An internal table should be sorted before duplicates are deleted",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1673",
+    "tags": [],
+    "description": "<p>Calling <code>DELETE ADJACENT DUPLICATES</code> won't reliably do any good if the table hasn't first been sorted to put duplicates side by side,\nsince the <code>ADJACENT</code> part of the command looks for multiple rows side-by-side with the same content.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDELETE ADJACENT DUPLICATES FROM ITAB COMPARING LAND.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSORT ITAB BY LAND.\nDELETE ADJACENT DUPLICATES FROM ITAB COMPARING LAND.\n</pre>\n\n"
+  }, {
+    "summary": "Variables should not be self-assigned",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1656",
+    "tags": ["cert"],
+    "description": "<p>There is no reason to re-assign a variable to itself. Either this statement is redundant and should be removed, or the re-assignment is a mistake\nand some other value or variable was intended for the assignment instead.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\npublic void setName(String name) {\n  name = name;\n}\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\npublic void setName(String name) {\n  this.name = name;\n}\n</pre>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never\n  executed </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect </li>\n</ul>\n\n"
+  }, {
+    "summary": "\"JOIN\" should be used instead of nested \"SELECT\" statements",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-2243",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>SELECT</code> with <code>JOIN</code> always performs better than nested selects.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT * FROM SPFL INTO SPFLI_WA.\n  SELECT * FROM SFLOGHT INTO SFLIGHT_WA\n    WHERE CARRID = SPFLI_WA-CARRID\n    AND CONNID = SPFLIGHT_WA_CONNID.\n  ENDSELECT.\nENDSELECT.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT * INTO WA\n  FROM SPFLI AS P INNER JOIN SFLIGHT AS F\n    ON P~CARRID = F~CARRID AND\n        P~CONNID = F~CONNID.\nEND-SELECT.\n</pre>\n\n"
+  }, {
+    "summary": "\"SELECT INTO TABLE\" should be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-2242",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>SELECT INTO TABLE</code> is much more efficient than <code>SELECT ... ENDSELECT</code>. <code>SELECT INTO TABLE</code> needs more memory to\nhold the result set, but in normal situations, this is not a concern. When memory is a concern, the result set can be divided into smaller sets.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT * FROM T006 INTO X006_WA.\n  ...\nENDSELECT.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT * FROM T006 INTO TABLE X006.\nLOOP AT X006 INTO X006_WA.\n  ...\nENDLOOP.\n</pre>\n\n"
+  }, {
+    "summary": "\"EXIT\" and \"CHECK\" statements should not be used in \"SELECT\" loops",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-2240",
+    "tags": ["performance", "sql"],
+    "description": "<p>Using <code>EXIT</code> and <code>CHECK</code> in <code>SELECT</code> statements to stop the execution of <code>SELECT</code> loop is an expensive\nand ineffective way to filter data. Filtering should be part of the <code>SELECT</code> loop themselves. Most of the time conditions located in a\n<code>CHECK</code> statement should be moved to the <code>WHERE</code> clause, and the <code>EXIT</code> statement should typically be replaced by an\n<code>UP TO 1 ROW</code> clause.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT * FROM SBOOK INTO SBOOK_WA.\n  CHECK: SBOOK_WAS-CARRID = 'LH' AND SBOOK_WAS-CONNID = '0400'. \"Noncompliant\nENDSELECT.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT * FROM SBOOK INTO SBOOK_WA WHERE CARRID = 'LH' AND CONNID = '0400'.\nENDSELECT.\n</pre>\n\n"
+  }, {
+    "summary": "Two branches in a conditional structure should not have exactly the same implementation",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1871",
+    "tags": ["design", "suspicious"],
+    "description": "<p>Having two <code>cases</code> in a <code>switch</code> statement or two branches in an <code>if</code> chain with the same implementation is at\nbest duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then in an <code>if</code> chain they should\nbe combined, or for a <code>switch</code>, one should fall through to the other. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCASE i.\n  WHEN 1.\n    doSomething.\n  WHEN 2.\n    doSomethingDifferent.\n  WHEN 3.  // Noncompliant; duplicates case 1's implementation\n    doSomething.\n  WHEN OTHERS.\n    doTheRest.\nENDCASE.\n\nif a &gt;= 0 AND a &lt; 10.\n  doTheThing.\nelseif a &gt;= 10 AND a &lt; 20.\n  doTheOtherThing.\nelseif a &gt;= 20 AND a &lt; 50.\n  doTheThing.  // Noncompliant; duplicates first condition\nelse.\n  doTheRest.\nendif.\n\nif b = 0.\n  doOneMoreThing.\nelse.\n  doOneMoreThing. // Noncompliant; duplicates then-branch\nendif.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCASE i.\n  WHEN 1 OR 3.\n    doSomething.\n  WHEN 2.\n    doSomethingDifferent.\n  WHEN OTHERS.\n    doTheRest.\nENDCASE.\n\nif (a &gt;= 0 AND a &lt; 10) OR (a &gt;= 20 AND a &lt; 50).\n  doTheThing.\nelseif a &gt;= 10 AND a &lt; 20.\n  doTheOtherThing.\nelse.\n  doTheRest.\nendif.\n\ndoOneMoreThing.\n</pre>\n<p>or </p>\n<pre>\nCASE i.\n  WHEN 1.\n    doSomething.\n  WHEN 2.\n    doSomethingDifferent.\n  WHEN 3.\n    doThirdThing.\n  WHEN OTHERS.\n    doTheRest.\nENDCASE.\n\nif a &gt;= 0 AND a &lt; 10.\n  doTheThing.\nelseif a &gt;= 10 AND a &lt; 20.\n  doTheOtherThing.\nelseif a &gt;= 20 AND a &lt; 50.\n  doTheThirdThing.\nelse.\n  doTheRest.\nendif.\n\nif b = 0.\n  doOneMoreThing.\nelse.\n  doTheRest.\nendif.\n\n</pre>\n<h2>Exceptions</h2>\n<p>Blocks in an <code>if</code> chain that contain a single line of code are ignored, as are blocks in a <code>switch</code> statement that contain a\nsingle line of code with or without a following <code>break</code>.</p>\n\n"
+  }, {
+    "summary": "Jump statements should not be used unconditionally",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1751",
+    "tags": ["misra", "cert", "unused"],
+    "description": "<p>Having an unconditional <code>stop</code>, <code>return</code>, <code>exit</code> in a loop renders it useless; the loop will only execute once and\nthe loop structure itself is simply wasted keystrokes.</p>\n<p>Having an unconditional <code>continue</code> in a loop can render the loop meaningless, or is itself wasted keystrokes, depending on where in the\nloop it occurs.</p>\n<p>Having an unconditional <code>return</code> anywhere other than at the end of a function or method simply renders all the rest of the code in the\nmethod useless.</p>\n<p>Having an unconditional <code>check</code> statement at the end of a loop is useless as the loop will carry on whatever is the result of the\nlogical expression.</p>\n<p>For these reasons, unconditional jump statements should never be used except for the final <code>return</code> in a loop or <code>check</code> not\nin the final place of the loop.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDATA remainder TYPE i.\nDO 20 TIMES.\n  remainder = sy-index MOD 2.\n  CONTINUE.  \" this is a bug within the code.\n  cl_demo_output=&gt;write_text().\nENDDO.\nDO.\n  write.\n  EXIT.   \"loop will exit at first execution\n  cl_demo_output=&gt;write( |{ sy-index } | ).\nENDDO.\nDO 20 TIMES.\n  remainder = sy-index MOD 2.\n  CHECK remainder = 0.  \" useless, loop will carry on.\nENDDO.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDATA remainder TYPE i.\nDO 20 TIMES.\n  remainder = sy-index MOD 2.\n  IF remainder &lt;&gt; 0.\n    CONTINUE.\n  ENDIF.\n  cl_demo_output=&gt;write_text( |{ sy-index }| ).\nENDDO.\ncl_demo_output=&gt;display( ).\nDATA limit TYPE i VALUE 10.\nDO.\n  IF sy-index &gt; limit.\n    EXIT.\n  ENDIF.\n  cl_demo_output=&gt;write( |{ sy-index } | ).\nENDDO.\ncl_demo_output=&gt;display( ).\nDO 20 TIMES.\n  remainder = sy-index MOD 2.\n  CHECK remainder = 0.\n  cl_demo_output=&gt;write_text( |{ sy-index }| ).\nENDDO.\ncl_demo_output=&gt;display( ).\n</pre>\n<h2>See</h2>\n<ul>\n  <li> MISRA C:2004, 14.1 - There shall be no unreachable code. </li>\n  <li> MISRA C++:2008, 0-1-1 - A <em>project</em> shall not contain <em>unreachable code</em>. </li>\n  <li> MISRA C++:2008, 0-1-9 - There shall be no dead code. </li>\n  <li> MISRA C:2012, 2.2 - There shall be no dead code </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never\n  executed </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect </li>\n</ul>\n\n"
+  }, {
+    "summary": "SQL \"LIKE\" clauses should not start with wildcard characters",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1739",
+    "tags": ["performance", "sql"],
+    "description": "<p>When the value of a <code>LIKE</code> clause starts with '%' or '_', indexes on the searched column are ignored, and a full table scan is performed\ninstead. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT FIRST_NAME, LAST_NAME FROM PERSONS\nWHERE LAST_NAME LIKE '%PONT'\n</pre>\n\n"
+  }, {
+    "summary": "\"SORTED\" or \"HASHED\" internal tables should be accessed with a key",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1670",
+    "tags": ["performance"],
+    "description": "<p>Internal tables can quickly become a source of performance problems if not accessed correctly, <code>SORTED</code> and <code>HASHED</code> tables\nshould always be accessed with the appropriate key or partial key.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nREAD TABLE it INTO work_area INDEX 1.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nREAD TABLE it INTO work_area WITH KEY color = 'RED'.\n</pre>\n\n"
+  }, {
+    "summary": "A SQL \"SELECT\" statement should not involve too many tables",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1597",
+    "tags": ["performance", "sql"],
+    "description": "<p>Having too many tables in a <code>SELECT</code> makes the code difficult to maintain and can lead to poor performance. Rewrite the logic or use\nviews instead.</p>\n\n"
+  }, {
+    "summary": "\"DATA\" variable names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1545",
+    "tags": ["convention"],
+    "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all\nvariable names match a provided regular expression.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDATA: MyText TYPE string.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDATA: my_text TYPE string.\n</pre>\n\n"
+  }, {
+    "summary": "Function names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1542",
+    "tags": ["convention"],
+    "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all function names match a provided regular expression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With default provided regular expression: ^([A-Z0-9_]*|[a-z0-9_]*)$</p>\n<pre>\nFUNCTION MyFunction.\n...\nENDFUNCTION.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nFUNCTION MY_FUNCTION.\n...\nENDFUNCTION.\n</pre>\n\n"
+  }, {
+    "summary": "\"REFRESH itab FROM TABLE\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1540",
+    "tags": ["obsolete"],
+    "description": "<p>This variant of the <code>REFRESH</code> statement is deprecated and should be avoided.</p>\n<p>This <code>REFRESH</code> statement initializes the internal table <code>itab</code>, reads several rows from the database table\n<code>dbtab</code>, and adds their contents to the internal table <code>itab</code>. A <code>SELECT</code> statement should be used instead.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nTABLES t100.\nDATA itab TYPE STANDARD TABLE OF t100.\n\nt100-sprsl = 'E'.\nt100-arbgb = 'BC'.\n\nREFRESH itab FROM TABLE t100.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDATA itab TYPE STANDARD TABLE OF t100.\n\nSELECT *\n       FROM t100\n       INTO TABLE itab\n       WHERE sprsl = 'E' AND\n             arbgb LIKE 'BC%'.\n</pre>\n\n"
+  }, {
+    "summary": "\"%_HINTS\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1512",
+    "tags": ["lock-in"],
+    "description": "<p>ABAP hints can be used to override the default behavior of the SAP Cost Based Optimizer (CBO). When the execution plan provided by the CBO is not\noptimal, it is possible to \"drive\" the CBO by providing the main index to be used to filter rows. </p>\n<p>Such optimizations are not portable from one database to another, such as when migrating from Oracle to DB2. Therefore hard coding an optimization\nshould be done only when it is strongly indicated. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nselect MY_COLUMN\ninto it_data\nfrom MY_TABLE\nWHERE FILTERING_COLUMN = '0'\n%_HINTS ORACLE 'INDEX(\"MY_TABLE\" \"MY_INDEX\")'.\n</pre>\n\n"
+  }, {
+    "summary": "System C functions should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1507",
+    "tags": ["lock-in"],
+    "description": "<p>According to the SAP documentation:</p>\n<blockquote>\n  <p>System functions are only intended for internal usage. Incompatible changes and further development is possible at any time and without warning\n  or notice.</p>\n</blockquote>\n<p>So calling system C functions using a <code>CALL</code> statement should be avoided.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCALL 'MULTIPLY' ID 'P1'  FIELD '9999'\n                ID 'P2'  FIELD '9999'\n                ID 'RES' FIELD RESULT.\n</pre>\n\n"
+  }, {
+    "summary": "Native SQL should not be statically embedded",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1506",
+    "tags": ["performance", "sql"],
+    "description": "<p>The <code>EXEC SQL ... END-EXEC</code> statement can be used to embed Native SQL statically in ABAP programs. </p>\n<p>According to the SAP documentation:</p>\n<blockquote>\n  <p>Alongside ADBC, it is also possible to embed Native SQL statically between <code>EXEC SQL</code> and <code>ENDEXEC</code> in ABAP programs. The\n  recommendation, however, is to use ADBC. While the static embedding of Native SQL offers exclusively static access to the Native SQL interface, ADBC\n  makes modern object-orientated and dynamic access possible. New developments and improvements, such as optimized performance using bulk access\n  across internal tables, are now made only for ADBC.</p>\n  <p>The existing static embedding of Native SQL statements is still supported but should no longer be used in new programs.</p>\n</blockquote>\n<h2>Noncompliant Code Example</h2>\n<pre>\nEXEC SQL.\n      CREATE TABLE abap_docu_demo_mytab (\n               val1 char(10) NOT NULL,\n               val2 char(10) NOT NULL,\n               PRIMARY KEY (val1)      )\nENDEXEC.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nNEW cl_sql_statement( )-&gt;execute_ddl(\n      `CREATE TABLE ` &amp;&amp; dbname   &amp;&amp;\n      `( val1 char(10) NOT NULL,` &amp;&amp;\n      `  val2 char(10) NOT NULL,` &amp;&amp;\n      `  PRIMARY KEY (val1) )` ).\n</pre>\n\n"
+  }, {
+    "summary": "To \"SELECT\", \"INSERT\" or \"DELETE\" several lines in databases, internal tables should be used in place of loop control structure",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1501",
+    "tags": ["performance", "sql"],
+    "description": "<p>Whenever more than one line needs to be read, inserted or deleted from a database table, it is more efficient to work with an internal table than\nto read, insert or delete the lines one by one inside a loop.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nLOOP AT TAB INTO TAB_WA.\n  INSERT INTO CUSTOMERS VALUES TAB_WA.\nENDLOOP.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nINSERT CUSTOMERS FROM TABLE TAB.\n</pre>\n\n"
+  }, {
+    "summary": "SQL \"DISTINCT\" operator should not be used to prevent bypassing the SAP buffering",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1500",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>DISTINCT</code> operator causes the <code>SELECT</code> statement to avoid the SAP buffering and to read directly from the database and not\nfrom the buffer on the application server.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT DISTINCT carrid\n       FROM spfli\n       INTO count\n       WHERE cityto = 'NEW YORK'.\n</pre>\n\n"
+  }, {
+    "summary": "Columns to be read with a \"SELECT\" statement should be clearly defined",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1499",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>SELECT *</code> should be avoided because it releases control of the returned columns and could therefore lead to errors and potentially to\nperformance issues.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT *\n       FROM persons\n       INTO newyorkers\n       WHERE city = 'NEW YORK'.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT firstname, lastname\n       FROM persons\n       INTO newyorkers\n       WHERE city = 'NEW YORK'.\n</pre>\n\n"
+  }, {
+    "summary": "Subqueries and \"JOIN\" clauses should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1494",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>JOIN</code> bypasses the SAP table buffer. Buffered tables should be accessed with the simplest <code>SELECT</code> statements possible so as\nnot to risk bypassing the buffer.</p>\n<p>If one of the tables in a <code>JOIN</code> is buffered, it would be an advantage to first import the required entries using a <code>SELECT</code>\ninto an internal table <code>itab</code>, and then for example, using the statement <code>SELECT ... FOR ALL ENTRIES IN itab</code> to access further\ntables.</p>\n<h2>Noncompliant Code Examples</h2>\n<p>For <code>JOIN</code> clauses:</p>\n<pre>\nSELECT s~carrid s~carrname p~connid\n       INTO CORRESPONDING FIELDS OF TABLE itab\n       FROM scarr AS s\n       LEFT OUTER JOIN spfli AS p ON s~carrid   =  p~carrid\n            AND p~cityfrom = p_cityfr.\n</pre>\n<p>For subqueries</p>\n<pre>\nSELECT  carrname\n  INTO  TABLE name_tab\n  FROM  scarr\n  WHERE EXISTS ( select  *\n                   FROM  spfli\n                   WHERE carrid   =  scarr~carrid AND\n                         cityfrom = 'NEW YORK'        ).\n</pre>\n\n"
+  }, {
+    "summary": "\"REFRESH itab\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1491",
+    "tags": [],
+    "description": "<p>This statement deletes all rows of an internal table itab. This <code>REFRESH</code> statement is deprecated and usage should be avoided.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nREFRESH itab.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCLEAR itab.\n</pre>\n\n"
+  }, {
+    "summary": "\"SYSTEM-CALL\" statement should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1487",
+    "tags": [],
+    "description": "<p>The ABAP documentation is pretty clear on this subject :</p>\n<blockquote>\n  <p>This statement is only for </p>\n  <p>!!! Internal use in SAP Basis development !!! </p>\n  <p>Even within SAP Basis, it may only be used in programs within the ABAP+GUI development group. </p>\n  <p>Its use is subject to various restrictions, not all of which may be listed in the documentation. This documentation is intended for internal SAP\n  use within the Basis development group ABAP+GUI. </p>\n  <p>Changes and further development, which may be incompatible, may occur at any time, without warning or notice! </p>\n</blockquote>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSYSTEM-CALL CREATE CLASS c.\n</pre>\n\n"
+  }, {
+    "summary": "\"DATA BEGIN OF OCCURS\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1485",
+    "tags": [],
+    "description": "<p><code>DATA BEGIN OF ... OCCURS</code> has been deprecated and will eventually be removed. All usages should be replaced.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDATA BEGIN OF itab OCCURS n. \"Noncompliant\n  ...\nDATA END OF itab [VALID BETWEEN intlim1 AND intlim2].\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDATA BEGIN OF wa.\n       ...\nDATA END OF wa.\nDATA itab LIKE TABLE OF wa.\n</pre>\n\n"
+  }, {
+    "summary": "Sections of code should not be \"commented out\"",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-125",
+    "tags": ["misra", "unused"],
+    "description": "<p>Programmers should not comment out code as it bloats programs and reduces readability.</p>\n<p>Unused code should be deleted and can be retrieved from source control history if required.</p>\n<h2>See</h2>\n<ul>\n  <li> MISRA C:2004, 2.4 - Sections of code should not be \"commented out\". </li>\n  <li> MISRA C++:2008, 2-7-2 - Sections of code shall not be \"commented out\" using C-style comments. </li>\n  <li> MISRA C++:2008, 2-7-3 - Sections of code should not be \"commented out\" using C++ comments. </li>\n  <li> MISRA C:2012, Dir. 4.4 - Sections of code should not be \"commented out\" </li>\n</ul>\n\n"
+  }, {
+    "summary": "Subroutine parameters should be passed by reference rather than by value",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1238",
+    "tags": ["performance"],
+    "description": "<p>Passing parameters by reference instead of by value avoids the overhead of making a copy. Passing arguments via copy should only be done when it is\ntechnically mandated, as it is for example with RFC function modules.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nclass School\n{\npublic:\n  void registerStudent(Student p);\n};\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nPERFORM subr CHANGING a1 a2 a3 a4 a5.\n</pre>\n\n"
+  }, {
+    "summary": "SQL EXISTS subqueries should not be used ",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1138",
+    "tags": ["performance", "sql"],
+    "description": "<p>SQL queries that use <code>EXISTS</code> subqueries are inefficient because the subquery is re-run for every row in the outer query's table. There\nare more efficient ways to write most queries, ways that do not use the <code>EXISTS</code> condition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT name\nFROM employee\nWHERE EXISTS (SELECT * FROM department WHERE department_id = id AND name = 'Marketing');\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT name\nFROM employee INNER JOIN department AS d\n  ON department_id = d.id AND d.name = 'Marketing';\n</pre>\n\n"
+  }, {
+    "summary": "Redundant pairs of parentheses should be removed",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1110",
+    "tags": ["confusing"],
+    "description": "<p>The use of parentheses, even those not required to enforce a desired order of operations, can clarify the intent behind a piece of code. But\nredundant pairs of parentheses could be misleading, and should be removed. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\n CHECK (SY-SUBRC NE 0). \"compliant even if ignored by compiler\n IF ((SY-SUBRC EQ 0)). \"Noncompliant\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n CHECK (SY-SUBRC NE 0).\n IF (SY-SUBRC EQ 0).\n</pre>\n\n"
+  }, {
+    "summary": "Collapsible \"if\" statements should be merged",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1066",
+    "tags": ["clumsy"],
+    "description": "<p>Merging collapsible <code>if</code> statements increases the code's readability.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nIF something.\n  IF somethingElse.\n    WRITE / 'hello'.\n  ENDIF.\nENDIF.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nIF something and somethingElse.\n  WRITE / 'hello'.\nENDIF.\n</pre>\n\n"
+  }, {
+    "summary": "\"BREAK-POINT\" statement should not be used in production",
+    "type": "Vulnerability",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1486",
+    "tags": ["cwe"],
+    "description": "<p>A <code>BREAK-POINT</code> statement is used when debugging an application with help of the ABAP Debugger. But such debugging statements could make\nan application vulnerable to attackers, and should not be left in the source code.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nIF wv_parallel EQ 'X'.\n  BREAK-POINT.\n  WAIT UNTIL g_nb_return EQ wv_nb_call.\nENDIF.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nIF wv_parallel EQ 'X'.\n  WAIT UNTIL g_nb_return EQ wv_nb_call.\nENDIF.\n</pre>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"http://cwe.mitre.org/data/definitions/489.html\">MITRE, CWE-489</a> - Leftover Debug Code </li>\n</ul>\n\n"
+  }, {
+    "summary": "SQL \"BYPASSING BUFFER\" clause should not be used",
+    "type": "Bug",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1505",
+    "tags": ["sql"],
+    "description": "<p>This <code>BYPASSING BUFFER</code> clause explicitly switches off SAP table buffering, so the <code>SELECT</code> reads data directly from the\ndatabase.</p>\n<p>By definition, using this clause can lead to performance issues, which is why its use must be strongly indicated.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT *\nINTO US_PERSONS\nFROM PERSONS\nBYPASSING BUFFER\nWHERE CITY EQ 'US'\n</pre>\n\n"
+  }, {
+    "summary": "Unnecessary chain syntax should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1715",
+    "tags": [],
+    "description": "<p>When there is only one statement in a chain, the chain syntax can be omitted, which simplifies the code.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCLEAR: w_alvvr.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCLEAR w_alvvr.\n</pre>\n\n"
+  }, {
+    "summary": "Report names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1544",
+    "tags": ["convention"],
+    "description": "<p>Shared naming conventions allow teams to collaborate efficiently. This rule checks that all [report/]program names match a provided regular\nexpression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the regular expression <code>^([A-Z0-9_]*|[a-z0-9_]*)$</code>:</p>\n<pre>\n    IDENTIFICATION DIVISION.\n       PROGRAM-ID. MY-PROGRAM.      *&gt; Noncompliant\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n    IDENTIFICATION DIVISION.\n       PROGRAM-ID. MY_PROGRAM.\n</pre>\n\n"
+  }, {
+    "summary": "Macro names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1543",
+    "tags": ["convention", "preprocessor"],
+    "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all macro\nnames match a provided regular expression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With default provided regular expression: ^([A-Z0-9_]*|[a-z0-9_]*)$</p>\n<pre>\nDEFINE MyMacro.\n  ...\nEND-OF-DEFINITION.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nDEFINE my_macro.\n  ...\nEND-OF-DEFINITION.\n</pre>\n\n"
+  }, {
+    "summary": "SQL aggregate functions should not be used to prevent bypassing the SAP buffer",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1502",
+    "tags": ["performance", "sql"],
+    "description": "<p><code>SQL COUNT(..), MIN(..), MAX(..), SUM(..), AVG(..)</code> aggregate functions cause the SAP table buffer to be bypassed, so the use of these\nfunctions can lead to performance issues.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT COUNT(*)\n       FROM persons\n       INTO count\n       WHERE city = 'NEW YORK'.\n</pre>\n\n"
+  }, {
+    "summary": "Unused local variables should be removed",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1481",
+    "tags": ["unused"],
+    "description": "<p>If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will\nnot wonder what the variable is used for.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nFUNCTION f.\n  DATA: LOCAL_1 LIKE BAR.\n  DATA: LOCAL_2 LIKE BAR. \"Noncompliant\n\n  SELECT * FROM LOCAL_1.\n\nENDFUNCTION.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nFUNCTION f.\n  DATA: LOCAL_1 LIKE BAR.\n\n  SELECT * FROM LOCAL_1.\n\nENDFUNCTION.\n</pre>\n\n"
+  }, {
+    "summary": "Loops should not contain more than a single \"CONTINUE\", \"EXIT\", \"CHECK\" statement",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-135",
+    "tags": ["brain-overload"],
+    "description": "<p>Restricting the number of <code>CONTINUE</code>, <code>EXIT</code> and <code>CHECK</code> statements in a loop is done in the interest of good\nstructured programming.</p>\n<p>One <code>CONTINUE</code>, <code>EXIT</code> and <code>CHECK</code> statement is acceptable in a loop, since it facilitates optimal coding. If\nthere is more than one, the code should be refactored to increase readability.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDO counter TIMES.\n  IF sy-index = 2.\n    CONTINUE.\n  ENDIF.\n  IF sy-index = 10.\n    EXIT.\n  ENDIF.\n  WRITE sy-index.\nENDDO.\n</pre>\n\n"
+  }, {
+    "summary": "\"CASE statements should have at least 3 \"WHEN\" clauses",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-1301",
+    "tags": ["misra", "bad-practice"],
+    "description": "<p><code>CASE</code> statements are useful when there are many different cases depending on the value of the same expression.</p>\n<p>For just one or two cases however, the code will be more readable with <code>IF</code> statements.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCASE SY-INDEX.\n  WHEN ONE.\n    WRITE  'One'.\n  WHEN 2.\n    WRITE  'Two'.\nENDCASE.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCASE SY-INDEX.\n  WHEN ONE.\n    WRITE  'One'.\n  WHEN 2.\n    WRITE  'Two'.\n  WHEN OTHERS.\n    WRITE 'Unexpected result'\nENDCASE.\n</pre>\n<h2>See</h2>\n<ul>\n  <li> MISRA C:2004, 15.5 - Every switch statement shall have at least one case clause. </li>\n  <li> MISRA C++:2008, 6-4-8 - Every switch statement shall have at least one case-clause. </li>\n  <li> MISRA C:2012, 16.6 - Every switch statement shall have at least two switch-clauses </li>\n</ul>\n\n"
+  }, {
+    "summary": "Interface names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-114",
+    "tags": ["convention"],
+    "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all\ninterface names match a provided regular expression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default regular expression <code>YIF_[A-Za-z]+</code>:</p>\n<pre>\nINTERFACE MyInterface. \"Noncompliant\n...\nENDINTERFACE.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nINTERFACE YIF_myinterface.\n...\nENDINTERFACE.\n</pre>\n\n"
+  }, {
+    "summary": "Class names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-101",
+    "tags": ["convention"],
+    "description": "<p>Shared coding conventions allow teams to collaborate effectively. This rule allows to check that all class names match a provided regular\nexpression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default provided regular expression <code>^([A-Z0-9_]*|[a-z0-9_]*)$</code>:</p>\n<pre>\nCLASS MyClass DEFINITION.\n...\nENDCLASS.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nCLASS MY_CLASS DEFINITION.\n...\nENDCLASS.\n</pre>\n\n"
+  }, {
+    "summary": "Method names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": true,
+    "ruleKey": "RSPEC-100",
+    "tags": ["convention"],
+    "description": "<p>Shared naming conventions allow teams to collaborate efficiently. This rule checks that all function names match a provided regular expression.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With default provided regular expression <code>^([A-Z0-9_]*|[a-z0-9_]*)$</code>:</p>\n<pre>\nMETHOD MyMethod\n...\nENDMETHOD.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nMETHOD MY_METHOD\n...\nENDMETHOD.\n</pre>\n\n"
+  }, {
+    "summary": "Values passed to OS commands should be sanitized",
+    "type": "Vulnerability",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-2076",
+    "tags": ["cwe", "owasp-a1", "sans-top25-insecure"],
+    "description": "<p>Applications that execute operating system commands or execute commands that interact with the underlying system should neutralize any\nexternally-provided values used in those commands. Failure to do so could allow an attacker to include input that executes unintended commands, or\nexposes sensitive data.</p>\n<p>This rule logs issues for dynamically-built commands, and when parameter values are used to influence how a command is run. it's then up to the\nauditor to figure out if the command execution is secure or not. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCALL 'SYSTEM' ID 'COMMAND' FIELD usr_input ID 'TAB' FIELD TAB1.  \" Noncompliant\n</pre>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"http://cwe.mitre.org/data/definitions/78\">MITRE, CWE-78</a> - Improper Neutralization of Special Elements used in an OS Command </li>\n  <li> <a href=\"http://cwe.mitre.org/data/definitions/88\">MITRE, CWE-88</a> - Argument Injection or Modification </li>\n  <li> <a href=\"https://www.owasp.org/index.php/Top_10_2013-A1-Injection\">OWASP Top Ten 2013 Category A1</a> - Injection </li>\n  <li> <a href=\"http://www.sans.org/top25-software-errors/\">SANS Top 25</a> - Insecure Interaction Between Components </li>\n  <li> Derived from the FindSecBugs rule <a href=\"http://h3xstream.github.io/find-sec-bugs/bugs.htm#COMMAND_INJECTION\">Potential Command Injection</a>\n  </li>\n</ul>\n\n"
+  }, {
+    "summary": "\"NOT IN\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1639",
+    "tags": ["suspicious"],
+    "description": "<p>While <code>NOT IN</code> can be far more efficient than <code>NOT EXISTS</code> in a query, it may return misleading results if the column in\nquestion contains null values.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT COUNT(*) FROM emp\n  WHERE empno NOT IN ( SELECT mgr FROM emp );\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSELECT COUNT(*) FROM emp T1\n   WHERE NOT EXISTS ( SELECT NULL FROM emp T2 WHERE t2.mgr = t1.empno );\n</pre>\n\n"
+  }, {
+    "summary": "Functions should not be too complex",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1541",
+    "tags": ["brain-overload"],
+    "description": "<p>The Cyclomatic Complexity of functions should not exceed a defined threshold. Complex code may perform poorly and can be difficult to test\nthoroughly.</p>\n\n"
+  }, {
+    "summary": "Methods should not be too complex",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-133",
+    "tags": [],
+    "description": "<p>The Cyclomatic Complexity of methods should not exceed a defined threshold. Complex code may perform poorly and can be difficult to test\nthoroughly.</p>\n<h2>Deprecated</h2>\n<p>This rule is deprecated; use {rule:abap:S1541} instead.</p>\n\n"
+  }, {
+    "summary": "Classes should not be too complex",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1311",
+    "tags": [],
+    "description": "<p>The Cyclomatic Complexity is measured by summing the number of <code>and</code>, <code>or</code> and <code>xor</code> operators, the number of\ncontrol flow statement like <code>IF</code>, <code>WHILE</code>, <code>DO</code>, <code>RETURN</code> ... in the body of a class plus one for each\nmethod. Even when the Cyclomatic Complexity of a class is very high, this complexity might be well distributed among all methods. Nevertheless, most\nof the time, a very complex class is a class which breaks the Single Responsibility Principle and which should be re-factored to be split in several\nclasses.</p>\n<h2>Deprecated</h2>\n<p>This rule is deprecated, and will eventually be removed.</p>\n\n"
+  }, {
+    "summary": "\"IF ... ELSEIF\" constructs should end with \"ELSE\" clauses",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-126",
+    "tags": ["misra", "cert"],
+    "description": "<p>This rule applies whenever an <code>IF</code> statement is followed by one or </p>\n<p>more <code>ELSEIF</code> statements; the final <code>ELSEIF</code> should be followed by an <code>ELSE</code> statement.</p>\n<p>The requirement for a final <code>ELSE</code> statement is defensive programming. </p>\n<p>The <code>ELSE</code> statement should either take appropriate action or contain </p>\n<p>a suitable comment as to why no action is taken. This is consistent with the </p>\n<p>requirement to have a final <code>OTHERS</code> clause in a <code>CASE</code></p>\n<p>statement. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nIF RESULT &gt; 0.\n  PERFORM do_something.\nELSEIF RESULT = 0.\n  PERFORM do_something_else.\nENDIF.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nIF RESULT &gt; 0.\n  PERFORM do_something.\nELSEIF RESULT = 0.\n  PERFORM do_something_else.\nELSE.\n  PERFORM error.\nENDIF.\n</pre>\n<h2>See</h2>\n<ul>\n  <li> MISRA C:2004, 14.10 - All if...else if constructs shall be terminated with an else clause. </li>\n  <li> MISRA C++:2008, 6-4-2 - All if...else if constructs shall be terminated with an else clause. </li>\n  <li> MISRA C:2012, 15.7 - All if...else if constructs shall be terminated with an else statement </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/YgE\">CERT, MSC01-C.</a> - Strive for logical completeness </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/JoIyAQ\">CERT, MSC01-CPP.</a> - Strive for logical completeness </li>\n  <li> <a href=\"https://www.securecoding.cert.org/confluence/x/PQHRAw\">CERT, MSC57-J.</a> - Strive for logical completeness </li>\n</ul>\n\n"
+  }, {
+    "summary": "Expressions should not be too complex",
+    "type": "Code Smell",
+    "defaultSeverity": "Critical",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1067",
+    "tags": ["brain-overload"],
+    "description": "<p>The complexity of an expression is defined by the number of <code>AND</code>, <code>OR</code>, <code>XOR</code> and <code>EQUIV</code> operators it\ncontains.</p>\n<p>A single expression's complexity should not become too high to keep the code readable.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default threshold value of 3</p>\n<pre>\nIF ((condition1 AND condition2) OR (condition3 AND condition4)) AND condition5.\n  ...\nENDIF.\n</pre>\n\n"
+  }, {
+    "summary": "Empty driver tables should not be used in a \"SELECT/FOR ALL ENTRIES\" clause",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-2237",
+    "tags": ["sql"],
+    "description": "<p>Using an empty driver table in a <code>SELECT</code>/<code>FOR ALL ENTRIES</code> table has a very important side effect: the complete\n<code>WHERE</code> clause is not taken into account because a <code>NO WHERE</code> condition is generated. Thus a full table scan is unexpectedly\nexecuted.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT carrid , connid , seatsocc FROM flights\nINTO TABLE seatsocc_tab                  \t\t\nFOR ALL ENTRIES IN conn_tab  \" Noncompliant; conn_tab may be empty.\nWHERE carrid = conn_tab-carrid\nAND connid = conn_tab-connid.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nIF conn_tab is not initial. \t\t\n  ...\t\n  SELECT carrid , connid , seatsocc FROM flights\n  INTO TABLE seatsocc_tab\n  FOR ALL ENTRIES IN conn_tab\n  WHERE carrid = conn_tab-carrid\n  AND connid = conn_tab-connid\n  ...\nENDIF.\n</pre>\n\n"
+  }, {
+    "summary": "Sort fields should be provided for an internal table sort",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1672",
+    "tags": [],
+    "description": "<p>Internal tables can be sorted without specifying the specific fields on which to sort. However, doing so is inefficient because when a sort key is\nnot specified, the entire row is used in the sort, which can be markedly inefficient.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSORT ITAB.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSORT ITAB BY LAND WEIGHT.\n</pre>\n\n"
+  }, {
+    "summary": "Operational statements should not be chained",
+    "type": "Bug",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1668",
+    "tags": [],
+    "description": "<p>The main reason for using chained statements is to increase readability, but when used with operational statements, chaining can have the opposite\neffect. Even worse, it can lead to unexpected program behavior.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nTRY.\n     ...\n  CATCH: cx_1, cx_2, cx_3.  \" only cx_3 gets the following CATCH block\n     \"exception handling\n      ...\nENDTRY.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nTRY.\n     ...\n  CATCH cx_1.\n     \"exception handling\n  CATCH cx_2.\n     \"exception handling\n  CATCH cx_3.\n     \"exception handling\n      ...\nENDTRY.\n</pre>\n\n"
+  }, {
+    "summary": "Duplications in driver tables should deleted before the tables are used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-2239",
+    "tags": ["performance", "sql"],
+    "description": "<p>Removing duplicate entries from driver tables enables <code>OPEN SQL</code> to generate fewer queries for getting the same data, giving a\nperformance boost.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT carrid , connid , seatsocc FROM flights\nINTO TABLE seatsocc_tab                  \t\t\nFOR ALL ENTRIES IN conn_tab\nWHERE carrid = conn_tab-carrid\nAND connid = conn_tab-connid.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nSORT conn_tab BY carrid.\nDELETE ADJACENT DUPLICATES FROM conn_tab COMPARING carrid.\n...\nSELECT carrid , connid , seatsocc FROM flights\nINTO TABLE seatsocc_tab                  \t\t\nFOR ALL ENTRIES IN conn_tab\nWHERE carrid = conn_tab-carrid\nAND connid = conn_tab-connid.\n</pre>\n\n"
+  }, {
+    "summary": "Mass operations should be used with internal tables instead of loops",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1671",
+    "tags": ["performance"],
+    "description": "<p>When several lines must be inserted/updated into an internal table, instead of doing those changes line by line, mass operations should be used\nbecause they offer better performance by design.</p>\n<p>This rule raises an issue when a single line operation like <code>APPEND</code>, <code>CONCATENATE</code>, and <code>INSERT</code> is performed on\nan internal table in a loop. </p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nLOOP AT ITAB1 INTO WA.\n  APPEND WA TO ITAB2.\nENDLOOP.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nAPPEND LINES OF ITAB1 TO ITAB2.\n</pre>\n\n"
+  }, {
+    "summary": "\"FORM... ENDFORM\" and \"PERFORM\" should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1655",
+    "tags": [],
+    "description": "<p>Procedural development in general, and <code>FORM... ENDFORM</code>, and <code>PERFORM</code> specifically, have been been classified as obsolete\nby SAP and should be avoided. Classes and methods should be used for all new development.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nFORM fill_table USING    wa   TYPE any\n                CHANGING ptab TYPE INDEX TABLE.\n  APPEND wa TO ptab.\nENDFORM.\n* ...\nPERFORM fill_table IN PROGRAM my_prog.\n</pre>\n\n"
+  }, {
+    "summary": "Macros should be documented",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1549",
+    "tags": ["preprocessor"],
+    "description": "<p>Every macro should be commented to explain its goal and how it works. This comment can be located just before or after the macro definition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nDEFINE my_macro.\n  ...\nEND-OF-DEFINITION.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n* here is\n* my comment\nDEFINE my_macro.\n  ...\nEND-OF-DEFINITION.\n</pre>\n<p>or </p>\n<pre>\nDEFINE my_macro.\n* here is\n* my comment\n  ...\nEND-OF-DEFINITION.\n</pre>\n\n"
+  }, {
+    "summary": "Functions should be documented",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1548",
+    "tags": [],
+    "description": "<p>Every function should be commented to explain its goal and how it works. This non-empty comment must be located before the function definition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nFUNCTION my_function.\n  ...\nENDFUNCTION.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n* here is\n* my comment\nFUNCTION my_function.\n  ...\nENDFUNCTION.\n</pre>\n\n"
+  }, {
+    "summary": "Forms should be documented",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1547",
+    "tags": [],
+    "description": "<p>Every subroutine(<code>FORM</code>) should be commented to explain its goal and how it works. This comment can be located just before or after the\nform definition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nFORM my_form.\n  ...\nENDFORM\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n* here is\n* my comment\nFORM my_form.\n  ...\nENDFORM\n</pre>\n<p>or</p>\n<pre>\nFORM my_form.\n* here is\n* my comment\n  ...\nENDFORM\n</pre>\n\n"
+  }, {
+    "summary": "Classes should be documented",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1546",
+    "tags": [],
+    "description": "<p>Every class definition should be commented to explain its goal and how it works. This comment must be located before [or after] the class\ndefinition.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nCLASS my_class DEFINITION.\n  ...\nENDCLASS\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n* here is\n* my comment\nCLASS my_class DEFINITION.\n  ...\nENDCLASS\n</pre>\n<h2>Exceptions</h2>\n<pre>\nCLASS my_class IMPLEMENTATION.  //Only class DEFINITIONs are checked by this rule\n  ...\nENDCLASS\n</pre>\n\n"
+  }, {
+    "summary": "The \"LIKE\" operator should be used very carefully in SQL \"WHERE\" condition",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1498",
+    "tags": ["performance", "sql"],
+    "description": "<p>Using the <code>LIKE</code> operator in SQL <code>WHERE</code> conditions can highly impact the performance of the request. The use of this\noperator should be strongly indicated.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nSELECT *\n       FROM doktl\n       INTO TABLE text_tab\n       WHERE doktext LIKE srch_str.\n</pre>\n\n"
+  }, {
+    "summary": "Statements should be on separate lines",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-122",
+    "tags": ["style"],
+    "description": "<p>For better readability, do not put more than one statement on a single line.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nWRITE 'Hello World'. WRITE 'You can use multiple statements on a line'.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nWRITE 'Hello World'.\nWRITE 'You can use multiple statements on a line'.\nWRITE 'But you shouldn't.'.\n</pre>\n\n"
+  }, {
+    "summary": "Magic numbers should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-109",
+    "tags": ["brain-overload"],
+    "description": "<p>A magic number is a number that comes out of nowhere, and is directly used in a statement. Magic numbers are often used, for instance to limit the\nnumber of iterations of a loops, to test the value of a property, etc.</p>\n<p>Using magic numbers may seem obvious and straightforward when you're writing a piece of code, but they are much less obvious and straightforward at\ndebugging time.</p>\n<p>That is why magic numbers must be demystified by first being assigned to clearly named variables before being used.</p>\n<p>-1, 0 and 1 are not considered magic numbers.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nIF sy-subrc EQ 42.\n  screen-request = 45.\nENDIF.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nanswer = 42.\nIF sy-subrc EQ answer.\n  screen-request = 45.\nENDIF.\n</pre>\n\n"
+  }, {
+    "summary": "Files should not have too many lines of code",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-104",
+    "tags": ["brain-overload"],
+    "description": "<p>A source file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to\nmaintain. Above a specific threshold, it is strongly advised to refactor it into smaller pieces of code which focus on well defined tasks. Those\nsmaller files will not only be easier to understand but also probably easier to test.</p>\n\n"
+  }, {
+    "summary": "Lines should not be too long",
+    "type": "Code Smell",
+    "defaultSeverity": "Major",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-103",
+    "tags": ["convention"],
+    "description": "<p>Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.</p>\n\n"
+  }, {
+    "summary": "Open SQL \"SELECT\" statements should have an \"ORDER BY\" clause",
+    "type": "Bug",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-2241",
+    "tags": ["unpredictable", "sql"],
+    "description": "<p>An Open SQL <code>SELECT</code> statement without an explicit <code>ORDER BY</code> clause will retrieve rows in an unpredictable order. On\npool/cluster tables, the current implementation of Open SQL <code>SELECT</code> returns the result set in the primary key order, but that's not the\ncase for transparent tables. That's why it's safer to always use an <code>ORDER BY</code> clause.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\nOPEN CURSOR C FOR SELECT * FROM SBOOK WHERE CARRID = 'LH '. \"NonCompliant\nSELECT * FROM FLIGHTS WHERE FLIGHT_NUMBER = 'LH '.\"NonCompliant\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nOPEN CURSOR C FOR SELECT * FROM SBOOK WHERE CARRID = 'LH '\n  ORDER BY PRIMARY KEY.\nSELECT * FROM FLIGHTS WHERE FLIGHT_NUMBER = 'LH ' ORDER BY PRIMARY KEY.\n</pre>\n\n"
+  }, {
+    "summary": "\"CATCH\" clauses should not be empty",
+    "type": "Bug",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1674",
+    "tags": [],
+    "description": "<p>Leaving a <code>CATCH</code> block empty means that the exception in question is neither handled nor passed forward to callers for handling at a\nhigher level. Suppressing errors rather than handling them could lead to unpredictable system behavior and should be avoided.</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\n  try.\n    if ABS( NUMBER ) &gt; 100.\n      write / 'Number is large'.\n    endif.\n    catch CX_SY_ARITHMETIC_ERROR into OREF.\n  endtry.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n  try.\n    if ABS( NUMBER ) &gt; 100.\n      write / 'Number is large'.\n    endif.\n  catch CX_SY_ARITHMETIC_ERROR into OREF.\n    write / OREF-&gt;GET_TEXT( ).\n  endtry.\n</pre>\n<h2>Exceptions</h2>\n<p>When a block contains a comment, it is not considered to be empty.</p>\n<h2>See</h2>\n<ul>\n  <li> <a href=\"http://cwe.mitre.org/data/definitions/391\">MITRE, CWE-391</a> - Unchecked Error Condition </li>\n</ul>\n\n"
+  }, {
+    "summary": "Asterisks should be used for headers and to comment out code",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1676",
+    "tags": ["convention"],
+    "description": "<p>For readability, SAP recommends that asterisks (<code>*</code>) only be used to comment out header lines and code. Commentary should be commented\nusing a double quote (<code>\"</code>)</p>\n<h2>Noncompliant Code Example</h2>\n<pre>\n* GAC -  13 June 13 - output user data\n* WRITE: / 'Firstname'.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\n\" GAC -  13 June 13 - output user data\n* WRITE: / 'Firstname'.\n</pre>\n<h2>Exceptions</h2>\n<p>This rule ignores code that is included in a commentary block and commented as commentary.</p>\n<pre>\n\" This is a commentary block. It could go on for a number of lines.\n\" As we see in the code sample below...\n\" WRITE: / 'Firstname'.\n\" It would have been better to comment the line above as code (i.e. with an asterisk)\n\" but not doing so is accepted.\n</pre>\n\n"
+  }, {
+    "summary": "Form names should comply with a naming convention",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-1510",
+    "tags": ["convention"],
+    "description": "<p>Naming conventions are an important tool in efficient team collaboration. This rule checks that all form names match a regular expression naming\nconvention.</p>\n<h2>Noncompliant Code Example</h2>\n<p>With the default regular expression:</p>\n<pre>\nFORM MyForm.\n...\nENDFORM.\n</pre>\n<h2>Compliant Solution</h2>\n<pre>\nFORM MY_FORM.\n...\nENDFORM.\n</pre>\n\n"
+  }, {
+    "summary": "Tabulation characters should not be used",
+    "type": "Code Smell",
+    "defaultSeverity": "Minor",
+    "inDefaultProfile": false,
+    "ruleKey": "RSPEC-105",
+    "tags": ["convention"],
+    "description": "<p>Developers should not need to configure the tab width of their text editors in order to be able to read source code.</p>\n<p>So the use of the tabulation character must be banned.</p>\n\n"
+  }]
+}

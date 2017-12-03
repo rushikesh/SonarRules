@@ -1,0 +1,1461 @@
+{
+  "types": {
+    "Code Smell": 5,
+    "Vulnerability": 3,
+    "Code Smell": 88,
+    "Bug": 11
+  },
+  "standards": [
+    {
+      "name": "CWE",
+      "count": 5
+    },
+    {
+      "name": "SANS_TOP_25",
+      "count": 1
+    },
+    {
+      "name": "OWASP",
+      "count": 1
+    },
+    {
+      "name": "MISRA",
+      "count": 10
+    },
+    {
+      "name": "CERT",
+      "count": 16
+    }
+  ],
+  "tags": [
+    {
+      "name": "convention",
+      "count": 23
+    },
+    {
+      "name": "unpredictable",
+      "count": 1
+    },
+    {
+      "name": "obsolete",
+      "count": 1
+    },
+    {
+      "name": "cert",
+      "count": 16
+    },
+    {
+      "name": "suspicious",
+      "count": 8
+    },
+    {
+      "name": "pitfall",
+      "count": 11
+    },
+    {
+      "name": "cwe",
+      "count": 5
+    },
+    {
+      "name": "api-design",
+      "count": 2
+    },
+    {
+      "name": "performance",
+      "count": 1
+    },
+    {
+      "name": "tests",
+      "count": 1
+    },
+    {
+      "name": "brain-overload",
+      "count": 10
+    },
+    {
+      "name": "design",
+      "count": 3
+    },
+    {
+      "name": "misra",
+      "count": 10
+    },
+    {
+      "name": "bad-practice",
+      "count": 4
+    },
+    {
+      "name": "style",
+      "count": 1
+    },
+    {
+      "name": "unused",
+      "count": 11
+    },
+    {
+      "name": "sans-top25-porous",
+      "count": 1
+    },
+    {
+      "name": "confusing",
+      "count": 8
+    },
+    {
+      "name": "owasp-a2",
+      "count": 1
+    },
+    {
+      "name": "clumsy",
+      "count": 8
+    }
+  ],
+  "rules": [
+    {
+      "ruleKey": "RSPEC-2068",
+      "type": "Vulnerability",
+      "summary": "Credentials should not be hard-coded",
+      "description": "<p>Because it is easy to extract strings from a compiled application, credentials should never be hard-coded. Do so, and they're almost guaranteed to end up in the hands of an attacker. This is particularly true for applications that are distributed.</p>\n\n<p>Credentials should be stored outside of the code in a strongly-protected encrypted configuration file or database.</p>\n\n<p>This rule flags instances of hard-coded credentials used in database and LDAP connections. It looks for hard-coded credentials in connection strings, and for variable names that match some well-known patterns.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> post:NSString = <span class=\"code-quote\">\"username=Steve&amp;password=123456\"</span>  <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-keyword\">var</span> postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!\r\n<span class=\"code-comment\">//...\r\n</span><span class=\"code-keyword\">var</span> request:NSMutableURLRequest = NSMutableURLRequest(URL: url)\r\nrequest.HTTPBody = postData\r\n<span class=\"code-comment\">//...\r\n</span><span class=\"code-keyword\">var</span> urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&amp;response, error:&amp;reponseError)\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> post:NSString = <span class=\"code-quote\">\"username=\\(getEncryptedUser())&amp;password=\\(getEncryptedPass())\"</span>\r\n<span class=\"code-keyword\">var</span> postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!\r\n<span class=\"code-comment\">//...\r\n</span><span class=\"code-keyword\">var</span> request:NSMutableURLRequest = NSMutableURLRequest(URL: url)\r\nrequest.HTTPBody = postData\r\n<span class=\"code-comment\">//...\r\n</span><span class=\"code-keyword\">var</span> urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&amp;response, error:&amp;reponseError)\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/798\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-798</a> - Use of Hard-coded Credentials</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/259\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-259</a> - Use of Hard-coded Password</li>\n\t<li><a href=\"http://www.sans.org/top25-software-errors/\" class=\"external-link\" rel=\"nofollow\">SANS Top 25</a> - Porous Defenses</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/qQCHAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC03-J.</a> - Never hard code sensitive information</li>\n\t<li><a href=\"https://www.owasp.org/index.php/Top_10_2013-A2-Broken_Authentication_and_Session_Management\" class=\"external-link\" rel=\"nofollow\">OWASP Top Ten 2013 Category A2</a> - Broken Authentication and Session Management</li>\n\t<li>Derived from FindSecBugs rule <a href=\"http://h3xstream.github.io/find-sec-bugs/bugs.htm#HARD_CODE_PASSWORD\" class=\"external-link\" rel=\"nofollow\">Hard Coded Password</a></li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE",
+        "OWASP",
+        "SANS_TOP_25"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "owasp-a2",
+        "sans-top25-porous"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1845",
+      "type": "Code Smell",
+      "summary": "Methods and field names should not be the same or differ only by capitalization",
+      "description": "<p>Looking at the set of methods in a <tt>class</tt>, <tt>struct</tt>, <tt>enum</tt>, or <tt>extension</tt> and finding two methods that differ only by capitalization is confusing to users of the class. It is similarly confusing to have a method and a field or a case which differ only in capitalization.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass SomeClass {\r\n    <span class=\"code-keyword\">var</span> lookUp = <span class=\"code-keyword\">false</span>\r\n    func lookup(){ }        <span class=\"code-comment\">// Noncompliant; method name differs from field name only by capitalization\r\n</span>    func lookUP(){ }        <span class=\"code-comment\">// Noncompliant; method name differs from field and another method name only by capitalization\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass SomeClass {\r\n    <span class=\"code-keyword\">var</span> lookUp = <span class=\"code-keyword\">false</span>\r\n    func getLookUp(){ }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-3661",
+      "type": "Code Smell",
+      "summary": "\"try!\" should not be used",
+      "description": "<p>The use of Swift 2.0's <tt>try!</tt> lets you execute code that might throw an exception without using the <tt>do</tt> and <tt>catch</tt> syntax normally required for such code. By using it, you're guaranteeing that the executed code will never fail. Murphy's Law guarantees you're wrong. And when it does fail, the program will exit abruptly, probably without cleaning up after itself.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet myvar = <span class=\"code-keyword\">try</span>! dangerousCode(foo);  <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-comment\">// ...</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">do</span> {\r\n  let myvar = <span class=\"code-keyword\">try</span> dangerousCode(foo);\r\n  <span class=\"code-comment\">// ...\r\n</span>} <span class=\"code-keyword\">catch</span> {\r\n  <span class=\"code-comment\">// handle error\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-3776",
+      "type": "Code Smell",
+      "summary": "Cognitive Complexity of functions should not be too high",
+      "description": "<p>Cognitive Complexity is a measure of how hard the control flow of a function is to understand. Functions with high Cognitive Complexity will be difficult to maintain.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://redirect.sonarsource.com/doc/cognitive-complexity.html\" class=\"external-link\" rel=\"nofollow\">Cognitive Complexity</a></li>\n</ul>\n",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1186",
+      "type": "Code Smell",
+      "summary": "Functions and closures should not be empty",
+      "description": "<p>There are several reasons for a function or closure not to have a body:</p>\n<ul>\n\t<li>It is an unintentional omission, and should be fixed to prevent unexpected behavior in production.</li>\n\t<li>It is not yet, or never will be, supported. In this case an exception should be thrown.</li>\n\t<li>The function is an intentionally-blank override. In this case a nested comment should explain the reason for the blank override.</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc fun(p1:Int) {\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc fun(p1:Int) {\r\n  <span class=\"code-keyword\">var</span> a = doSomething(p1)\r\n  <span class=\"code-keyword\">var</span> threshold = 42\r\n  <span class=\"code-keyword\">if</span> a &gt; threshold {\r\n    <span class=\"code-comment\">// ...\r\n</span>  }\r\n}\r\n</pre>\n</div></div>\n<p>or </p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc fun(p1:Int) {\r\n  <span class=\"code-comment\">// Intentionally unimplemented...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1477",
+      "type": "Code Smell",
+      "summary": "Source files should not have any duplicated blocks",
+      "description": "<p>An issue is created on a file as soon as there is at least one block of duplicated code on this file.</p>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-4186",
+      "type": "Code Smell",
+      "summary": "\"IBInspectable\" should be used correctly",
+      "description": "<p>Adding <tt>IBInspectable</tt> to a properly-typed variable makes it available in Xcode's Interface Builder. But that only works if variable type is declared explicitly as one of the following: </p>\n\n<ul>\n\t<li><tt>Int</tt> types, <tt>Double</tt>, <tt>Float</tt>, <tt>Bool</tt></li>\n\t<li><tt>String</tt> (or its optional)</li>\n\t<li><tt>CGFloat</tt>, <tt>CGPoint</tt>, <tt>CGSize</tt>, <tt>CGRect</tt></li>\n\t<li><tt>UIColor</tt>, <tt>UIImage</tt> (and their optionals)</li>\n\t<li><tt>NSString</tt>,  <tt>NSColor</tt>, <tt>NSImage</tt> (and their optionals)</li>\n\t<li><tt>NSRect</tt>, <tt>NSPoint</tt>, <tt>NSSize</tt>,</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n@IBInspectable  <span class=\"code-comment\">// Noncompliant; type is implicit\r\n</span><span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> cornerRadius = 2.0 {\r\n  didSet {\r\n     <span class=\"code-comment\">//...\r\n</span>  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n@IBInspectable\r\n<span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> cornerRadius: CGFloat  = 2.0 {\r\n  didSet {\r\n     <span class=\"code-comment\">//...\r\n</span>  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1700",
+      "type": "Code Smell",
+      "summary": "A field should not duplicate the name of its containing class",
+      "description": "<p>It's confusing to have a class member with the same name (case differences aside) as its enclosing class. This is particularly so when you consider the common practice of naming a class instance for the class itself.</p>\n\n<p>Best practice dictates that any field or member with the same name as the enclosing class be renamed to be more descriptive of the particular aspect of the class it represents or holds.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n  <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> foo : <span class=\"code-object\">String</span>\r\n\r\n  <span class=\"code-keyword\">public</span> func getFoo() -&gt; <span class=\"code-object\">String</span> {\r\n     <span class=\"code-keyword\">return</span> foo\r\n  }\r\n\r\n  <span class=\"code-comment\">//...\r\n</span>\r\n}\r\n\r\n<span class=\"code-keyword\">var</span> foo = Foo()\r\nfoo.getFoo() <span class=\"code-comment\">// what does <span class=\"code-keyword\">this</span> <span class=\"code-keyword\">return</span>?</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n  <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> name : <span class=\"code-object\">String</span> \r\n\r\n  <span class=\"code-keyword\">public</span> func getName() -&gt; <span class=\"code-object\">String</span> { \r\n      <span class=\"code-keyword\">return</span> name \r\n  }\r\n\r\n  <span class=\"code-comment\">//...\r\n</span>\r\n}\r\n\r\n<span class=\"code-keyword\">var</span> foo = Foo();\r\nfoo.getName()\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2961",
+      "type": "Code Smell",
+      "summary": "Backticks should not be used around symbol names",
+      "description": "<p>You can't create a variable named \"for\". Unless you put backticks (<tt>`</tt>) around it.</p>\n\n<p>Since that would be the first step down a slippery slope of hopeless confusion, backticks should be removed from identifier names - whether they're keywords or not - and the identifiers renamed as required.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> `<span class=\"code-keyword\">for</span>` = 1   <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> `in` = 0; `in` &lt; 10 &amp;&amp; `<span class=\"code-keyword\">for</span>` &gt; 0; `in`++) {  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">var</span> `x` = <span class=\"code-quote\">\"hello\"</span>  <span class=\"code-comment\">// Noncompliant; why would you <span class=\"code-keyword\">do</span> <span class=\"code-keyword\">this</span>?</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> i = a\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> j=0; j&lt; 10; j++) { \r\n  <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">var</span> x = <span class=\"code-quote\">\"hello\"</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>When Objective-C libraries are used in Swift, backticks may be needed around parameter names which are keywords in Swift but not in Objective C. Therefore this rule ignores backticks around parameter names.</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> protectionSpace: NSURLProtectionSpace = NSURLProtectionSpace(\r\n  host: host,\r\n  port: port,\r\n  `protocol`: prot,  <span class=\"code-comment\">// Compliant\r\n</span>  realm: nil,\r\n  authenticationMethod: authenticationMethod\r\n);\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3087",
+      "type": "Code Smell",
+      "summary": "Closure expressions should not be nested too deeply",
+      "description": "<p>The point of using closure expressions is to clearly express a succinct bit of logic. Start nesting closure expressions too deeply and you create a logic snarl that will likely snare both you and future maintainers.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the maximum depth of 2:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo(42) { (x: Int) in\r\n    bar(x) { (x: Int) in\r\n      foobar(x) { <span class=\"code-comment\">// Noncompliant\r\n</span>        print(x * 42)  \r\n      }\r\n      print(x + 42)\r\n    }\r\n    print(x - 42)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc multPlus(x:Int) {\r\n  foobar(x) {\r\n    print(x * 42)  \r\n  }\r\n  print(x + 42)\r\n}\r\n\r\nfoo(42) { (x: Int) in\r\n    bar(x, multPlus) \r\n    print(x - 42)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1066",
+      "type": "Code Smell",
+      "summary": "Collapsible \"if\" statements should be merged",
+      "description": "<p>Merging collapsible <tt>if</tt> statements increases the code's readability.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition1 {\r\n  <span class=\"code-keyword\">if</span> condition2 {\r\n    doSomething()\r\n  }\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> let y = someOptional {\r\n  <span class=\"code-keyword\">if</span> x &gt; 0 {\r\n    doSomething()\r\n  } \r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition1 &amp;&amp; condition2 {\r\n  doSomething()\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> let y = someOptional where x &gt; 0 {\r\n  doSomething()\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> x &gt; 0, let y = someOptional {\r\n  doSomething()\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3981",
+      "type": "Bug",
+      "summary": "Collection sizes comparisons should make sense",
+      "description": "<p>The number of elements in a collection, an array or a string are always greater than or equal to zero. So testing that a size or length is greater than or equal to zero doesn't make sense, since the result is always <tt>true</tt>. Similarly testing that it is less than zero will always return <tt>false</tt>. Perhaps the intent was to check the non-emptiness instead. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (myArray.count &gt;= 0) { ... }\r\n\r\n<span class=\"code-keyword\">if</span> (myString.characters.count &lt; 0) { ... }\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (myArray.isEmpty) { ... }\r\n\r\n<span class=\"code-keyword\">if</span> (myString.isEmpty) { ... }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1854",
+      "type": "Code Smell",
+      "summary": "Dead stores should be removed",
+      "description": "<p>A dead store happens when a local variable is assigned a value that is not read by any subsequent instruction. Calculating or retrieving a value only to then overwrite it or throw it away, could indicate a serious error in the code. Even if it's not an error, it is at best a waste of resources. Therefore all calculated values should be used.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc calculateRate(a:Int, b:Int) {\r\n  <span class=\"code-keyword\">var</span> i:Int\r\n  \r\n  i = a + b <span class=\"code-comment\">// Noncompliant; calculation result not used before value is overwritten\r\n</span>  i = doSomething()  <span class=\"code-comment\">// Noncompliant; retrieved value not used\r\n</span>  <span class=\"code-keyword\">for</span> i = 0; i &lt; 10; i++ { \r\n    <span class=\"code-comment\">//  ...\r\n</span>  }\r\n  <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc calculateRate(a:Int, b:Int) {\r\n  <span class=\"code-keyword\">var</span> i:Int\r\n\r\n  i = doSomething()\r\n  i += a + b\r\n  storeI(i)\r\n\r\n  <span class=\"code-keyword\">for</span> i = 0; i &lt; 10; i++ { \r\n    <span class=\"code-comment\">//  ...\r\n</span>  }\r\n}\r\n</pre>\n</div></div><h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>This rule ignores initializations to -1, 0, 1, <tt>null</tt>, <tt>true</tt>, <tt>false</tt> and <tt>\"\"</tt>.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/563.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-563</a> - Assignment to Variable without Use ('Unused Variable')</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/QYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC13-C.</a> - Detect and remove unused values</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/S4IyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC13-CPP.</a> - Detect and remove unused values</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/uQCSBg\" class=\"external-link\" rel=\"nofollow\">CERT, MSC56-J.</a> - Detect and remove superfluous code and values</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1764",
+      "type": "Bug",
+      "summary": "Identical expressions should not be used on both sides of a binary operator",
+      "description": "<p>Using the same value on either side of a binary operator is almost always a mistake. In the case of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted code, and should be simplified. In the case of bitwise operators and most binary mathematical operators, having the same value on both sides of an operator yields predictable results, and should be simplified.</p>\n\n<p>This rule ignores <tt>*</tt>, <tt>+</tt>. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> a == a { <span class=\"code-comment\">// always <span class=\"code-keyword\">true</span>\r\n</span>  doZ()\r\n}\r\n<span class=\"code-keyword\">if</span>  a != a  { <span class=\"code-comment\">// always <span class=\"code-keyword\">false</span>\r\n</span>  doY()\r\n}\r\n<span class=\"code-keyword\">if</span> a == b &amp;&amp; a == b { <span class=\"code-comment\">// <span class=\"code-keyword\">if</span> the first one is <span class=\"code-keyword\">true</span>, the second one is too\r\n</span>  doX()\r\n}\r\n<span class=\"code-keyword\">if</span> a == b || a == b { <span class=\"code-comment\">// <span class=\"code-keyword\">if</span> the first one is <span class=\"code-keyword\">true</span>, the second one is too\r\n</span>  doW()\r\n}\r\n\r\n<span class=\"code-keyword\">var</span> j = 5 / 5 <span class=\"code-comment\">//always 1\r\n</span><span class=\"code-keyword\">var</span> k = 5 - 5 <span class=\"code-comment\">//always 0</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Left-shifting 1 onto 1 is common in the construction of bit masks, and is ignored.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> i = 1 &lt;&lt; 1; <span class=\"code-comment\">// Compliant\r\n</span><span class=\"code-keyword\">var</span> j = a &lt;&lt; a; <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C</a> - Detect and remove code that has no effect</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP</a> - Detect and remove code that has no effect.</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3110",
+      "type": "Bug",
+      "summary": "Infix operators that end with \"=\" should update their left operands",
+      "description": "<p>The conventional expectation of operators that end with <tt>=</tt>, such as <tt>+=</tt>, <tt>-=</tt>, <tt>*=</tt>, and so on, is that the result of the operation will be assigned to the operand on the left-hand side of the operator.</p>\n\n<p>Define any other behavior and you almost guarantee that the users of your code will misunderstand and therefore misuse your operator.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc **= (p1:Int, p2:Int) -&gt; Int {   <span class=\"code-comment\">// Noncompliant. Change <span class=\"code-keyword\">operator</span> name or update value of first parameter\r\n</span>    <span class=\"code-keyword\">return</span> p1 ** p2\r\n}\r\n\r\nfunc =&gt; (p1:Int, p2:Int) -&gt; Int {  <span class=\"code-comment\">// Compliant; doesn't end with '='\r\n</span>    <span class=\"code-keyword\">return</span> p1 ** p1 ** p2\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc **= (inout p1:Int, p2:Int) { \r\n    p1 = p1 ** p2\r\n}\r\n\r\nfunc =&gt; (p1:Int, p2:Int) -&gt; Int {\r\n    <span class=\"code-keyword\">return</span> p1 ** p1 ** p2\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1763",
+      "type": "Bug",
+      "summary": "Jump statements should not be followed by other statements",
+      "description": "<p>Jump statements (<tt>return</tt>, <tt>break</tt>, <tt>continue</tt>, and <tt>fallthrough</tt>) move control flow out of the current code block. Typically, any statements in a block that come after a jump are simply wasted keystrokes lying in wait to confuse the unwary. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc fun(a:Int)-&gt;Int{\r\n  <span class=\"code-keyword\">var</span> i = 10;\r\n  <span class=\"code-keyword\">return</span> i + a;\r\n  i++;             <span class=\"code-comment\">// <span class=\"code-keyword\">this</span> is never executed\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc fun(a:Int)-&gt;Int{\r\n  <span class=\"code-keyword\">var</span> i = 10;\r\n  <span class=\"code-keyword\">return</span> i + a;\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.1 - There shall be no unreachable code</li>\n\t<li>MISRA C++:2008, 0-1-1 - A project shall not contain unreachable code</li>\n\t<li>MISRA C++:2008, 0-1-9 - There shall be no dead code</li>\n\t<li>MISRA C:2012, 2.1 - A project shall not contain unreachable code</li>\n\t<li>MISRA C:2012, 2.2 - There shall be no dead code</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/561.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-561</a> - Dead Code</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/uQCSBg\" class=\"external-link\" rel=\"nofollow\">CERT, MSC56-J.</a> - Detect and remove superfluous code and values</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/OYIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC07-CPP.</a> - Detect and remove dead code</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1751",
+      "type": "Code Smell",
+      "summary": "Jump statements should not be used unconditionally",
+      "description": "<p>Having an unconditional <tt>break</tt>, <tt>return</tt> in a loop renders it useless; the loop will only execute once and the loop structure itself is simply wasted keystrokes.</p>\n\n<p>Having an unconditional <tt>continue</tt> in a loop can render the loop meaningless, or is itself wasted keystrokes, depending on where in the loop it occurs.</p>\n\n<p>Having an unconditional <tt>return</tt> anywhere other than at the end of a function or method simply renders all the rest of the code in the method useless.</p>\n\n<p>For these reasons, unconditional jump statements should never be used except for the final <tt>return</tt> in a function.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> i:Int\r\n<span class=\"code-keyword\">for</span> (i = 0; i &lt; 10; ++i) {\r\n    print(<span class=\"code-quote\">\"i is \\(i)\"</span>)\r\n    <span class=\"code-keyword\">break</span>  <span class=\"code-comment\">// loop only executes once\r\n</span>}\r\n\r\n<span class=\"code-keyword\">for</span> (i = 0; i &lt; 10; ++i) {\r\n    <span class=\"code-keyword\">continue</span>\r\n    print(<span class=\"code-quote\">\"i is \\(i)\"</span>)  <span class=\"code-comment\">// <span class=\"code-keyword\">this</span> is never executed\r\n</span>}\r\n\r\n<span class=\"code-keyword\">for</span> (i = 0; i &lt; 10; ++i) {\r\n    print(<span class=\"code-quote\">\"i is \\(i)\"</span>)\r\n    <span class=\"code-keyword\">continue</span>  <span class=\"code-comment\">// <span class=\"code-keyword\">this</span> is meaningless; the loop would <span class=\"code-keyword\">continue</span> anyway\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> i:Int\r\n<span class=\"code-keyword\">for</span> (i = 0; i &lt; 10; ++i){\r\n    print(<span class=\"code-quote\">\"i is \\(i)\"</span>)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.1 - There shall be no unreachable code.</li>\n\t<li>MISRA C++:2008, 0-1-1 - A <em>project</em> shall not contain <em>unreachable code</em>.</li>\n\t<li>MISRA C++:2008, 0-1-9 - There shall be no dead code.</li>\n\t<li>MISRA C:2012, 2.2 - There shall be no dead code</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C</a> - Detect and remove code that has no effect</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1117",
+      "type": "Code Smell",
+      "summary": "Local variables should not have the same name as fields or \"enum\" cases",
+      "description": "<p>Shadowing fields or <tt>enum</tt> <tt>case</tt>s with a local variable is a bad practice that reduces code readability: It makes it confusing to know whether the field or the variable is being used.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">var</span> myField:Int = 0\r\n\r\n  <span class=\"code-keyword\">public</span> func doSomething() {\r\n    <span class=\"code-keyword\">var</span> myField = 0\r\n    ...\r\n  }\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/2ADEAw\" class=\"external-link\" rel=\"nofollow\">CERT, DCL51-J.</a> - Do not shadow or obscure identifiers in subscopes</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-108",
+      "type": "Code Smell",
+      "summary": "Nested blocks of code should not be left empty",
+      "description": "<p>Most of the time a block of code is empty when a piece of code is really missing. So such empty block must be either filled or removed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> (<span class=\"code-keyword\">var</span> i = 0; i &lt; 42; i++){}  <span class=\"code-comment\">// Empty on purpose or missing piece of code ?</span>\r\n</pre>\n</div></div><h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>When a block contains a comment, this block is not considered to be empty.</p>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2960",
+      "type": "Code Smell",
+      "summary": "Operators should be surrounded by whitespace in function definitions",
+      "description": "<p>Surrounding your operators with whitespace in operator declarations will help maintainers derive meaning from what might otherwise look like a meaningless jumble of punctuation.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc &lt;*&gt;(a: MyClass, b: MyClass) -&gt; <span class=\"code-object\">Boolean</span> { <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc &lt;*&gt; (a: MyClass, b: MyClass) -&gt; <span class=\"code-object\">Boolean</span> {\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3083",
+      "type": "Bug",
+      "summary": "Precedence and associativity of standard operators should not be changed",
+      "description": "<p>It is acceptable to override standard operators to provide appropriate behaviors for your classes. But it is not appropriate to change those operators' associativity or precedence from the standard. Doing so will inevitably lead to misuse and mistakes for users of the class.</p>\n\n<p>Instead of overriding an existing operator's associativity or precedence, you should either let them use the default values or define a completely new operator.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ninfix <span class=\"code-keyword\">operator</span> - {associativity right precedence 140}  <span class=\"code-comment\">// Noncompliant. For a different behavior create a different <span class=\"code-keyword\">operator</span>\r\n</span>func - (lhs: MyInt, rhs: MyInt) -&gt; MyInt {\r\n  <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">var</span> a = MyInt(10), b = MyInt(5), c = MyInt(5)\r\nprint(a - b - c) <span class=\"code-comment\">// against expectations, <span class=\"code-keyword\">this</span> outputs 10</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ninfix <span class=\"code-keyword\">operator</span> &lt;- {associativity right precedence 140} \r\nfunc &lt;- (lhs: MyInt, rhs:MyInt) -&gt; MyInt {\r\n  <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">var</span> a = MyInt(10), b = MyInt(5), c = MyInt(5)\r\nprint(a - b - c) <span class=\"code-comment\">// prints 0 as expected\r\n</span>print(a &lt;- b &lt;- c) <span class=\"code-comment\">// prints 10</span>\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1110",
+      "type": "Code Smell",
+      "summary": "Redundant pairs of parentheses should be removed",
+      "description": "<p>Useless parentheses can sometimes be misleading and so should be removed. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">return</span> ((x + 1))       <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-keyword\">var</span> x = ((y / 2 + 1))  <span class=\"code-comment\">// Noncompliant\r\n</span><span class=\"code-keyword\">if</span> ((x &gt; 0)) { ... }   <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">return</span> (x + 1)\r\n<span class=\"code-keyword\">return</span> x + 1\r\n<span class=\"code-keyword\">var</span> x = (y / 2 + 1)\r\n<span class=\"code-keyword\">var</span> x = y / 2 + 1\r\n<span class=\"code-keyword\">if</span> (x &gt; 0) { ... }\r\n<span class=\"code-keyword\">if</span> x &gt; 0 { ... }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1862",
+      "type": "Bug",
+      "summary": "Related \"if/else if\" statements and \"cases\" in a \"switch\" should not have the same condition",
+      "description": "<p>A <tt>switch</tt> and a chain of <tt>if</tt>/<tt>else if</tt> statements is evaluated from top to bottom. At most, only one branch will be executed: the first one with a condition that evaluates to <tt>true</tt>. </p>\n\n<p>Therefore, duplicating a condition automatically leads to dead code. Usually, this is due to a copy/paste error. At best, it's simply dead code and at worst, it's a bug that is likely to induce further bugs as the code is maintained, and obviously it could lead to unexpected behavior. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> param == 1 {\r\n  openWindow()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> param == 2 {\r\n  closeWindow()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> param == 1 {            <span class=\"code-comment\">// Noncompliant\r\n</span>  moveWindowToTheBackground()\r\n}\r\n\r\n<span class=\"code-keyword\">switch</span> i {\r\n  <span class=\"code-keyword\">case</span> 1:\r\n    <span class=\"code-comment\">//...\r\n</span>  <span class=\"code-keyword\">case</span> 3:\r\n    <span class=\"code-comment\">//...\r\n</span>  <span class=\"code-keyword\">case</span> 1:                         <span class=\"code-comment\">// Noncompliant\r\n</span>    <span class=\"code-comment\">//...\r\n</span>  <span class=\"code-keyword\">default</span>:\r\n    <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> param == 1 {\r\n  openWindow()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> param == 2 {\r\n  closeWindow()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> param == 3 {\r\n  moveWindowToTheBackground()\r\n}\r\n\r\n<span class=\"code-keyword\">switch</span> i {\r\n  <span class=\"code-keyword\">case</span> 1:\r\n    <span class=\"code-comment\">//...\r\n</span>  <span class=\"code-keyword\">case</span> 3:\r\n    <span class=\"code-comment\">//...\r\n</span>  <span class=\"code-keyword\">default</span>:\r\n    <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "pitfall",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2201",
+      "type": "Bug",
+      "summary": "Return values from functions without side effects should not be ignored",
+      "description": "<p>When the call to a function doesn't have any side effects, what is the point of making the call if the results are ignored? In such case, either the function call is useless and should be dropped or the source code doesn't behave as expected. </p>\n\n<p>This rule raises an issue on the following methods of the Swift standard library:</p>\n<ul>\n\t<li><tt>abs</tt> function</li>\n\t<li><tt>signum</tt> method</li>\n\t<li><tt>distance</tt> method</li>\n\t<li><tt>advanced</tt> method</li>\n\t<li><tt>addingProduct</tt> method</li>\n\t<li><tt>squareRoot</tt> method</li>\n\t<li><tt>remainder</tt>, <tt>truncatingRemainder</tt> methods</li>\n\t<li><tt>rounded</tt> method</li>\n\t<li><tt>dropLast</tt>, <tt>drop</tt>, <tt>dropFirst</tt> methods</li>\n\t<li><tt>lowercased</tt>, <tt>uppercased</tt> methods</li>\n\t<li><tt>sorted</tt>, <tt>reversed</tt> methods</li>\n\t<li><tt>prefix</tt>, <tt>suffix</tt> methods</li>\n</ul>\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2012, 17.7 - The value returned by a function having non-void return type shall be used</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/9YIRAQ\" class=\"external-link\" rel=\"nofollow\">CERT, EXP12-C.</a> - Do not ignore values returned by functions</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/eoAyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, EXP12-CPP.</a> - Do not ignore values returned by functions or methods</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/9gEqAQ\" class=\"external-link\" rel=\"nofollow\">CERT, EXP00-J.</a> - Do not ignore values returned by methods</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-125",
+      "type": "Code Smell",
+      "summary": "Sections of code should not be \"commented out\"",
+      "description": "<p>Programmers should not comment out code as it bloats programs and reduces readability.<br/>\nUnused code should be deleted and can be retrieved from source control history if required.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 2.4 - Sections of code should not be \"commented out\".</li>\n\t<li>MISRA C++:2008, 2-7-2 - Sections of code shall not be \"commented out\" using C-style comments.</li>\n\t<li>MISRA C+<ins>:2008, 2-7-3 - Sections of code should not be \"commented out\" using C</ins>+ comments.</li>\n\t<li>MISRA C:2012, Dir. 4.4 - Sections of code should not be \"commented out\"</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-122",
+      "type": "Code Smell",
+      "summary": "Statements should be on separate lines",
+      "description": "<p>For better readability, do not put more than one statement on a single line.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> someCondition { doSomething()}\r\n...\r\n<span class=\"code-keyword\">var</span> result = doSomething(); <span class=\"code-keyword\">return</span> result\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> someCondition {\r\n  doSomething()\r\n}\r\n...\r\n<span class=\"code-keyword\">var</span> result = doSomething()\r\n<span class=\"code-keyword\">return</span> result\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Variable declaration with initialising code block and closure expressions containing a single statement are ignored.</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> x : Int { <span class=\"code-keyword\">return</span> 0 }                                       <span class=\"code-comment\">// Variable declaration with initialising code block\r\n</span>doSomething({ (x: Int, y: Int) -&gt; Bool in <span class=\"code-keyword\">return</span> x &gt; y }, 5)   <span class=\"code-comment\">// Closure expression</span>\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "style"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1134",
+      "type": "Code Smell",
+      "summary": "Track uses of \"FIXME\" tags",
+      "description": "<p><tt>FIXME</tt> tags are commonly used to mark places where a bug is suspected, but which the developer wants to deal with later.<br/>\nSometimes the developer will not have the time or will simply forget to get back to that tag.<br/>\nThis rule is meant to track those tags and to ensure that they do not go unnoticed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc divide(numerator:Int, denominator:Int) -&gt; Int {\r\n  <span class=\"code-keyword\">return</span> numerator / denominator              <span class=\"code-comment\">// FIXME denominator value might be  0\r\n</span>}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/546.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-546</a> - Suspicious Comment</li>\n</ul>\n",
+      "standards": [
+        "CWE"
+      ],
+      "tags": [
+        "cwe"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1871",
+      "type": "Code Smell",
+      "summary": "Two branches in a conditional structure should not have exactly the same implementation",
+      "description": "<p>Having two <tt>cases</tt> in the same <tt>switch</tt> statement or branches in the same <tt>if</tt> structure  with the same implementation is at best duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then they should be combined.</p>\n\n<p>Moreover when the second and third operands of a ternary operator are the same, the operator will always return the same value regardless of the condition. Either the operator itself is pointless, or a mistake was made in coding it.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> i {\r\n  <span class=\"code-keyword\">case</span> 1: \r\n    doSomething()\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent()\r\n  <span class=\"code-keyword\">case</span> 3:  <span class=\"code-comment\">// Noncompliant; duplicates <span class=\"code-keyword\">case</span> 1's implementation\r\n</span>    doSomething() \r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest()\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> a &gt;= 0 &amp;&amp; a &lt; 10 {\r\n  doTheThing()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> a &gt;= 10 &amp;&amp; a &lt; 20 {\r\n  doTheOtherThing()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> a &gt;= 20 &amp;&amp; a &lt; 50 {\r\n  doTheThing()  <span class=\"code-comment\">// Noncompliant; duplicates first condition\r\n</span>} <span class=\"code-keyword\">else</span> {\r\n  doTheRest()\r\n}\r\n\r\nb = a ? 12 &gt; 4 : 4  <span class=\"code-comment\">// Noncompliant; always results in the same value</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> i {\r\n  <span class=\"code-keyword\">case</span> 1, 3: \r\n    doSomething()\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent()\r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest()\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> (a &gt;= 0 &amp;&amp; a &lt; 10) || (a &gt;= 20 &amp;&amp; a &lt; 50) {\r\n  doTheThing()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> a &gt;= 10 &amp;&amp; a &lt; 20 {\r\n  doTheOtherThing()\r\n} <span class=\"code-keyword\">else</span> {\r\n  doTheRest()\r\n}\r\n\r\nb = 4\r\n</pre>\n</div></div>\n<p>or </p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> i {\r\n  <span class=\"code-keyword\">case</span> 1: \r\n    doSomething()\r\n  <span class=\"code-keyword\">case</span> 2: \r\n    doSomethingDifferent()\r\n  <span class=\"code-keyword\">case</span> 3:\r\n    doThirdThing() \r\n  <span class=\"code-keyword\">default</span>: \r\n    doTheRest()\r\n}\r\n\r\n<span class=\"code-keyword\">if</span> a &gt;= 0 &amp;&amp; a &lt; 10 {\r\n  doTheThing()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> a &gt;= 10 &amp;&amp; a &lt; 20 {\r\n  doTheOtherThing()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> a &gt;= 20 &amp;&amp; a &lt; 50 {\r\n  doTheThirdThing()\r\n} <span class=\"code-keyword\">else</span> {\r\n  doTheRest()\r\n}\r\n\r\nb = a ? 12 &gt; 4 : 8\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p><tt>case</tt> labels that declare variables cannot have multiple patterns. Therefore this situation is ignored.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> a {\r\n    <span class=\"code-keyword\">case</span> .STR_CASE(let x):\r\n        print(x)\r\n    <span class=\"code-keyword\">case</span> .INT_CASE(let x):\r\n        print(x)\r\n    <span class=\"code-keyword\">default</span>:\r\n        print(<span class=\"code-quote\">\"<span class=\"code-keyword\">default</span>\"</span>)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "design",
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1144",
+      "type": "Code Smell",
+      "summary": "Unused \"private\" functions should be removed",
+      "description": "<p><tt>private</tt> methods that are never executed are dead code: unnecessary, inoperative code that should be removed. Cleaning out dead code decreases the size of the maintained codebase, making it easier to understand the program and preventing bugs from being introduced.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/OYIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC07-CPP.</a> - Detect and remove dead code</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1172",
+      "type": "Code Smell",
+      "summary": "Unused function parameters should be removed",
+      "description": "<p>Unused parameters are misleading. Whatever the values passed to such parameters, the behavior will be the same.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc doSomething(a: Int, b: Int) {     <span class=\"code-comment\">// <span class=\"code-quote\">\"b\"</span> is unused\r\n</span>  compute(a)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nvoid doSomething(a: Int) { \r\n  compute(a)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Override methods are excluded.</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\noverride doSomething(a: Int, b: Int) {     <span class=\"code-comment\">// no issue reported on b\r\n</span>  compute(a)\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C++:2008, 0-1-11 - There shall be no unused parameters (named or unnamed) in nonvirtual functions.</li>\n\t<li>MISRA C:2012, 2.7 - There should be no unused parameters in functions</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1065",
+      "type": "Code Smell",
+      "summary": "Unused labels should be removed",
+      "description": "<p>If a label is declared but not used in the program, it can be considered as dead code and should therefore be removed.<br/>\nThis will improve maintainability as developers will not wonder what this label is used for.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nwhileLoopLabel: <span class=\"code-keyword\">while</span> x &gt; 0 {    <span class=\"code-comment\">// Noncompliant\r\n</span>    x -= 1\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">while</span> x &gt; 0 {\r\n    x -= 1\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2012, 2.6 - A function should not contain unused label declarations</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NYA5\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-C.</a> - Detect and remove code that has no effect or is never executed</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/SIIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC12-CPP.</a> - Detect and remove code that has no effect</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2951",
+      "type": "Code Smell",
+      "summary": "\"break\" should be the only statement in a \"case\"",
+      "description": "<p>Because <tt>case</tt> statements in a Swift <tt>switch</tt> do not fall through, there is no need to use <tt>break</tt> at the end of a <tt>case</tt> unless it would otherwise be empty. Since an empty <tt>case</tt> isn't allowed, an explicit <tt>break</tt> is needed to make such code compilable. There is no other reason to use <tt>break</tt> in a <tt>case</tt>.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> weekday {\r\n  <span class=\"code-keyword\">case</span> sunday:\r\n    <span class=\"code-keyword\">break</span>\r\n  <span class=\"code-keyword\">case</span> monday:\r\n    getUpEarly()\r\n    <span class=\"code-keyword\">break</span>  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-keyword\">case</span> tuesday\r\n    <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> weekday {\r\n  <span class=\"code-keyword\">case</span> sunday:\r\n    <span class=\"code-keyword\">break</span>\r\n  <span class=\"code-keyword\">case</span> monday:\r\n    getUpEarly()\r\n  <span class=\"code-keyword\">case</span> tuesday\r\n    <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy",
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1301",
+      "type": "Code Smell",
+      "summary": "\"switch\" statements should have at least 3 \"case\" clauses",
+      "description": "<p><tt>switch</tt> statements are useful when there are many different cases depending on the value of the same expression.<br/>\nFor just one or two cases however, the code will be more readable with <tt>if</tt> statements.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> (variable) {\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    doSomething();\r\n  <span class=\"code-keyword\">default</span>:\r\n    doSomethingElse();\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (variable == 0) {\r\n  doSomething();\r\n} <span class=\"code-keyword\">else</span> {\r\n  doSomethingElse();\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 15.5 - Every switch statement shall have at least one case clause.</li>\n\t<li>MISRA C++:2008, 6-4-8 - Every switch statement shall have at least one case-clause.</li>\n\t<li>MISRA C:2012, 16.6 - Every switch statement shall have at least two switch-clauses</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "bad-practice",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-101",
+      "type": "Code Smell",
+      "summary": "Class names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate effectively. This rule allows to check that all class names match a provided regular expression.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With default provided regular expression <tt>^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass my_class {...}\r\n</pre>\n</div></div>\n\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass MyClass {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2094",
+      "type": "Code Smell",
+      "summary": "Classes should not be empty",
+      "description": "<p>There is no good excuse for an empty class. If it's being used simply as a common extension point, it should be replaced with a <tt>protocol</tt>. If it was stubbed in as a placeholder for future development it should be fleshed-out. In any other case, it should be eliminated.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Nothing {  <span class=\"code-comment\">// Noncompliant\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> protocol Nothing {\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-115",
+      "type": "Code Smell",
+      "summary": "Constant names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all constant names match a provided regular expression.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet Pi = 3.14\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet pi = 3.14\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-116",
+      "type": "Code Smell",
+      "summary": "Field names should comply with a naming convention",
+      "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that field names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass MyClass {\r\n  <span class=\"code-keyword\">var</span> MyField = 1\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass MyClass {\r\n  <span class=\"code-keyword\">var</span> myField = 1\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2108",
+      "type": "Code Smell",
+      "summary": "Fields and variables that are never updated should be constant",
+      "description": "<p>Variables that are never updated will always return their default values and so they should be explicitly declared as constant. A <tt>let</tt>-declaration guarantees and clearly signals to the programmer that its value is supposed to and will never change.<br/>\nThis rule applies to non-constant fields and variables which are not set within the codebase.</p>\n",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-100",
+      "type": "Code Smell",
+      "summary": "Function names should comply with a naming convention",
+      "description": "<p>Shared naming conventions allow teams to collaborate efficiently. This rule checks that all function names match a provided regular expression.</p>\n",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1313",
+      "type": "Vulnerability",
+      "summary": "IP addresses should not be hardcoded",
+      "description": "<p>Hardcoding an IP address into source code is a bad idea for several reasons:</p>\n<ul>\n\t<li>a recompile is required if the address changes</li>\n\t<li>it forces the same address to be used in every environment (dev, sys, qa, prod)</li>\n\t<li>it places the responsibility of setting the value to use in production on the shoulders of the developer</li>\n\t<li>it allows attackers to decompile the code and thereby discover a potentially sensitive address</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> host : NSHost = NSHost(address: <span class=\"code-quote\">\"127.0.0.1\"</span>)\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> host : NSHost = NSHost(address: configuration.ipAddress)\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/qQCHAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC03-J.</a> - Never hard code sensitive information</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-117",
+      "type": "Code Smell",
+      "summary": "Local variable and function parameter names should comply with a naming convention",
+      "description": "<p>Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a local variable or function parameter name does not match the provided regular expression.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-114",
+      "type": "Code Smell",
+      "summary": "Protocol names should comply with a naming convention",
+      "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all protocol names match a provided regular expression.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> protocol myProtocol {...} <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> protocol MyProtocol {...}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2760",
+      "type": "Code Smell",
+      "summary": "Sequential tests should not check the same condition",
+      "description": "<p>When the same condition is checked twice in a row, it is either confusing - why have separate checks? - or an error - some other condition should have been checked in the second test.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> a == b { <span class=\"code-comment\">// Compliant; a reassigned in previous block\r\n</span>  doSomething(b)\r\n}\r\n<span class=\"code-keyword\">if</span> a == b {  <span class=\"code-comment\">// Noncompliant; is <span class=\"code-keyword\">this</span> really what was intended?\r\n</span>  doTheThing(c)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> a == b { \r\n  doTheThing(b)\r\n  doTheThing(c)\r\n}\r\n</pre>\n</div></div>\n<p>or</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> a == b { \r\n  doTheThing(b)\r\n}\r\n<span class=\"code-keyword\">if</span> b == c {\r\n  doTheThing(c)\r\n}\r\n</pre>\n</div></div><h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Since it is a common pattern to test a variable, reassign it if it fails the test, then re-test it, that pattern is ignored.</p>",
+      "standards": [],
+      "tags": [
+        "clumsy",
+        "suspicious"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2635",
+      "type": "Code Smell",
+      "summary": "Trailing closures should not begin on new lines",
+      "description": "<p>When the last argument to a function is a closure, it's possible and sometimes desirable to write that closure after the function's parentheses. This is called a <em>trailing</em> closure. In order to help distinguish a trailing closure from an independent code block, it is best to begin the closure on the same line as the function call.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunWithClosureArgument()\r\n{ <span class=\"code-comment\">// Noncompliant; looks like an independent code block\r\n</span>   print(<span class=\"code-quote\">\"Hello world\"</span>)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunWithClosureArgument() { \r\n   print(<span class=\"code-quote\">\"Hello world\"</span>)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-119",
+      "type": "Code Smell",
+      "summary": "Type parameter names should comply with a naming convention",
+      "description": "<p>Shared naming conventions make it possible for a team to collaborate efficiently. Following the established convention of single-letter type parameter names helps users and maintainers of your code quickly see the difference between a type parameter and a poorly named class.</p>\n\n<p>This rule check that all type parameter names match a provided regular expression. The following code snippets use the default regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default regular expression <tt>^<span class=\"error\">&#91;A-Z&#93;</span>$</tt>:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass&lt;TYPE&gt; {    <span class=\"code-comment\">// Noncompliant\r\n</span>  func method&lt;TYPE&gt;(t : TYPE) { <span class=\"code-comment\">// Noncompliant\r\n</span>  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass&lt;T&gt; { \r\n  func method&lt;T&gt;(t : T) {\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1075",
+      "type": "Code Smell",
+      "summary": "URIs should not be hardcoded",
+      "description": "<p>Hard coding a URI makes it difficult to test a program: path literals are not always portable across operating systems,  a given absolute path may not exist on a specific test environment, a specified Internet URL may not be available when executing the tests, production environment filesystems usually differ from the development environment, ...etc. For all those reasons, a URI should never be hard coded. Instead, it should be replaced by customizable parameter.</p>\n\n<p>Further even if the elements of a URI are obtained dynamically, portability can still be limited if the path-delimiters are hard-coded.</p>\n\n<p>This rule raises an issue when URI's or path delimiters are hard coded.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n    <span class=\"code-keyword\">public</span> func listUsers() -&gt; [User] {\r\n        <span class=\"code-keyword\">var</span> users:[User]\r\n        let location = <span class=\"code-quote\">\"/home/mylogin/Dev/users.txt\"</span>     <span class=\"code-comment\">// Non-Compliant\r\n</span>        let fileContent = NSString(contentsOfFile: location, encoding: NSUTF8StringEncoding, error: nil)\r\n        users = parse(fileContent!)\r\n        <span class=\"code-keyword\">return</span> users\r\n    }\r\n}\r\n</pre>\n</div></div>  \n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n    <span class=\"code-comment\">// Configuration is a class that returns customizable properties: it can be mocked to be injected during tests. \r\n</span>    <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> config:Configuration\r\n    <span class=\"code-keyword\">public</span> init(myConfig:Configuration) {\r\n        config = myConfig\r\n    }\r\n    <span class=\"code-keyword\">public</span> func listUsers() -&gt; [User] {\r\n        <span class=\"code-keyword\">var</span> users:[User]\r\n        <span class=\"code-comment\">// Find here the way to get the correct folder, in <span class=\"code-keyword\">this</span> <span class=\"code-keyword\">case</span> using the Configuration object\r\n</span>        let location = config.getProperty(<span class=\"code-quote\">\"myApplication.listingFile\"</span>)\r\n        <span class=\"code-comment\">// and use <span class=\"code-keyword\">this</span> parameter instead of the hard coded path\r\n</span>        let fileContent = NSString(contentsOfFile: location, encoding: NSUTF8StringEncoding, error: nil)\r\n        users = parse(fileContent!)\r\n        <span class=\"code-keyword\">return</span> users\r\n    }\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/qQCHAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC03-J.</a> - Never hard code sensitive information</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1481",
+      "type": "Code Smell",
+      "summary": "Unused local variables should be removed",
+      "description": "<p>If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will not wonder what the variable is used for.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> func numberOfMinutes(hours:Int) -&gt; Int {\r\n  <span class=\"code-keyword\">var</span> seconds = 0   <span class=\"code-comment\">// seconds is never used \r\n</span>  <span class=\"code-keyword\">return</span> hours * 60;\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> func numberOfMinutes(hours:Int) -&gt; Int{\r\n  <span class=\"code-keyword\">return</span> hours * 60\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Simple <tt>for-in</tt> loop counters are ignored by this rule because while they are often legitimately unused, their declaration is required by the syntax.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">for</span> i in 1...10 {  <span class=\"code-comment\">// Ignored\r\n</span>  print(<span class=\"code-quote\">\"Hello! \"</span>);\r\n}\r\n\r\n<span class=\"code-keyword\">for</span> (a, b) in someElements {  <span class=\"code-comment\">// Noncompliant; b unused\r\n</span>  print(a)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "unused"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1133",
+      "type": "Code Smell",
+      "summary": "Deprecated code should be removed",
+      "description": "<p>This rule is meant to be used as a way to track code which is marked as being deprecated. Deprecated code should eventually be removed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n\r\n  @availability(*, deprecated=1.1)   <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-keyword\">public</span> func bar() {\r\n  }\r\n\r\n  @availability(*, obsoleted=1.1)  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-keyword\">public</span> func baz() {\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "obsolete"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Info"
+    },
+    {
+      "ruleKey": "RSPEC-1135",
+      "type": "Code Smell",
+      "summary": "Track uses of \"TODO\" tags",
+      "description": "<p><tt>TODO</tt> tags are commonly used to mark places where some more code is required, but which the developer wants to implement later.<br/>\nSometimes the developer will not have the time or will simply forget to get back to that tag.<br/>\nThis rule is meant to track those tags and to ensure that they do not go unnoticed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc doSomething() {\r\n  <span class=\"code-comment\">// TODO\r\n</span>}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/546.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-546</a> - Suspicious Comment</li>\n</ul>\n",
+      "standards": [
+        "CWE"
+      ],
+      "tags": [
+        "cwe"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Info"
+    },
+    {
+      "ruleKey": "RSPEC-1606",
+      "type": "Code Smell",
+      "summary": "Failed unit tests should be fixed",
+      "description": "<p>Test failures or errors generally indicate that regressions have been introduced. Those tests should be handled as soon as possible to reduce the cost to fix the corresponding regressions.</p>",
+      "standards": [],
+      "tags": [
+        "tests"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-2007",
+      "type": "Code Smell",
+      "summary": "Functions and variables should not be defined outside of classes",
+      "description": "<p>Defining and using global variables and global functions, when the convention dictates OOP can be confusing and difficult to use properly for multiple reasons:</p>\n<ul>\n\t<li>You run the risk of name clashes.</li>\n\t<li>Global functions must be stateless, or they can cause difficult-to-track bugs.</li>\n\t<li>Global variables can be updated from anywhere and may no longer hold the value you expect.</li>\n\t<li>It is difficult to properly test classes that use global functions.</li>\n</ul>\n\n\n<p>Instead of being declared globally, such variables and functions should be moved into a class, potentially marked <tt>static</tt>, so they can be used without a class instance. </p>\n\n<p>This rule  checks that only object-oriented programming is used and that no functions or procedures are declared outside of a class.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> name = <span class=\"code-quote\">\"Bob\"</span>    <span class=\"code-comment\">// Noncompliant\r\n</span>\r\nfunc doSomething() {   <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-comment\">//...\r\n</span>}\r\n\r\nclass MyClass {\r\n    <span class=\"code-comment\">//...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class MyClass {\r\n  <span class=\"code-keyword\">public</span> <span class=\"code-keyword\">static</span> <span class=\"code-keyword\">var</span> name = <span class=\"code-quote\">\"Bob\"</span>\r\n\r\n  <span class=\"code-keyword\">public</span> class func doSomething() {              <span class=\"code-comment\">// Compliant\r\n</span>    <span class=\"code-comment\">//...\r\n</span>  }\r\n  <span class=\"code-comment\">//...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>The operator function is a function with a name that matches the operator to be overloaded. Because such functions can only be defined in a global scope, they are ignored by this rule.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Vector2D {\r\n    <span class=\"code-keyword\">var</span> x = 0.0, y = 0.0\r\n    <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\nfunc + (left: Vector2D, right: Vector2D) -&gt; Vector2D {\r\n    <span class=\"code-keyword\">return</span> Vector2D(x: left.x + right.x, y: left.y + right.y)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "design"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1451",
+      "type": "Code Smell",
+      "summary": "Track lack of copyright and license headers",
+      "description": "<p>Each source file should start with a header stating file ownership and the license which must be used to distribute the application. <br/>\nThis rule must be fed with the header text that is expected at the beginning of every file.</p>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n/*\r\n * SonarQube, open source software quality management tool.\r\n * Copyright (C) 2008-2013 SonarSource\r\n * mailto:contact AT sonarsource DOT com\r\n *\r\n * SonarQube is free software; you can redistribute it and/or\r\n * modify it under the terms of the GNU Lesser General Public\r\n * License as published by the Free Software Foundation; either\r\n * version 3 of the License, or (at your option) any later version.\r\n *\r\n * SonarQube is distributed in the hope that it will be useful,\r\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\r\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\r\n * Lesser General Public License <span class=\"code-keyword\">for</span> more details.\r\n *\r\n * You should have received a copy of the GNU Lesser General Public License\r\n * along with <span class=\"code-keyword\">this</span> program; <span class=\"code-keyword\">if</span> not, write to the Free Software Foundation,\r\n * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\r\n */\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-126",
+      "type": "Code Smell",
+      "summary": "\"if ... else if\" constructs should end with \"else\" clauses",
+      "description": "<p>This rule applies whenever an <tt>if</tt> statement is followed by one or more <tt>else if</tt> statements; the final <tt>else if</tt> should be followed by an <tt>else</tt> statement.</p>\n\n<p>The requirement for a final <tt>else</tt> statement is defensive programming.<br/>\nThe <tt>else</tt> statement should either take appropriate action or contain a suitable comment as to why no action is taken. This is consistent with the requirement to have a final <tt>default</tt> clause in a <tt>switch</tt> statement.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> x == 0 {\r\n  doSomething()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> x == 1 {\r\n  doSomethingElse()\r\n} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> x == 0 {\r\n  doSomething()\r\n} <span class=\"code-keyword\">else</span> <span class=\"code-keyword\">if</span> x == 1 {\r\n  doSomethingElse()\r\n} <span class=\"code-keyword\">else</span> {\r\n  NSException(name:<span class=\"code-quote\">\"IllegalStateException\"</span>, reason:<span class=\"code-quote\">\"Unreachable <span class=\"code-keyword\">else</span> clause is reached\"</span>, userInfo:nil).raise()\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.10 - All if...else if constructs shall be terminated with an else clause.</li>\n\t<li>MISRA C++:2008, 6-4-2 - All if...else if constructs shall be terminated with an else clause.</li>\n\t<li>MISRA C:2012, 15.7 - All if...else if constructs shall be terminated with an else statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/YgE\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-C.</a> - Strive for logical completeness</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/JoIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-CPP.</a> - Strive for logical completeness</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/PQHRAw\" class=\"external-link\" rel=\"nofollow\">CERT, MSC57-J.</a> - Strive for logical completeness</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1821",
+      "type": "Code Smell",
+      "summary": "\"switch\" statements should not be nested",
+      "description": "<p>Nested <tt>switch</tt> structures are difficult to understand because you can easily confuse the cases of an inner <tt>switch</tt> as belonging to an outer statement. Therefore nested <tt>switch</tt> statements should be avoided.</p>\n\n<p>Specifically, you should structure your code to avoid the need for nested <tt>switch</tt> statements, but if you cannot, then consider moving the inner <tt>switch</tt> to another function.</p>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1482",
+      "type": "Code Smell",
+      "summary": "Branches should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the branch coverage on this file is less than the required threshold. It gives the number of branches to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1311",
+      "type": "Code Smell",
+      "summary": "Classes should not be too complex",
+      "description": "<p>The cyclomatic complexity of a class should not exceed a defined threshold. Complex code can perform poorly and will in any case be difficult to understand and therefore to maintain.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-3111",
+      "type": "Code Smell",
+      "summary": "Conditional compilation should not be used",
+      "description": "<p>Conditional compilation is generally recognized as a bad practice that is occasionally necessary when dealing with platform-specific code. As much as possible, code should be refactored to minimize or eliminate conditionally-compiled, platform-specific code because even when necessary and well-intentioned, such code segments can leave your codebase in a hopeless tangle.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example </h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\"> \r\n#<span class=\"code-keyword\">if</span> os(OSX) <span class=\"code-comment\">// Noncompliant \r\n</span>    let a = 2 \r\n#<span class=\"code-keyword\">else</span> \r\n    let a = 3 \r\n#endif \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "design",
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-134",
+      "type": "Code Smell",
+      "summary": "Control flow statements \"if\", \"for\", \"for in\", \"while\", \"do while\" and \"switch\" should not be nested too deeply",
+      "description": "<p>Nested <tt>if</tt>, <tt>for</tt>, <tt>for in</tt>, <tt>while</tt>, <tt>do while</tt> and <tt>switch</tt> statements are a key ingredient for making what's known as \"Spaghetti code\".<br/>\nSuch code is hard to read, refactor and therefore maintain.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  <span class=\"code-keyword\">if</span> condition1 {                  <span class=\"code-comment\">// Compliant - depth = 1\r\n</span>    /* ... */\r\n    <span class=\"code-keyword\">if</span> condition2 {                <span class=\"code-comment\">// Compliant - depth = 2\r\n</span>      /* ... */\r\n      <span class=\"code-keyword\">for</span> <span class=\"code-keyword\">var</span> i = 0; i &lt; 10; i++ {  <span class=\"code-comment\">// Compliant - depth = 3, not exceeding the limit\r\n</span>        /* ... */\r\n        <span class=\"code-keyword\">if</span> condition4 {            <span class=\"code-comment\">// Non-Compliant - depth = 4\r\n</span>          <span class=\"code-keyword\">if</span> condition5 {          <span class=\"code-comment\">// Depth = 5, exceeding the limit, but issues are only reported on depth = 4\r\n</span>            /* ... */\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1067",
+      "type": "Code Smell",
+      "summary": "Expressions should not be too complex",
+      "description": "<p>The complexity of an expression is defined by the number of <tt>&amp;&amp;</tt>, <tt>||</tt> and <tt>condition ? ifTrue : ifFalse</tt> operators it contains.<br/>\nA single expression's complexity should not become too high to keep the code readable.</p>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold value 3</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  <span class=\"code-keyword\">if</span> ((condition1 &amp;&amp; condition2) || (condition3 &amp;&amp; condition4)) &amp;&amp; condition5 { ... }\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  <span class=\"code-keyword\">if</span> (myFirstCondition() || mySecondCondition()) &amp;&amp; myLastCondition() { ... }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1541",
+      "type": "Code Smell",
+      "summary": "Functions should not be too complex",
+      "description": "<p>The Cyclomatic Complexity of functions should not exceed a defined threshold. Complex code may perform poorly and can be difficult to test thoroughly.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-2967",
+      "type": "Bug",
+      "summary": "Implicitly unwrapped optionals should not be used",
+      "description": "<p>The point of using an optional is to signal that the value may be <tt>nil</tt> and to provide graceful ways of dealing with it if it is <tt>nil</tt>. While implicitly unwrapped optionals still provide means of dealing with <tt>nil</tt> values, they also signal that the value won't be <tt>nil</tt>, and unwrap it automatically. In addition to sending a decidedly mixed signal, this could lead to runtime errors if the value ever is <tt>nil</tt>. </p>\n\n<p>It is safest, and clearest to use either an optional or a plain type and avoid the boggy middle ground of implicitly unwrapped optionals.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> greeting : <span class=\"code-object\">String</span>!  <span class=\"code-comment\">// Noncompliant\r\n</span>\r\nprintln(greeting)  <span class=\"code-comment\">// At <span class=\"code-keyword\">this</span> point the value is nil. <span class=\"code-object\">Runtime</span> error results</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> greeting : <span class=\"code-object\">String</span>?\r\n\r\n<span class=\"code-keyword\">if</span> let howdy = greeting {\r\n  println(howdy)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1483",
+      "type": "Code Smell",
+      "summary": "Lines should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. It gives the number of lines to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-2197",
+      "type": "Code Smell",
+      "summary": "Modulus results should not be checked for direct equality",
+      "description": "<p>When the modulus of a negative number is calculated, the result will either be negative or zero. Thus, comparing the modulus of a variable for equality with a positive number (or a negative one) could result in unexpected results. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc isOdd(x:Int) -&gt; Bool {\r\n  <span class=\"code-keyword\">return</span> x % 2 == 1  <span class=\"code-comment\">// Noncompliant; <span class=\"code-keyword\">if</span> x is negative, x % 2 == -1\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc isOdd(x:Int) -&gt; Bool {\r\n  <span class=\"code-keyword\">return</span> x % 2 != 0\r\n}\r\n</pre>\n</div></div>\n<p>or</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc isOdd(x:Int) -&gt; Bool {\r\n  <span class=\"code-keyword\">return</span> abs(x % 2) == 1\r\n}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/xAHAAQ\" class=\"external-link\" rel=\"nofollow\">CERT, NUM51-J.</a> - Do not assume that the remainder operator always returns a nonnegative result for integral operands</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/NQBi\" class=\"external-link\" rel=\"nofollow\">CERT, INT10-C</a> - Do not assume a positive remainder when using the % operator</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/_YBLAQ\" class=\"external-link\" rel=\"nofollow\">CERT, INT10-CPP.</a> - Do not assume a positive remainder when using the % operator</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-4184",
+      "type": "Code Smell",
+      "summary": "\"IBOutlet\" variables should be private",
+      "description": "<p>Marking a variable with <tt>IBOutlet</tt> allows it to be connected with a Storyboard component through the Interface Builder. Allowing such a variable to be accessed outside the class, may result in other classes making assignments that override the automatic dependency injection from the Storyboard itself.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  @IBOutlet <span class=\"code-keyword\">var</span> label: UILabel!  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n  @IBOutlet <span class=\"code-keyword\">private</span> <span class=\"code-keyword\">var</span> label: UILabel!\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1151",
+      "type": "Code Smell",
+      "summary": "\"switch case\" clauses should not have too many lines of code",
+      "description": "<p>The <tt>switch</tt> statement should be used only to clearly define some new branches in the control flow. As soon as a <tt>case</tt> clause contains too many statements this highly decreases the readability of the overall control flow statement. In such case, the content of the <tt>case</tt> clause should be extracted into a dedicated method.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>The following code snippet illustrates this rule with the default threshold of 5:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> myVariable {\r\n  <span class=\"code-keyword\">case</span> 0: <span class=\"code-comment\">// 6 lines till next <span class=\"code-keyword\">case</span>\r\n</span>    methodCall1(\"\")\r\n    methodCall2(\"\")\r\n    methodCall3(\"\")\r\n    methodCall4(\"\")\r\n    methodCall5(\"\")\r\n  <span class=\"code-keyword\">case</span> 1:\r\n  ...\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">switch</span> myVariable {\r\n  <span class=\"code-keyword\">case</span> 0:\r\n    doSomething()\r\n  <span class=\"code-keyword\">case</span> 1:\r\n  ...\r\n}\r\n...\r\nfunc doSomething(){\r\n    methodCall1(\"\")\r\n    methodCall2(\"\")\r\n    methodCall3(\"\")\r\n    methodCall4(\"\")\r\n    methodCall5(\"\")\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2042",
+      "type": "Code Smell",
+      "summary": "Classes should not have too many lines of code",
+      "description": "<p>A class that grows too much tends to aggregate too many responsibilities, and inevitably becomes harder to understand and to maintain. Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well-defined topics.</p>\n\n<p>This rule raises an issue when classes, structs, or enums have more than the allowed number of lines.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1188",
+      "type": "Code Smell",
+      "summary": "Closures should not have too many lines",
+      "description": "<p>Closures are a very convenient and compact way to inject a behaviour without having to create a dedicated function. But those closures should be used only if the behaviour to be injected can be defined in a few lines of code, otherwise the source code can quickly become unreadable.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2523",
+      "type": "Code Smell",
+      "summary": "Comments should not be nested",
+      "description": "<p>Nested comments are confusing and can lead maintainers to misunderstand which code is active.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n/*\r\n  This is a comment block.\r\n  It may be difficult to figure out that the following line of code is actually commented\r\n\r\n\r\nvariable = function_call();\r\n/* variable contains the result. Noncompliant; <span class=\"code-keyword\">inner</span> comment */\r\n*/\r\n</pre>\n</div></div>\n\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 2.3 - The character sequence /* shall not be used within a comment.</li>\n\t<li>MISRA C++:2008, 2-7-1 - The character sequence /* shall not be used within a C-style comment.</li>\n\t<li>MISRA C:2012, 3.1 - The character sequences /* and // shall not be used within a comment</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/L4IyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC04-CPP.</a> - Use comments consistently and in a readable fashion</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/KgQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC04-C.</a> -  Use comments consistently and in a readable fashion</li>\n</ul>\n",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-4142",
+      "type": "Code Smell",
+      "summary": "Duplicate values should not be passed as arguments",
+      "description": "<p>There are valid cases for passing a variable multiple times into the same method call, but usually doing so is a mistake, and something else was intended for one of the arguments.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> equal(myPoint.x, myPoint.x) {  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-comment\">//...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> equal(myPoint.x, myPoint.y) {\r\n  <span class=\"code-comment\">//...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1908",
+      "type": "Code Smell",
+      "summary": "Files should not be too complex",
+      "description": "<p>Most of the time, a very complex file breaks the Single Responsibility Principle and should be re-factored into several different files.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-104",
+      "type": "Code Smell",
+      "summary": "Files should not have too many lines of code",
+      "description": "<p>A source file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor it into smaller pieces of code which focus on well defined tasks. Those smaller files will not only be easier to understand but also probably easier to test.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-4173",
+      "type": "Code Smell",
+      "summary": "Filter conditions should be used as predicates to \"first\"",
+      "description": "<p>If you only want one instance that matches certain criteria out of a collection, it's far more efficient to grab the first matching item than it is to fully filter the collection for your criteria and then only use a single value.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet one = arr.filter { $0.containsString(<span class=\"code-quote\">\"yo\"</span>) }.first  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet one = arr.first(where: { $0.containsString(<span class=\"code-quote\">\"yo\"</span>) })\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "performance"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1244",
+      "type": "Bug",
+      "summary": "Floating point numbers should not be tested for equality",
+      "description": "<p>Floating point math is imprecise because of the challenges of storing such values in a binary representation. Even worse, floating point math is not associative; push a <tt>Float</tt> or a <tt>Double</tt> through a series of simple mathematical operations and the answer will be different based on the order of those operation because of the rounding that takes place at each step.</p>\n\n<p>Even simple floating point assignments are not simple:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> f: <span class=\"code-object\">Float</span> = 0.1 <span class=\"code-comment\">// 0.1000000014901161193847656\r\n</span><span class=\"code-keyword\">var</span> d: <span class=\"code-object\">Double</span> = 0.1 <span class=\"code-comment\">// 0.1000000000000000055511151</span>\r\n</pre>\n</div></div>\n\n<p>Therefore, the use of the equality (<tt>==</tt>) and inequality (<tt>!=</tt>) operators on <tt>Float</tt> or <tt>Double</tt> values is almost always an error. </p>\n\n<p>This rule checks for the use of direct and indirect equality/inequailty tests on floats and doubles.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> myNumber: <span class=\"code-object\">Float</span> = 0.3 + 0.6\r\n\r\n<span class=\"code-keyword\">if</span> myNumber == 0.9 { <span class=\"code-comment\">// Noncompliant. Because of floating point imprecision, <span class=\"code-keyword\">this</span> will be <span class=\"code-keyword\">false</span>\r\n</span>    <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">if</span> myNumber &lt;= 0.9 &amp;&amp; myNumber &gt;= 0.9 { <span class=\"code-comment\">// Noncompliant indirect equality test\r\n</span>  <span class=\"code-comment\">// ...\r\n</span>}\r\n\r\n<span class=\"code-keyword\">if</span> myNumber &lt; 0.9 || myNumber &gt; 0.9 { <span class=\"code-comment\">// Noncompliant indirect inequality test\r\n</span>  <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 13.3 - Floating-point expressions shall not be tested for equality or inequality.</li>\n\t<li>MISRA C++:2008, 6-2-2 - Floating-point expressions shall not be directly or indirectly tested for equality or inequality</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "misra"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3630",
+      "type": "Code Smell",
+      "summary": "Force casts should not be used",
+      "description": "<p>Because force casting (<tt>as!</tt>) does not perform any type safety validations, it is capable of performing dangerous conversions between unrelated types. When the types are truly unrelated, the cast will cause a system crash.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo as! MyClass  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo as? MyClass\r\n</pre>\n</div></div>\n<h2><a name=\"See\"></a>See</h2>\n\n<ul>\n\t<li>CppCoreGuidelines, Type safety profile - Type.1: Don't use reinterpret_cast.</li>\n</ul>\n",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2968",
+      "type": "Code Smell",
+      "summary": "Function type parameters should come at the end of the parameter list",
+      "description": "<p>Trailing closure syntax can only be used with the last argument to a function call. Place a function type parameter anywhere else in the list and you limit the options of the caller.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc foo(p1: Int-&gt;Int, p2: Int){  <span class=\"code-comment\">// Noncompliant; p1 should come at the end\r\n</span>  print(p1(p2))\r\n}\r\n\r\nfoo({a in a * 2}, 42) <span class=\"code-comment\">// Trailing closure syntax can't be used here</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc foo(p2: Int, p1: Int-&gt;Int){\r\n  print(p1(p2))\r\n}\r\n\r\nfoo(42) {a in a * 2}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "api-design"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1142",
+      "type": "Code Smell",
+      "summary": "Functions should not contain too many return statements",
+      "description": "<p>Having too many return statements in a function increases the function's essential complexity because the flow of execution is broken each time a return statement is encountered. This makes it harder to read and understand the logic of the function.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 3:</p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc myMethod() -&gt; Bool { <span class=\"code-comment\">// Noncompliant as there are 4 <span class=\"code-keyword\">return</span> statements\r\n</span>  <span class=\"code-keyword\">if</span> condition1 {\r\n    <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>\r\n  } <span class=\"code-keyword\">else</span> {\r\n    <span class=\"code-keyword\">if</span> condition2 {\r\n      <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">false</span>\r\n    } <span class=\"code-keyword\">else</span> {\r\n      <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">true</span>\r\n    }\r\n  }\r\n  <span class=\"code-keyword\">return</span> <span class=\"code-keyword\">false</span>\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-881",
+      "type": "Code Smell",
+      "summary": "Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression",
+      "description": "<p>The use of increment and decrement operators in method calls or in combination with other arithmetic operators is not recommended, because:</p>\n<ul>\n\t<li>It can significantly impair the readability of the code.</li>\n\t<li>It introduces additional side effects into a statement, with the potential for undefined behavior.</li>\n\t<li>It is safer to use these operators in isolation from any other arithmetic operators.</li>\n</ul>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nu8a = ++u8b + u8c--\r\nfoo = bar++ / 4\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<p>The following sequence is clearer and therefore safer:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n++u8b  \r\nu8a = u8b + u8c\r\nu8c--\r\nfoo = bar / 4\r\nbar++\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 12.1 - Limited dependence should be placed on the C operator precedence rules in expressions.</li>\n\t<li>MISRA C:2004, 12.13 - The increment (++) and decrement (--) operators should not be mixed with other operators in an expression.</li>\n\t<li>MISRA C+<ins>:2008, 5-2-10 - The increment (</ins>+) and decrement (--) operator should not be mixed with other operators in an expression.</li>\n\t<li>MISRA C:2012, 12.1 - The precedence of operators within expressions should be made explicit</li>\n\t<li>MISRA C:2012, 13.3 - A full expression containing an increment (++) or decrement (--) operator should have no other potential side effects other than that cause by the increment or decrement operator</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/ZwE\" class=\"external-link\" rel=\"nofollow\">CERT, EXP30-C.</a> - Do not depend on the order of evaluation for side effects</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/fYAyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, EXP50-CPP.</a> - Do not depend on the order of evaluation for side effects</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/yQC7AQ\" class=\"external-link\" rel=\"nofollow\">CERT, EXP05-J.</a> - Do not follow a write by a subsequent write or read of the same object within an expression</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-103",
+      "type": "Code Smell",
+      "summary": "Lines should not be too long",
+      "description": "<p>Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2758",
+      "type": "Bug",
+      "summary": "The ternary operator should not return the same value regardless of the condition",
+      "description": "<p>When the second and third operands of a ternary operator are the same, the operator will always return the same value regardless of the condition. Either the operator itself is pointless, or a mistake was made in coding it. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc canVote(person:Person) -&gt; Bool {\r\n  <span class=\"code-keyword\">return</span> person.age &gt; 18 ? <span class=\"code-keyword\">true</span> : <span class=\"code-keyword\">true</span> <span class=\"code-comment\">// Noncompliant; is <span class=\"code-keyword\">this</span> what was intended?\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc canVote(person:Person) -&gt; Bool {\r\n  <span class=\"code-keyword\">return</span> person.age &gt; 18 ? <span class=\"code-keyword\">true</span> : <span class=\"code-keyword\">false</span>\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2260",
+      "type": "Code Smell",
+      "summary": "Track parsing failures",
+      "description": "<p>When the parser fails, it is possible to record the failure as an issue on the file. This way, not only is it possible to track the number of files that do not parse but also to easily find out why they do not parse.</p>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2958",
+      "type": "Code Smell",
+      "summary": "Trailing closure syntax should not be used when multiple parameters are of function type",
+      "description": "<p>Using trailing closure syntax for the last parameter in a call is often the most elegant way to handle it. But if the call requires multiple function-type arguments, the use of a trailing closure can be messy and confusing. In such cases, it's better to pass closure expressions as normal arguments.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> x = complexOperation(\r\n  arg: 2, \r\n  op1: {$0 + 10}\r\n) {$0 * $0}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> x = complexOperation(\r\n  arg: 2, \r\n  op1: {$0 + 10}, \r\n  op2: {$0 * $0}\r\n)\r\n</pre>\n</div></div>\n",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1996",
+      "type": "Code Smell",
+      "summary": "Types should be defined in separate source files",
+      "description": "<p>A file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. This is doubly true for a file with multiple independent classes, extensions, protocols, enumerations or structures. It is strongly advised to define each individual type in separate source file.</p>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>The case when file contains only class and its extensions is ignored.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass MyViewController: UIViewController {\r\n  <span class=\"code-comment\">// class stuff here\r\n</span>}\r\n\r\nextension MyViewController: UITableViewDataSource {\r\n  <span class=\"code-comment\">// table view data source methods\r\n</span>}\r\n\r\nextension MyViewController: UIScrollViewDelegate {\r\n  <span class=\"code-comment\">// scroll view delegate methods\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2962",
+      "type": "Code Smell",
+      "summary": "\"get\" should be omitted in read-only computed properties and subscripts",
+      "description": "<p>For read-only computed properties and subscript declarations, the <tt>get</tt> keyword and its braces are optional, and should be omitted for the sake of brevity.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nstruct Magic {\r\n  <span class=\"code-keyword\">var</span> number:Int {\r\n    get {  <span class=\"code-comment\">// Noncompliant\r\n</span>      <span class=\"code-keyword\">return</span> 42\r\n    }\r\n  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nstruct Magic {\r\n  <span class=\"code-keyword\">var</span> number:Int {\r\n    <span class=\"code-keyword\">return</span> 42\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2957",
+      "type": "Code Smell",
+      "summary": "\"return\" should be omitted from single-expression closures",
+      "description": "<p>When a closure contains only a <tt>return</tt> statement, the <tt>return</tt> itself can be omitted.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nsomeList.sort { a, b in\r\n  <span class=\"code-keyword\">return</span> a &gt; b\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nsomeList.sort { a, b in a &gt; b }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2963",
+      "type": "Code Smell",
+      "summary": "\"self\" should only be used when required",
+      "description": "<p>The use of <tt>self</tt> is optional except when in closure expressions, and when it's needed to distinguish between property names and arguments. For the sake of brevity, <tt>self</tt> should be omitted when it's not strictly required.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass Car {\r\n  <span class=\"code-keyword\">var</span> color: Int\r\n\r\n  init(color: Int) {\r\n    self.color = color\r\n  }\r\n\r\n  func fade() {\r\n    self.color--  <span class=\"code-comment\">// Noncompliant\r\n</span>  }\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass Car {\r\n  <span class=\"code-keyword\">var</span> color: Int\r\n\r\n  init(color: Int) {\r\n    self.color = color\r\n  }\r\n\r\n  func fade() {\r\n    color--\r\n  }\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1642",
+      "type": "Code Smell",
+      "summary": "\"struct\" names should comply with a naming convention",
+      "description": "<p>Sharing some naming conventions enables teams to collaborate more efficiently. This rule checks that all <tt>struct</tt> names match a provided regular expression.</p>\n\n<p>Using the default regular expression:  \"^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$\"</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nstruct my_struct {\r\n    <span class=\"code-keyword\">var</span> one : Int\r\n    <span class=\"code-keyword\">var</span> two : Int\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nstruct MyStruct {\r\n    <span class=\"code-keyword\">var</span> one : Int\r\n    <span class=\"code-keyword\">var</span> two : Int\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1109",
+      "type": "Code Smell",
+      "summary": "A close curly brace should be located at the beginning of a line",
+      "description": "<p>Shared coding conventions make it possible for a team to efficiently collaborate. This rule makes it mandatory to place a close curly brace at the beginning of a line.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition {\r\n  doSomething()} \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition {\r\n  doSomething()\r\n} \r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>When blocks are inlined (open and close curly braces on the same line), no issue is triggered.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition {doSomething()} \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2950",
+      "type": "Vulnerability",
+      "summary": "Access control should be specified for top-level definitions",
+      "description": "<p>The access level defaults to <tt>internal</tt> if left unspecified. Since that doesn't make sense for most top-level declarations, access levels should always be specified explicitly, even when <tt>internal</tt> is what's intended.</p>\n\n<p>This rule raises an issue when the access level is not specified on any top-level declaration.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nclass Foo {  <span class=\"code-comment\">// Noncompliant\r\n</span>  <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">public</span> class Foo {\r\n  <span class=\"code-comment\">// ...\r\n</span>}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1105",
+      "type": "Code Smell",
+      "summary": "An open curly brace should be located at the end of a line",
+      "description": "<p>Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when an open curly brace is not placed at the end of a line of code.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition\r\n{\r\n  doSomething()\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition {\r\n  doSomething()\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Closure and inlined blocks (left and right curly braces on the same line) are ignored by this rule. </p>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> condition {doSomething()} <span class=\"code-comment\">// Compliant\r\n</span>reversed = sorted(\r\n    names, \r\n    { (s1: <span class=\"code-object\">String</span>, s2: <span class=\"code-object\">String</span>) -&gt; Bool in  <span class=\"code-comment\">// Compliant\r\n</span>        <span class=\"code-keyword\">return</span> s1 &gt; s2\r\n    })\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-139",
+      "type": "Code Smell",
+      "summary": "Comments should not be located at the end of lines of code",
+      "description": "<p>This rule verifies that single-line comments are not located at the ends of lines of code. The main idea behind this rule is that in order to be really readable, trailing comments would have to be properly written and formatted (correct alignment, no interference with the visual structure of the code, not too long to be visible) but most often, automatic code formatters would not handle this correctly: the code would end up less readable. Comments are far better placed on the previous empty line of code, where they will always be visible and properly formatted.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> a1 = b + c <span class=\"code-comment\">// This is a trailing comment that can be very very <span class=\"code-object\">long</span></span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-comment\">// This very <span class=\"code-object\">long</span> comment is better placed before the line of code\r\n</span><span class=\"code-keyword\">var</span> a2 = b + c\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2343",
+      "type": "Code Smell",
+      "summary": "Enumeration members should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all enumeration member names match a provided regular expression.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With default provided regular expression: <tt>^<span class=\"error\">&#91;a-z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*$</tt></p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">enum</span> SomeEnumeration {\r\n    <span class=\"code-keyword\">case</span> SomeMember  <span class=\"code-comment\">// Non-Compliant\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">enum</span> SomeEnumeration {\r\n    <span class=\"code-keyword\">case</span> someMember\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2342",
+      "type": "Code Smell",
+      "summary": "Enumeration types should comply with a naming convention",
+      "description": "<p>Shared naming conventions allow teams to collaborate efficiently. This rule checks that all <tt>enum</tt> names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With default provided regular expression: <tt>^<span class=\"error\">&#91;A-Z&#93;</span><span class=\"error\">&#91;a-zA-Z0-9&#93;</span>*</tt></p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">enum</span> someEnumeration { <span class=\"code-comment\">// Non-Compliant\r\n</span>    <span class=\"code-keyword\">case</span> Bar\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">enum</span> SomeEnumeration {\r\n    <span class=\"code-keyword\">case</span> Bar\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-113",
+      "type": "Code Smell",
+      "summary": "Files should contain an empty newline at the end",
+      "description": "<p>Some tools work better when files end with an empty line.<br/>\nThis rule simply generates an issue if it is missing.</p>\n\n<p>For example, a Git diff looks like this if the empty line is missing at the end of the file:</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n+class Test {\r\n+}\r\n\\ No newline at end of file\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2309",
+      "type": "Code Smell",
+      "summary": "Files should not be empty",
+      "description": "<p>Files with no lines of code clutter a project and should be removed.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-comment\">//<span class=\"code-keyword\">import</span> Foundation\r\n</span><span class=\"code-comment\">//\r\n</span><span class=\"code-comment\">//<span class=\"code-keyword\">public</span> class Bar {}</span>\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "unused"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-3400",
+      "type": "Code Smell",
+      "summary": "Functions should not return constants",
+      "description": "<p>There's no point in forcing the overhead of a function or method call for a function that always returns the same constant value. Even worse, the fact that a function call must be made will likely mislead developers who call the method thinking that something more is done. Declare a constant instead. </p>\n\n<p>This rule raises an issue on functions that contain only one  statement: the <tt>return</tt> of a constant value. </p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc getBestNumber() -&gt; Int {\r\n  <span class=\"code-keyword\">return</span> 12  <span class=\"code-comment\">// Noncompliant\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet bestNumber = 12;\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Methods which are members of a class having a type inheritance clause are ignored.</p>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1131",
+      "type": "Code Smell",
+      "summary": "Lines should not end with trailing whitespaces",
+      "description": "<p>Trailing whitespaces are simply useless and should not stay in code. They may generate noise when comparing different versions of the same file.</p>\n\n<p>If you encounter issues from this rule, this probably means that you are not using an automated code formatter - which you should if you have the opportunity to do so. </p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-comment\">// Noncompliant; there are extra spaces after '<span class=\"code-object\">String</span>'\r\n</span><span class=\"code-keyword\">var</span> str:<span class=\"code-object\">String</span>     \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-3086",
+      "type": "Code Smell",
+      "summary": "Operator functions should call existing functions",
+      "description": "<p>Making an operator a convenience wrapper around an existing function or method provides additional flexibility to users in how the functionality is called and in what options are passed in.</p>\n\n<p>This rule raises an issue when the function that defines the operation of a operator consists of something other than a single function call.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ninfix <span class=\"code-keyword\">operator</span> &gt;&lt; { associativity right precedence 90 }\r\nfunc &gt;&lt; (left: <span class=\"code-object\">Double</span>, right: <span class=\"code-object\">Double</span>) -&gt; <span class=\"code-object\">Double</span> {  <span class=\"code-comment\">// Noncompliant\r\n</span>  let leftD = (left % 1) * 100\r\n  let rightD = (right % 1) * 100\r\n  let leftW = (left - leftD) / 100\r\n  let rightW = (right - rightD) / 100\r\n  <span class=\"code-keyword\">return</span> (leftD + leftW) * (rightD + rightW)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\ninfix <span class=\"code-keyword\">operator</span> &gt;&lt; { associativity right precedence 90 }\r\nfunc &gt;&lt; (left: <span class=\"code-object\">Double</span>, right: <span class=\"code-object\">Double</span>) -&gt; <span class=\"code-object\">Double</span> { \r\n  <span class=\"code-keyword\">return</span> fubar(left, right)\r\n}\r\n\r\nfunc fubar(left: <span class=\"code-object\">Double</span>, right: <span class=\"code-object\">Double</span>) -&gt; <span class=\"code-object\">Double</span> {\r\n  let leftD = (left % 1) * 100\r\n  let rightD = (right % 1) * 100\r\n  let leftW = (left - leftD) / 100\r\n  let rightW = (right - rightD) / 100\r\n  <span class=\"code-keyword\">return</span> (leftD + leftW) * (rightD + rightW)\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Operators that end with <tt>=</tt> are expected to update their left-hand operands, and are therefore ignored.</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc **= (inout p1:Int, p2:Int) { \r\n    p1 = p1 ** p2\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "api-design",
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2966",
+      "type": "Bug",
+      "summary": "Optionals should not be force-unwrapped",
+      "description": "<p>The point of declaring an optional variable is to make explicit the fact that it might contain no valid value, i.e. <tt>nil</tt>. Force-unwrapping an optional will lead to a runtime error if the optional does contain <tt>nil</tt>. Even if the value is tested first, it's still considered a bad practice to use force-unwrapping. Instead, optional binding or optional chaining should be used.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> greeting: <span class=\"code-object\">String</span>?\r\n\r\n<span class=\"code-comment\">// ...\r\n</span>println( \\(greeting!))  <span class=\"code-comment\">// Noncompliant; could cause a runtime error\r\n</span>\r\n<span class=\"code-keyword\">if</span> greeting != nil {\r\n  println( \\(greeting!))  <span class=\"code-comment\">// Noncompliant; better but still not great\r\n</span>}\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> greeting: <span class=\"code-object\">String</span>?\r\n\r\n<span class=\"code-comment\">// ...\r\n</span><span class=\"code-keyword\">if</span> let howdy = greeting {\r\n  println(howdy)\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "unpredictable"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-4233",
+      "type": "Code Smell",
+      "summary": "Parentheses should be omitted when trailing closure is the only argument",
+      "description": "<p>If a closure expression is provided as the function or method’s only argument and you provide that expression as a trailing closure, you do not need to write a pair of parentheses <tt>()</tt> after the function or method’s name when you call the function. This makes the code somewhat easier to read.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nreversedNames = names.sorted() { $0 &gt; $1 } <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\neversedNames = names.sorted { $0 &gt; $1 }\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-3424",
+      "type": "Code Smell",
+      "summary": "Skipped unit tests should be either removed or fixed",
+      "description": "<p>Skipped unit tests are considered dead code. Either they should be activated again (and updated) or they should be removed.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1438",
+      "type": "Code Smell",
+      "summary": "Statements should end with semicolons",
+      "description": "<p>In Swift, the semicolon (<tt>;</tt>) is optional as a statement separator, but omitting semicolons can be confusing.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> x = 1\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">var</span> x = 1;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2959",
+      "type": "Code Smell",
+      "summary": "Statements should not end with semicolons",
+      "description": "<p>The semicolon (<tt>;</tt>) is optional as a statement separator except in traditional <tt>for</tt> loops and when several statements are combined on one line (which is a bad practice). For cleaner code, semicolons should be omitted.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-object\">int</span> a;  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-object\">int</span> a\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-105",
+      "type": "Code Smell",
+      "summary": "Tabulation characters should not be used",
+      "description": "<p>Developers should not need to configure the tab width of their text editors in order to be able to read source code.<br/>\nSo the use of the tabulation character must be banned.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1484",
+      "type": "Code Smell",
+      "summary": "Track instances of below-threshold comment line density",
+      "description": "<p>An issue is created on a file as soon as the density of comment lines on this file is less than the required threshold. The number of comment lines to be written in order to reach the required threshold is provided by each issue message.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2969",
+      "type": "Code Smell",
+      "summary": "Trailing closure syntax should be used for the last argument",
+      "description": "<p>The use of trailing closure syntax can make code clearer, but it should only be used when the call only requires a single function type parameter.</p>\n\n<p>This rule raises an issue when trailing closure syntax is not used for the last argument in a call that requires only a single function type parameter.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nUIView.animateWithDuration(1.0, animations: {  <span class=\"code-comment\">// Noncompliant\r\n</span>  self.myView.alpha = 0\r\n})\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nUIView.animateWithDuration(1.0) {\r\n  self.myView.alpha = 0\r\n}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "clumsy"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-4188",
+      "type": "Code Smell",
+      "summary": "Tuples should not be too large",
+      "description": "<p>An unordered pair is easy to handle, but the longer an unordered set gets, the harder it is to deal with.</p>\n\n<p>This rule raises an issue when a tuple of more than the allowed number of elements is returned.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<p>With the default threshold of 2</p>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc doTheThing() -&gt; (Int, Int, Int) {}  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfunc doTheThing() -&gt; MyIntStruct {}\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "confusing"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2148",
+      "type": "Code Smell",
+      "summary": "Underscores should be used to make large numbers readable",
+      "description": "<p>In Swift it is possible to add underscores ('_') to numeric literals to enhance readability. The addition of underscores in this manner has no semantic meaning, but makes it easier for maintainers to understand the code.</p>\n\n<p>The number of digits to the left of a decimal point needed to trigger this rule varies by base.</p>\n<table class='confluenceTable'><tbody>\n<tr>\n<th class='confluenceTh'>Base</th>\n<th class='confluenceTh'> Minimum digits</th>\n</tr>\n<tr>\n<td class='confluenceTd'>binary</td>\n<td class='confluenceTd'> 9 </td>\n</tr>\n<tr>\n<td class='confluenceTd'>decimal</td>\n<td class='confluenceTd'> 6 </td>\n</tr>\n<tr>\n<td class='confluenceTd'>octal</td>\n<td class='confluenceTd'> 9 </td>\n</tr>\n<tr>\n<td class='confluenceTd'>hexadecimal</td>\n<td class='confluenceTd'> 9 </td>\n</tr>\n</tbody></table>\n\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet i = 10000000  <span class=\"code-comment\">// Noncompliant; is <span class=\"code-keyword\">this</span> 10 million or 100 million?\r\n</span>let j = 0b01101001010011011110010101011110  <span class=\"code-comment\">// Noncompliant\r\n</span>let l = 0x7fffffffffffffff  <span class=\"code-comment\">// Noncompliant</span>\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nlet i = 10_000_000\r\nlet j = 0b01101001_01001101_11100101_01011110\r\nlet l = 0x7fff_ffff_ffff_ffff\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    }
+  ]
+}

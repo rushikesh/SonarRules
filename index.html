@@ -1,0 +1,155 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Rushikesh: Sonar Rules Explorer</title>
+	<link rel="stylesheet" href="themes/conv.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.2.min.css" />
+	<script src="themes/jquery-1.10.2.min.js"></script>
+	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
+	<script src="themes/conversions.js"></script>
+	<link rel="stylesheet" href="themes/css/animation.css">
+	<style type="text/css">
+		.ui-body-a {
+			background-color: #22282f;
+		}
+
+		.ui-panel-inner {
+			position: absolute;
+			top: 1px;
+			left: 0;
+			right: 0;
+			bottom: 0px;
+			overflow: auto;
+			-webkit-overflow-scrolling: touch;
+			background-color: #22282f;
+			color: antiquewhite;
+		}
+
+		img.center {
+			display: block;
+			margin: 0 auto;
+		}
+	</style>
+	<script type="text/javascript">
+		var titleTxt = "Sonar Rules Explorer";
+		$(document).ready(function () {
+			$("#headerTitle").html(titleTxt);
+			$("#content").html("<img class='center' src='img/Sonar-qube.png'/>");
+
+			$.getJSON('js/languages.json', function (data) {
+				$.each(data, function (i) {
+					var li = document.createElement('li');
+					var ele = document.createElement('a');
+					ele.href = "#";
+					ele.id = data[i].key;
+					ele.innerHTML = data[i].name + "<span class='ui-li-count'>" + data[i].types.Bug + "</span>";
+					$(li).append(ele);
+					$("#qlist").append(li);
+				});
+				$('#qlist').listview().listview('refresh');
+				$('#nav-panel').click();
+			});
+
+
+			$('#qlist').on('click', 'a', function () {
+				$("#headerTitle").html(titleTxt + ' For ' + $(this).text().replace(/\d+/, ''));
+				var fileName = $(this).attr('id');
+				$.getJSON('js/' + fileName + '.json', function (data) {
+					content = data;
+					updateContent();
+				});
+				$("#nav-panel").panel("close");
+			});
+
+			$('#content').on('click', '#langRule a', function () {
+				console.log("rushi2");
+				var id = $(this).attr('id');
+				console.log(id);
+				$("#content2").html(content.rules[id].summary + '<br/>' + content.rules[id].description);
+				$.mobile.navigate("#imgPage", {
+					transition: "slide"
+				});
+			});
+
+
+		});
+
+		function updateContent() {
+			var data = content.rules;
+			console.log(data);
+			var ul = document.createElement('ol');
+			ul.id = "langRule";
+			ul["data-role"] = "listview";
+			$.each(data, function (i) {
+				var li = document.createElement('li');
+				var ele = document.createElement('a');
+				ele.href = "#";
+				ele.id = i;
+				ele.innerHTML = data[i].summary;
+				$(li).append(ele);
+				$(ul).append(li);
+			});
+			$("#content").html(ul);
+			$('#langRule').listview().listview('refresh');
+			//$("#factTitle").html(arrNames[i] + " Fact #" + (cnt + 1));
+		}
+	</script>
+</head>
+
+<body>
+	<div data-role="page" data-theme="a" id="page">
+		<div data-role="header" data-position="fixed">
+			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+			<a href="#popupBasic" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right"
+			  data-iconpos="notext">Info</a>
+			<h1 id="headerTitle"></h1>
+		</div>
+		<div data-role="content" data-theme="a" id="content">
+
+		</div>
+		<div data-role="popup" id="popupBasic" data-overlay-theme="a" class="ui-content">
+			<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			<p>Sonar Rules Explorer App.
+			</p>
+			<p>A handy app to keep your coding knowledge fresh and in compliance with best practices.
+			</p>
+			<p>Created By:
+				<a href="http://www.rushis.com">Rushi</a>
+			</p>
+		</div>
+		<div data-role="panel" data-position="left" data-position-fixed="true" data-display="overlay" id="nav-panel">
+			<h2>Sonar</h2>
+			<h4>Rules Explorer</h4>
+			<ul id="qlist" data-role="listview" data-count-theme=b>
+
+			</ul>
+		</div>
+	</div>
+
+	<!-- Start of second page -->
+	<div data-role="page" id="imgPage" class="cstmPage">
+		<div data-role="header" data-position="fixed">
+			<a href="#" data-rel="back" data-icon="arrow-l" data-role="button" data-theme="a" data-transition="slideUp" data-iconpos="notext">Back</a>
+			<a href="#popupBasic1" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon2" data-icon="info"
+			  class="ui-btn-right" data-iconpos="notext">Info</a>
+			<h1 id="imgTitle"></h1>
+		</div>
+		<div data-role="popup" id="popupBasic1" data-overlay-theme="a" class="ui-content">
+			<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			<p>Sonar Rules Explorer App.
+			</p>
+			<p>A handy app to keep your coding knowledge fresh and in compliance with best practices.
+			</p>
+			<p>Created By:
+				<a href="http://www.rushis.com">Rushi</a>
+			</p>
+		</div>
+		<div data-role="content" id="content2">
+		</div>
+	</div>
+</body>
+
+</html>

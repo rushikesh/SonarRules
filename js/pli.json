@@ -1,0 +1,400 @@
+{
+  "types": {
+    "Code Smell": 2,
+    "Code Smell": 23,
+    "Bug": 1
+  },
+  "standards": [
+    {
+      "name": "CWE",
+      "count": 2
+    },
+    {
+      "name": "MISRA",
+      "count": 3
+    },
+    {
+      "name": "CERT",
+      "count": 4
+    }
+  ],
+  "tags": [
+    {
+      "name": "convention",
+      "count": 7
+    },
+    {
+      "name": "cwe",
+      "count": 2
+    },
+    {
+      "name": "tests",
+      "count": 1
+    },
+    {
+      "name": "performance",
+      "count": 1
+    },
+    {
+      "name": "brain-overload",
+      "count": 3
+    },
+    {
+      "name": "misra",
+      "count": 3
+    },
+    {
+      "name": "bad-practice",
+      "count": 3
+    },
+    {
+      "name": "style",
+      "count": 1
+    },
+    {
+      "name": "cert",
+      "count": 4
+    },
+    {
+      "name": "suspicious",
+      "count": 2
+    },
+    {
+      "name": "sql",
+      "count": 1
+    },
+    {
+      "name": "pitfall",
+      "count": 3
+    }
+  ],
+  "rules": [
+    {
+      "ruleKey": "RSPEC-131",
+      "type": "Code Smell",
+      "summary": "\"SELECT\" statements should end with \"OTHERWISE\" statements",
+      "description": "<p>If every <tt>WHEN</tt> test of a <tt>SELECT</tt> statement fails, an <tt>ERROR</tt> condition is raised if the <tt>OTHERWISE</tt> statement is omitted. This can lead to the unexpected termination of the program.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (42);\r\n\r\n  select (i); /* Non-Compliant - SELECT without OTHERWISE statement */\r\n    when (0) put list ('i = 0');\r\n    when (1) put list ('i = 1');\r\n  end;\r\n\r\n  put list ('Continuation'); /* This statement will not be executed */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (42);\r\n\r\n  select (i); /* Compliant */\r\n    when (0) put list ('i = 0');\r\n    when (1) put list ('i = 1');\r\n    otherwise; /* No operation */\r\n  end;\r\n\r\n  put list ('Continuation'); /* This statement will be executed */\r\nend;\r\n</pre>\n</div></div><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 15.0 - The MISRA C <em>switch</em> syntax shall be used.</li>\n\t<li>MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause</li>\n\t<li>MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.</li>\n\t<li>MISRA C++:2008, 6-4-6 - The final clause of a switch statement shall be the default-clause</li>\n\t<li>MISRA C:2012, 16.1 - All switch statements shall be well-formed</li>\n\t<li>MISRA C:2012, 16.4 - Every <em>switch</em> statement shall have a <em>default</em> label</li>\n\t<li>MISRA C:2012, 16.5 - A <em>default</em> label shall appear as either the first or the last <em>switch label</em> of a <em>switch</em> statement</li>\n\t<li><a href=\"http://cwe.mitre.org/data/definitions/478.html\" class=\"external-link\" rel=\"nofollow\">MITRE, CWE-478</a> - Missing Default Case in Switch Statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/YgE\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-C.</a> - Strive for logical completeness</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/JoIyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC01-CPP.</a> - Strive for logical completeness</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "CWE",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1669",
+      "type": "Code Smell",
+      "summary": "Keywords should not be used as variable names",
+      "description": "<p>PL/I, unlike many other programming languages, does not reserve any word's usage.<br/>\nThis implies that it is syntaxically valid to use the keyword <tt>IF</tt> as variable names for instance.<br/>\nBut doing so results in confusing code which is hard to read, especially in editors without proper PL/I syntax highlighting support.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare <span class=\"code-keyword\">if</span> fixed decimal init (42); /* Non-Compliant */\r\n\r\n  <span class=\"code-keyword\">if</span> <span class=\"code-keyword\">if</span> = 42 then <span class=\"code-keyword\">do</span>; /* Cconfusing */\r\n    put list ('<span class=\"code-keyword\">if</span> = 42');\r\n  end;\r\n\r\n  go to <span class=\"code-keyword\">goto</span>; /* Confusing */\r\n\r\n  <span class=\"code-keyword\">goto</span>: /* Non-Compliant */\r\n  ;\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1477",
+      "type": "Code Smell",
+      "summary": "Source files should not have any duplicated blocks",
+      "description": "<p>An issue is created on a file as soon as there is at least one block of duplicated code on this file.</p>",
+      "standards": [],
+      "tags": [
+        "pitfall"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-2313",
+      "type": "Code Smell",
+      "summary": "\"END;\" statements should have the same indentation level as their matching \"PROCEDURE\", \"SELECT\", and \"DO\" statements",
+      "description": "<p>For better readability, <tt>END</tt> statements must have the same indentation level as their matching opening <tt>PROCEDURE</tt>, <tt>SELECT</tt>, and <tt>DO</tt> statements.</p>\n\n<p>This rule does not verify the alignment of the compound statements <tt>DO ... END;</tt> (type 1) and <tt>BEGIN ... END;</tt>. They are mostly used together with the <tt>IF</tt> and <tt>ON</tt> statements and are subject to different indentation rules.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (0);\r\n\r\n  <span class=\"code-keyword\">do</span> i = 0 to 9;\r\n    <span class=\"code-keyword\">if</span> i = 0 then /* The <span class=\"code-keyword\">do</span> was forgotten here */\r\n      put list ('Initialization...');\r\n      put list ('i = 0');\r\n      end; /* Non-Compliant - should be aligned with the DO statement */\r\n  end; /* Non-Compliant - should be aligned with the PROCEDURE statement */\r\n\r\n/* The procedure's end seems to be missing */\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (0);\r\n\r\n  <span class=\"code-keyword\">do</span> i = 0 to 9;\r\n    <span class=\"code-keyword\">if</span> i = 0 then <span class=\"code-keyword\">do</span>;\r\n      put list ('Initialization...');\r\n      put list ('i = 0');\r\n    end; /* This end's alignment is not verified by <span class=\"code-keyword\">this</span> rule */\r\n  end; /* Compliant */\r\nend; /* Compliant */\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-907",
+      "type": "Code Smell",
+      "summary": "\"GO TO\" statements should not be used",
+      "description": "<p><tt>goto</tt> is an unstructured control flow statement. It makes code less readable and maintainable. Structured control flow statements such as <tt>if</tt>, <tt>for</tt>, <tt>while</tt>, <tt>continue</tt> or <tt>break</tt> should be used instead.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (0);\r\n\r\nloopLabel:\r\n  put list (i);\r\n  i = i + 1;\r\n  <span class=\"code-keyword\">if</span> i &lt; 10 then go to loopLabel;  /* Noncompliant - usage of the GO TO statement */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (0);\r\n\r\n\r\n  <span class=\"code-keyword\">do</span> i = 0 to 9;   /* Compliant */\r\n    put list (i);\r\n  end;\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"Exceptions\"></a>Exceptions</h2>\n<p>Exclusions format parameter can be used to allow specific <tt>GO TO</tt> targets which match the given regular expression.</p><h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.4 - The goto statement shall not be used.</li>\n\t<li>MISRA C:2012, 15.1 - The goto statement should not be used</li>\n</ul>\n",
+      "standards": [
+        "MISRA"
+      ],
+      "tags": [
+        "brain-overload",
+        "misra"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-4208",
+      "type": "Code Smell",
+      "summary": "\"INONLY\" or \"NONASSIGNABLE\" parameters should not be written to",
+      "description": "<p>Parameters that are declared as \"INONLY\" or \"NONASSIGNABLE\" are flagged as non-assignable by the compiler.</p>\n\n<p>This rule raises an issue when a non-assignable parameter is written to.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nsum: PROC(a, b);\r\n   dcl a fixed dec(15,2) NONASSIGNABLE;\r\n   dcl b fixed dec(15,2) NONASSIGNABLE;\r\n   a = a + b; /* Noncompliant */\r\n   <span class=\"code-keyword\">return</span> (a);\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1499",
+      "type": "Code Smell",
+      "summary": "Columns to be read with a \"SELECT\" statement should be clearly defined",
+      "description": "<p><tt>SELECT *</tt> should be avoided because it releases control of the returned columns and could therefore lead to errors and potentially to performance issues.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nSELECT * \r\n       FROM persons \r\n       INTO newyorkers \r\n       WHERE city = 'NEW YORK'. \r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nSELECT firstname, lastname \r\n       FROM persons \r\n       INTO newyorkers\r\n       WHERE city = 'NEW YORK'. \r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "performance",
+        "sql"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1619",
+      "type": "Code Smell",
+      "summary": "FIXED DECIMAL declarations should be defined with odd length",
+      "description": "<p>The storage of a <tt>FIXED DECIMAL</tt> is most efficient when you use an odd number of digits, so that the leftmost byte is fully used.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n declare total fixed dec(10);\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n declare total fixed dec(9);\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-3982",
+      "type": "Bug",
+      "summary": "Parentheses should be used in factored variable declarations",
+      "description": "<p>When multiple variables are <tt>DECLARE</tt>d in a single statement, parentheses must be used around the variable list to ensure the variable attributes in the statement are applied to all the variables in the declaration. Without parentheses, the attributes are applied only to the last variable in the list.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nDECLARE X,Y FIXED BIN(15);\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nDECLARE (X,Y) FIXED BIN(15);\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1542",
+      "type": "Code Smell",
+      "summary": "Procedure names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate efficiently. This rule checks that all function names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo#: proc options(main); /* Non-Compliant */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);  /* Compliant */\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-107",
+      "type": "Code Smell",
+      "summary": "Procedures should not have too many parameters",
+      "description": "<p>Procedures with excessive parameters are difficult to use, as one needs to figure out what each parameter is.<br/>\nIn many cases, the procedure can either be split into several smaller ones, or a better data structure can be found.<br/>\nThis rule verifies that each procedure has at most the given number of parameters.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare myArray (9) fixed decimal init (1, 2, 3, 4, 5, 6, 7, 8, 9);\r\n\r\n  put list (mySum(myArray(1), myArray(2), myArray(3), myArray(4), myArray(5), myArray(6), myArray(7), myArray(8), myArray(9)));\r\nend;\r\n\r\nmySum: proc (a1, a2, a3, a4, a5, a6, a7, a8, a9) returns (fixed decimal); /* Non-Compliant - too many parameters */\r\n  declare (a1, a2, a3, a4, a5, a6, a7, a8, a9) fixed decimal;\r\n\r\n  <span class=\"code-keyword\">return</span> (a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9);\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare myArray (9) fixed decimal init (1, 2, 3, 4, 5, 6, 7, 8, 9);\r\n\r\n  put list (sum(myArray));  /* Compliant - uses the built-in sum() function which works on an array */\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1545",
+      "type": "Code Smell",
+      "summary": "Variable names should comply with a naming convention",
+      "description": "<p>Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all variable names match a provided regular expression.</p><h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare bar# fixed decimal; /* Noncompliant */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare bar fixed decimal;  /* Compliant */\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1516",
+      "type": "Code Smell",
+      "summary": "String constants should not span multiple lines",
+      "description": "<p>String literals written on multiple lines should not be used, especially since the new line characters are <b>not</b> part of the string anyway. The concatenation operator <tt>||</tt> should be used instead. Moreover, if trailing comments are present, they can be automatically removed by text editors and lead to unexpected results.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  put list ('Hello,      /* Noncompliant; trailing space is not readable and may be stripped */\r\nworld');\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  put list ('Hello, ' ||\r\n'world');\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-2311",
+      "type": "Code Smell",
+      "summary": "The \"DCL\" abbreviation should not be used",
+      "description": "<p>For better readability, it is preferable to use <tt>DECLARE</tt> instead of the unpronounceable <tt>DCL</tt> abbreviation.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  dcl i fixed decimal init (0); /* Noncompliant */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init (0); /* Compliant */\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": true,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1147",
+      "type": "Code Smell",
+      "summary": "\"STOP\" statements should not be called",
+      "description": "<p><tt>STOP</tt> terminates the current application. Since it does not carry any information as to what went wrong it is not a good way to handle errors and will most likely confuse the user, therefore it is highly recommended never to use the <tt>STOP</tt> statement.</p>\n",
+      "standards": [
+        "CERT",
+        "CWE"
+      ],
+      "tags": [
+        "cert",
+        "cwe",
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-1606",
+      "type": "Code Smell",
+      "summary": "Failed unit tests should be fixed",
+      "description": "<p>Test failures or errors generally indicate that regressions have been introduced. Those tests should be handled as soon as possible to reduce the cost to fix the corresponding regressions.</p>",
+      "standards": [],
+      "tags": [
+        "tests"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Blocker"
+    },
+    {
+      "ruleKey": "RSPEC-134",
+      "type": "Code Smell",
+      "summary": "\"if\" statements should not be nested too deeply",
+      "description": "<p>Nested <tt>if</tt> statements are key ingredients for making what's known as \"Spaghetti code\".</p>\n\n<p>Such code is hard to read, refactor and therefore maintain.</p>",
+      "standards": [],
+      "tags": [
+        "brain-overload"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1482",
+      "type": "Code Smell",
+      "summary": "Branches should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the branch coverage on this file is less than the required threshold. It gives the number of branches to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-121",
+      "type": "Code Smell",
+      "summary": "Control structures should use curly braces",
+      "description": "<p>While not technically incorrect, the omission of curly braces can be misleading, and may lead to the introduction of errors during maintenance.</p>\n\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (condition)  <span class=\"code-comment\">// Noncompliant\r\n</span>  executeSomething();\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\n<span class=\"code-keyword\">if</span> (condition) {\r\n  executeSomething();\r\n}\r\n</pre>\n</div></div>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li>MISRA C:2004, 14.8 - The statement forming the body of a switch, while, do ... while or for statement shall be a compound statement</li>\n\t<li>MISRA C:2004, 14.9 - An if (expression) construct shall be followed by a compound statement. The else keyword shall be followed by either a compound statement, or another if statement</li>\n\t<li>MISRA C++:2008, 6-3-1 - The statement forming the body of a switch, while, do ... while or for statement shall be a compound statement</li>\n\t<li>MISRA C++:2008, 6-4-1 - An if (condition) construct shall be followed by a compound statement. The else keyword shall be followed by either a compound statement, or another if statement</li>\n\t<li>MISRA C:2012, 15.6 - The body of an iteration-statement or a selection-statement shall be a compound-statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/1QGMAg\" class=\"external-link\" rel=\"nofollow\">CERT, EXP19-C.</a> - Use braces for the body of an if, for, or while statement</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/3wHEAw\" class=\"external-link\" rel=\"nofollow\">CERT, EXP52-J.</a> - Use braces for the body of an if, for, or while statement</li>\n</ul>\n",
+      "standards": [
+        "CERT",
+        "MISRA"
+      ],
+      "tags": [
+        "cert",
+        "misra",
+        "pitfall"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-1483",
+      "type": "Code Smell",
+      "summary": "Lines should have sufficient coverage by unit tests",
+      "description": "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. It gives the number of lines to be covered in order to reach the required threshold.</p>",
+      "standards": [],
+      "tags": [
+        "bad-practice"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Critical"
+    },
+    {
+      "ruleKey": "RSPEC-103",
+      "type": "Code Smell",
+      "summary": "Lines should not be too long",
+      "description": "<p>Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-122",
+      "type": "Code Smell",
+      "summary": "Statements should be on separate lines",
+      "description": "<p>For better readability, do not put more than one statement on a single line.</p>\n<h2><a name=\"NoncompliantCodeExample\"></a>Noncompliant Code Example</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  declare i fixed decimal init(42); put list (i); /* Noncompliant - there are two statements */\r\nend;\r\n</pre>\n</div></div>\n\n<h2><a name=\"CompliantSolution\"></a>Compliant Solution</h2>\n<div class=\"code panel\" style=\"border-width: 1px;\"><div class=\"codeContent panelContent\">\n<pre class=\"code-java\">\r\nfoo: proc options(main);\r\n  /* Compliant */\r\n  declare i fixed decimal init(42);\r\n  put list (i);\r\nend;\r\n</pre>\n</div></div>",
+      "standards": [],
+      "tags": [
+        "style"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-2260",
+      "type": "Code Smell",
+      "summary": "Track parsing failures",
+      "description": "<p>When the PL/I parser fails, it is possible to record the failure as a violation on the file.<br/>\nThis way, not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.</p>",
+      "standards": [],
+      "tags": [
+        "suspicious"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Major"
+    },
+    {
+      "ruleKey": "RSPEC-1578",
+      "type": "Code Smell",
+      "summary": "File names should comply with a naming convention",
+      "description": "<p>Shared coding conventions allow teams to collaborate effectively. For that reason, file names should conform to a defined standard. This rule raises an issue when the names of analyzed files don't match the provided regular expression.</p>\n\n<h2><a name=\"See\"></a>See</h2>\n<ul>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/P4IyAQ\" class=\"external-link\" rel=\"nofollow\">CERT, MSC09-CPP.</a> - Character encoding: Use subset of ASCII for safety</li>\n\t<li><a href=\"https://www.securecoding.cert.org/confluence/x/lQAl\" class=\"external-link\" rel=\"nofollow\">CERT, MSC09-C.</a> - Character encoding: Use subset of ASCII for safety</li>\n</ul>\n",
+      "standards": [
+        "CERT"
+      ],
+      "tags": [
+        "cert",
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-3424",
+      "type": "Code Smell",
+      "summary": "Skipped unit tests should be either removed or fixed",
+      "description": "<p>Skipped unit tests are considered dead code. Either they should be activated again (and updated) or they should be removed.</p>",
+      "standards": [],
+      "tags": [],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    },
+    {
+      "ruleKey": "RSPEC-1484",
+      "type": "Code Smell",
+      "summary": "Track instances of below-threshold comment line density",
+      "description": "<p>An issue is created on a file as soon as the density of comment lines on this file is less than the required threshold. The number of comment lines to be written in order to reach the required threshold is provided by each issue message.</p>",
+      "standards": [],
+      "tags": [
+        "convention"
+      ],
+      "inDefaultProfile": false,
+      "defaultSeverity": "Minor"
+    }
+  ]
+}

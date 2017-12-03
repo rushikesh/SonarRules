@@ -1,0 +1,191 @@
+[{
+    "key": "abap",
+    "name": "ABAP",
+    "types": {
+      "Vulnerability": 4,
+      "Code Smell": 65,
+      "Bug": 15
+    }
+  },
+  {
+    "key": "c",
+    "name": "C",
+    "types": {
+      "Code Smell": 8,
+      "Vulnerability": 2,
+      "Code Smell": 163,
+      "Bug": 56
+    }
+  },
+  {
+    "key": "cpp",
+    "name": "C++",
+    "types": {
+      "Code Smell": 8,
+      "Vulnerability": 2,
+      "Code Smell": 240,
+      "Bug": 69
+    }
+  },
+  {
+    "key": "cobol",
+    "name": "COBOL",
+    "types": {
+      "Vulnerability": 6,
+      "Code Smell": 113,
+      "Bug": 53
+    }
+  },
+  {
+    "key": "csharp",
+    "name": "C#",
+    "types": {
+      "Vulnerability": 9,
+      "Code Smell": 228,
+      "Bug": 64
+    }
+  },
+  {
+    "key": "flex",
+    "name": "Flex",
+    "types": {
+      "Code Smell": 3,
+      "Vulnerability": 6,
+      "Code Smell": 60,
+      "Bug": 8
+    }
+  },
+  {
+    "key": "java",
+    "name": "Java",
+    "types": {
+      "Vulnerability": 33,
+      "Code Smell": 299,
+      "Bug": 103
+    }
+  },
+  {
+    "key": "javascript",
+    "name": "Javascript",
+    "types": {
+      "Vulnerability": 9,
+      "Code Smell": 120,
+      "Bug": 57
+    }
+  },
+  {
+    "key": "objective-c",
+    "name": "Objective C",
+    "types": {
+      "Code Smell": 8,
+      "Vulnerability": 2,
+      "Code Smell": 169,
+      "Bug": 47
+    }
+  },
+  {
+    "key": "php",
+    "name": "PHP",
+    "types": {
+      "Vulnerability": 10,
+      "Code Smell": 105,
+      "Bug": 26
+    }
+  },
+  {
+    "key": "pli",
+    "name": "PL/I",
+    "types": {
+      "Code Smell": 2,
+      "Code Smell": 23,
+      "Bug": 1
+    }
+  },
+  {
+    "key": "plsql",
+    "name": "PL/SQL",
+    "types": {
+      "Code Smell": 5,
+      "Vulnerability": 1,
+      "Code Smell": 117,
+      "Bug": 37
+    }
+  },
+  {
+    "key": "python",
+    "name": "Python",
+    "types": {
+      "Code Smell": 4,
+      "Vulnerability": 1,
+      "Code Smell": 40,
+      "Bug": 13
+    }
+  },
+  {
+    "key": "rpg",
+    "name": "RPG",
+    "types": {
+      "Code Smell": 3,
+      "Vulnerability": 1,
+      "Code Smell": 52,
+      "Bug": 7
+    }
+  },
+  {
+    "key": "swift",
+    "name": "Swift",
+    "types": {
+      "Code Smell": 5,
+      "Vulnerability": 3,
+      "Code Smell": 88,
+      "Bug": 11
+    }
+  },
+  {
+    "key": "typescript",
+    "name": "TypeScript",
+    "types": {
+      "Vulnerability": 3,
+      "Code Smell": 57,
+      "Bug": 22
+    }
+  },
+  {
+    "key": "tsql",
+    "name": "T-SQL",
+    "types": {
+      "Code Smell": 3,
+      "Vulnerability": 1,
+      "Code Smell": 33,
+      "Bug": 12
+    }
+  },
+  {
+    "key": "vbnet",
+    "name": "VB.NET",
+    "types": {
+      "Vulnerability": 0,
+      "Code Smell": 64,
+      "Bug": 5
+    }
+  },
+  {
+    "key": "web",
+    "name": "Web",
+    "types": {
+      "Code Smell": 4,
+      "Vulnerability": 2,
+      "Code Smell": 19,
+      "Bug": 18
+    }
+  },
+  {
+    "key": "xml",
+    "name": "XML",
+    "types": {
+      "Code Smell": 1,
+      "Code Smell": 2,
+      "Bug": 1
+    }
+  }
+]
