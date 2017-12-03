@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
-                
+                    
     xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.rushis.sonarrules"
         version   = "1.0.0">
-    <name>Amazing Facts</name>
+    <name>Sonar Rules</name>
     <description>
-        Amazing Facts App.
+        Sonar Rules App.
     </description>
     <author href="http://www.rushis.com" email="support@phonegap.com">
         Rushikesh
