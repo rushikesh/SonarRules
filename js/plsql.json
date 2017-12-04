@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 5,
+    "Code Smell": 122,
     "Vulnerability": 1,
-    "Code Smell": 117,
     "Bug": 37
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 7
     },
@@ -19,8 +17,7 @@
       "count": 10
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 22
     },
@@ -105,8 +102,7 @@
       "count": 9
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-1590",
       "type": "Bug",
       "summary": "\"DELETE\" and \"UPDATE\" statements should contain \"WHERE\" clauses",

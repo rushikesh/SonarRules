@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 3,
+    "Code Smell": 63,
     "Vulnerability": 6,
-    "Code Smell": 60,
     "Bug": 8
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 6
     },
@@ -19,8 +17,7 @@
       "count": 9
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 13
     },
@@ -97,8 +94,7 @@
       "count": 3
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-1446",
       "type": "Code Smell",
       "summary": "Dynamic classes should not be used",

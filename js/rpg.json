@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 3,
+    "Code Smell": 55,
     "Vulnerability": 1,
-    "Code Smell": 52,
     "Bug": 7
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 2
     },
@@ -19,8 +17,7 @@
       "count": 5
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 7
     },
@@ -93,8 +90,7 @@
       "count": 2
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-1630",
       "type": "Bug",
       "summary": "All opened \"USROPN\" files should be explicitly closed",

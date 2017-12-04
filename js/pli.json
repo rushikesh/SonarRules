@@ -1,11 +1,9 @@
 {
   "types": {
-    "Code Smell": 2,
-    "Code Smell": 23,
+    "Code Smell": 25,
     "Bug": 1
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 2
     },
@@ -18,8 +16,7 @@
       "count": 4
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 7
     },
@@ -68,8 +65,7 @@
       "count": 3
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-131",
       "type": "Code Smell",
       "summary": "\"SELECT\" statements should end with \"OTHERWISE\" statements",

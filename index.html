@@ -153,6 +153,10 @@
 					content = data;
 					filterContent = data;
 					setCntValuesInHeader(data);
+					$.each('#hsrc,#hbug,#hsml,#hvul'.split(','), function (i, ele) {
+						$($(ele).find('use')[0]).attr('class', 'svglogoDisable');
+					});
+					$($('#hsrc').find('use')[0]).attr('class', 'svglogo');
 					updateContent(data);
 				});
 				$("#nav-panel").panel("close");

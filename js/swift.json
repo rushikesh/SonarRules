@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 5,
+    "Code Smell": 92,
     "Vulnerability": 3,
-    "Code Smell": 88,
     "Bug": 11
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 5
     },
@@ -27,8 +25,7 @@
       "count": 16
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 23
     },
@@ -109,8 +106,7 @@
       "count": 8
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-2068",
       "type": "Vulnerability",
       "summary": "Credentials should not be hard-coded",

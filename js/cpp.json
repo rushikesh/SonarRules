@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 8,
+    "Code Smell": 248,
     "Vulnerability": 2,
-    "Code Smell": 240,
     "Bug": 69
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 28
     },
@@ -23,8 +21,7 @@
       "count": 90
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "c11",
       "count": 1
     },
@@ -153,8 +150,7 @@
       "count": 16
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-3936",
       "type": "Code Smell",
       "summary": "\"case\" ranges should cover multiple values",

@@ -1,8 +1,7 @@
 {
   "types": {
-    "Code Smell": 8,
+    "Code Smell": 171,
     "Vulnerability": 2,
-    "Code Smell": 163,
     "Bug": 56
   },
   "standards": [{

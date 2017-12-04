@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 4,
+    "Code Smell": 44,
     "Vulnerability": 1,
-    "Code Smell": 40,
     "Bug": 13
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 2
     },
@@ -19,8 +17,7 @@
       "count": 6
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 12
     },
@@ -85,8 +82,7 @@
       "count": 1
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-2733",
       "type": "Bug",
       "summary": "\"__exit__\" should accept type, value, and traceback arguments",

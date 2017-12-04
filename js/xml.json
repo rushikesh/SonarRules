@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 1,
-    "Code Smell": 2,
+    "Code Smell": 3,
     "Bug": 1
   },
   "standards": [],
-  "tags": [
-    {
+  "tags": [{
       "name": "style",
       "count": 1
     },
@@ -15,8 +13,7 @@
       "count": 1
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-1778",
       "type": "Bug",
       "summary": "XML files containing a prolog header should start with \"<?xml\" characters",

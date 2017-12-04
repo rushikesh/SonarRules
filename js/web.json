@@ -1,12 +1,10 @@
 {
   "types": {
-    "Code Smell": 4,
+    "Code Smell": 23,
     "Vulnerability": 2,
-    "Code Smell": 19,
     "Bug": 18
   },
-  "standards": [
-    {
+  "standards": [{
       "name": "CWE",
       "count": 1
     },
@@ -19,8 +17,7 @@
       "count": 1
     }
   ],
-  "tags": [
-    {
+  "tags": [{
       "name": "convention",
       "count": 4
     },
@@ -73,8 +70,7 @@
       "count": 9
     }
   ],
-  "rules": [
-    {
+  "rules": [{
       "ruleKey": "RSPEC-1095",
       "type": "Bug",
       "summary": "\"<!DOCTYPE>\" declarations should appear before \"<html>\" tags",
