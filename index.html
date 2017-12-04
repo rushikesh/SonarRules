@@ -9,9 +9,19 @@
 	<link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.2.min.css" />
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
-	<script src="themes/conversions.js"></script>
 	<link rel="stylesheet" href="themes/css/animation.css">
 	<style type="text/css">
+		body.ui-mobile-viewport,
+		div.ui-mobile-viewport,
+		.ui-content {
+			overflow-x: scroll;
+			overflow-y: scroll;
+		}
+
+		#langRule>li>a.ui-btn {
+			text-overflow: initial;
+		}
+
 		.ui-body-a {
 			background-color: #22282f;
 		}
@@ -65,9 +75,7 @@
 			});
 
 			$('#content').on('click', '#langRule a', function () {
-				console.log("rushi2");
 				var id = $(this).attr('id');
-				console.log(id);
 				$("#content2").html(content.rules[id].summary + '<br/>' + content.rules[id].description);
 				$.mobile.navigate("#imgPage", {
 					transition: "slide"
@@ -79,7 +87,6 @@
 
 		function updateContent() {
 			var data = content.rules;
-			console.log(data);
 			var ul = document.createElement('ol');
 			ul.id = "langRule";
 			ul["data-role"] = "listview";
