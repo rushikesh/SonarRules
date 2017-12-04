@@ -49,7 +49,6 @@
 		var titleTxt = "Sonar Rules Explorer";
 		$(document).ready(function () {
 			$("#headerTitle").html(titleTxt);
-			$("#content").html("<img class='center' src='img/Sonar-qube.png'/>");
 
 			$.getJSON('js/languages.json', function (data) {
 				$.each(data, function (i) {
@@ -87,7 +86,8 @@
 
 			$('#content').on('click', '#langRule a', function () {
 				var id = $(this).attr('id');
-				$("#content2").html(content.rules[id].summary + '<br/>' + content.rules[id].description);
+				$("#content2").text(content.rules[id].summary);
+				$("#content2").append('<br/>' + content.rules[id].description);
 				$.mobile.navigate("#imgPage", {
 					transition: "slide"
 				});
@@ -106,7 +106,7 @@
 				var ele = document.createElement('a');
 				ele.href = "#";
 				ele.id = i;
-				ele.innerHTML = data[i].summary;
+				ele.innerText = data[i].summary;
 				$(li).append(ele);
 				$(ul).append(li);
 			});
