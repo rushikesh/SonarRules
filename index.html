@@ -57,14 +57,23 @@
 					var ele = document.createElement('a');
 					ele.href = "#";
 					ele.id = data[i].key;
-					ele.innerHTML = data[i].name + "<span class='ui-li-count'>" + data[i].types.Bug + "</span>";
+					var cnt = getTotalRuleCount(data[i]);
+					ele.innerHTML = data[i].name + "<span class='ui-li-count'>" + cnt + "</span>";
 					$(li).append(ele);
 					$("#qlist").append(li);
 				});
 				$('#qlist').listview().listview('refresh');
-				$('#nav-panel').click();
+				$("#nav-panel").panel("open");
 			});
 
+			function getTotalRuleCount(data) {
+				var sum = 0;
+				for (var key in data.types) {
+					if (data.types.hasOwnProperty(key))
+						sum += data.types[key]
+				}
+				return sum;
+			}
 
 			$('#qlist').on('click', 'a', function () {
 				$("#headerTitle").html(titleTxt + ' For ' + $(this).text().replace(/\d+/, ''));
@@ -103,7 +112,6 @@
 			});
 			$("#content").html(ul);
 			$('#langRule').listview().listview('refresh');
-			//$("#factTitle").html(arrNames[i] + " Fact #" + (cnt + 1));
 		}
 	</script>
 </head>
