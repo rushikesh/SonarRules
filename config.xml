@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
-                    
+                        
     xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.rushis.sonarrules"
         version   = "1.0.0">
@@ -51,6 +51,7 @@
     <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
     <!-- Plugins -->
     <!-- Core plugins -->
+    <plugin name="cordova-plugin-inappbrowser" spec="1" />
     <!-- <gap:plugin name="org.apache.cordova.battery-status" /><gap:plugin name="org.apache.cordova.camera" /><gap:plugin name="org.apache.cordova.media-capture" /><gap:plugin name="org.apache.cordova.console" /><gap:plugin name="org.apache.cordova.contacts" /><gap:plugin name="org.apache.cordova.device" /><gap:plugin name="org.apache.cordova.device-motion" /><gap:plugin name="org.apache.cordova.device-orientation" /><gap:plugin name="org.apache.cordova.dialogs" /><gap:plugin name="org.apache.cordova.file" /><gap:plugin name="org.apache.cordova.file-transfer" /><gap:plugin name="org.apache.cordova.geolocation" /><gap:plugin name="org.apache.cordova.globalization" /><gap:plugin name="org.apache.cordova.inappbrowser" /><gap:plugin name="org.apache.cordova.media" /><gap:plugin name="org.apache.cordova.network-information" /><gap:plugin name="org.apache.cordova.splashscreen" /><gap:plugin name="org.apache.cordova.vibration" /> -->
     <!-- Third party plugins -->
     <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
