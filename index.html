@@ -241,7 +241,7 @@
 				e.preventDefault();
 				var $this = $(this);
 				var target = '_blank';
-				window.open($this.attr('href'), target, 'location=no');
+				cordova.InAppBrowser.open($this.attr('href'), target, 'location=no');
 			});
 
 
