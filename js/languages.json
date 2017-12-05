@@ -11,9 +11,8 @@
     "key": "c",
     "name": "C",
     "types": {
-      "Code Smell": 8,
+      "Code Smell": 171,
       "Vulnerability": 2,
-      "Code Smell": 163,
       "Bug": 56
     }
   },
@@ -21,9 +20,8 @@
     "key": "cpp",
     "name": "C++",
     "types": {
-      "Code Smell": 8,
+      "Code Smell": 248,
       "Vulnerability": 2,
-      "Code Smell": 240,
       "Bug": 69
     }
   },
@@ -49,9 +47,8 @@
     "key": "flex",
     "name": "Flex",
     "types": {
-      "Code Smell": 3,
+      "Code Smell": 66,
       "Vulnerability": 6,
-      "Code Smell": 60,
       "Bug": 8
     }
   },
@@ -77,9 +74,8 @@
     "key": "objective-c",
     "name": "Objective C",
     "types": {
-      "Code Smell": 8,
+      "Code Smell": 177,
       "Vulnerability": 2,
-      "Code Smell": 169,
       "Bug": 47
     }
   },
@@ -96,8 +92,7 @@
     "key": "pli",
     "name": "PL/I",
     "types": {
-      "Code Smell": 2,
-      "Code Smell": 23,
+      "Code Smell": 25,
       "Bug": 1
     }
   },
@@ -105,9 +100,8 @@
     "key": "plsql",
     "name": "PL/SQL",
     "types": {
-      "Code Smell": 5,
+      "Code Smell": 122,
       "Vulnerability": 1,
-      "Code Smell": 117,
       "Bug": 37
     }
   },
@@ -115,9 +109,8 @@
     "key": "python",
     "name": "Python",
     "types": {
-      "Code Smell": 4,
+      "Code Smell": 44,
       "Vulnerability": 1,
-      "Code Smell": 40,
       "Bug": 13
     }
   },
@@ -125,9 +118,8 @@
     "key": "rpg",
     "name": "RPG",
     "types": {
-      "Code Smell": 3,
+      "Code Smell": 55,
       "Vulnerability": 1,
-      "Code Smell": 52,
       "Bug": 7
     }
   },
@@ -135,9 +127,8 @@
     "key": "swift",
     "name": "Swift",
     "types": {
-      "Code Smell": 5,
+      "Code Smell": 93,
       "Vulnerability": 3,
-      "Code Smell": 88,
       "Bug": 11
     }
   },
@@ -154,9 +145,8 @@
     "key": "tsql",
     "name": "T-SQL",
     "types": {
-      "Code Smell": 3,
+      "Code Smell": 36,
       "Vulnerability": 1,
-      "Code Smell": 33,
       "Bug": 12
     }
   },
@@ -173,9 +163,8 @@
     "key": "web",
     "name": "Web",
     "types": {
-      "Code Smell": 4,
+      "Code Smell": 23,
       "Vulnerability": 2,
-      "Code Smell": 19,
       "Bug": 18
     }
   },
@@ -183,8 +172,7 @@
     "key": "xml",
     "name": "XML",
     "types": {
-      "Code Smell": 1,
-      "Code Smell": 2,
+      "Code Smell": 3,
       "Bug": 1
     }
   }
