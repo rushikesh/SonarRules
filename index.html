@@ -92,6 +92,7 @@
 		var titleTxt = "Sonar Rules Explorer";
 		var content;
 		var filterContent;
+		var curEle;
 		var startIndex = 0,
 			endIndex = 0,
 			loadFactor = 30;
@@ -110,6 +111,20 @@
 				}
 				return false;
 			};
+
+			$(window).on("navigate", function (event, data) {
+				var direction = data.state.direction;
+				if (direction == 'back') {
+					setTimeout(function () {
+						$(window).scrollTop(($(curEle).offset().top) - 130);
+						console.log('rushi');
+					}, 100)
+
+				}
+				if (direction == 'forward') {
+					// do something else
+				}
+			});
 
 			$.getJSON('js/languages.json', function (data) {
 				$.each(data, function (i) {
@@ -226,6 +241,7 @@
 
 			$('#content').on('click', '#langRule a', function () {
 				var id = $(this).attr('id');
+				curEle = $(this);
 				var rule = filterContent.rules[id];
 				var severityName = rule.defaultSeverity;
 				var severity = rule.defaultSeverity;
