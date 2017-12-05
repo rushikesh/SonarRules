@@ -91,8 +91,17 @@
 
 		.rule {
 			white-space: pre-wrap;
-			word-wrap: break-word;
+			word-wrap: normal;
+			word-break: keep-all;
+			text-align: left;
+			display: block;
+		}
+
+		.ruleMeta {
 			display: inline-block;
+			width: 100%;
+			position: relative;
+			top: -11px;
 		}
 	</style>
 	<script type="text/javascript">
@@ -365,14 +374,14 @@
 					var typeName = data[i].type;
 					type = getType(type);
 					severity = getSeverity(severity);
-					$(ele).append(spn);
 					$(ele).append(
-						'<br/><svg viewBox="0 0 16 16" style="position:relative;width:25px;height:25px;top:6px"><use xlink:href="#' +
+						'<span class="ruleMeta"><svg viewBox="0 0 16 16" style="position:relative;width:25px;height:25px;top:6px"><use xlink:href="#' +
 						type + '" class="svglogoBlack"></use></svg>' + typeName +
 						'<span style="position:relative;float:right;top:9px"><svg viewBox="0 0 16 16" style="position:relative;width:20px;height:20px;top:5px"><use xlink:href="#' +
 						severity + '" class="svglogoBlack"></use></svg><span style="position:relative;top:-2px">' + severityName +
-						'</span></span>'
+						'</span></span><span>'
 					);
+					$(ele).append(spn);
 					$(li).append(ele);
 					$('#langRule').append(li);
 				}
