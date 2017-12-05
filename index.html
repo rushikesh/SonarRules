@@ -7,9 +7,9 @@
 	<link rel="stylesheet" href="themes/conv.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.2.min.css" />
+	<link rel="stylesheet" href="themes/css/animation.css">
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
-	<link rel="stylesheet" href="themes/css/animation.css">
 	<style type="text/css">
 		body.ui-mobile-viewport,
 		div.ui-mobile-viewport,
@@ -92,8 +92,24 @@
 		var titleTxt = "Sonar Rules Explorer";
 		var content;
 		var filterContent;
+		var startIndex = 0,
+			endIndex = 0,
+			loadFactor = 30;
 		$(document).ready(function () {
 			$("#headerTitle").html(titleTxt);
+
+			$.fn.isInViewport = function () {
+				if ($(this).length) {
+					var elementTop = $(this).offset().top;
+					var elementBottom = elementTop + $(this).outerHeight();
+
+					var viewportTop = $(window).scrollTop();
+					var viewportBottom = viewportTop + $(window).height();
+
+					return elementBottom > viewportTop && elementTop < viewportBottom;
+				}
+				return false;
+			};
 
 			$.getJSON('js/languages.json', function (data) {
 				$.each(data, function (i) {
@@ -161,6 +177,8 @@
 						$($(ele).find('use')[0]).attr('class', 'svglogoDisable');
 					});
 					$($('#hsrc').find('use')[0]).attr('class', 'svglogo');
+					startIndex = 0;
+					endIndex = loadFactor;
 					updateContent(data);
 				});
 				$("#nav-panel").panel("close");
@@ -200,6 +218,8 @@
 				} else {
 					data.rules = rules;
 				}
+				startIndex = 0;
+				endIndex = loadFactor;
 				filterContent = data;
 				updateContent(filterContent);
 			});
@@ -243,7 +263,14 @@
 				var target = '_blank';
 				cordova.InAppBrowser.open($this.attr('href'), target, 'location=no');
 			});
-
+			$(document).on('resize scroll', function () {
+				if ($('#loadMore').isInViewport()) {
+					startIndex = endIndex + 1;
+					endIndex = endIndex + loadFactor;
+					$('#loadMore').removeAttr('id');
+					updateContent(filterContent);
+				}
+			});
 
 		});
 
@@ -288,34 +315,46 @@
 
 		function updateContent(content) {
 			var data = content.rules;
-			var ul = document.createElement('ol');
-			ul.id = "langRule";
-			ul["data-role"] = "listview";
+			var ul;
+			if ($('#langRule').length == 0) {
+				ul = document.createElement('ol');
+				ul.id = "langRule";
+				ul["data-role"] = "listview";
+				$("#content").html(ul);
+			}
+			if (startIndex == 0) {
+				$('#langRule').html('');
+				$(window).scrollTop(0);
+			}
 			$.each(data, function (i) {
-				var li = document.createElement('li');
-				var ele = document.createElement('a');
-				var spn = document.createElement('span');
-				ele.href = "#";
-				ele.id = i;
-				spn.innerText = data[i].summary;
-				var severityName = data[i].defaultSeverity;
-				var severity = data[i].defaultSeverity;
-				var type = data[i].type;
-				var typeName = data[i].type;
-				type = getType(type);
-				severity = getSeverity(severity);
-				$(ele).append(spn);
-				$(ele).append(
-					'<br/><svg viewBox="0 0 16 16" style="position:relative;width:25px;height:25px;top:6px"><use xlink:href="#' +
-					type + '" class="svglogoBlack"></use></svg>' + typeName +
-					'<span style="position:relative;float:right;top:9px"><svg viewBox="0 0 16 16" style="position:relative;width:20px;height:20px;top:5px"><use xlink:href="#' +
-					severity + '" class="svglogoBlack"></use></svg><span style="position:relative;top:-2px">' + severityName +
-					'</span></span>'
-				);
-				$(li).append(ele);
-				$(ul).append(li);
+				if (i >= startIndex && i <= endIndex) {
+					var li = document.createElement('li');
+					if (i == endIndex) {
+						li.id = 'loadMore';
+					}
+					var ele = document.createElement('a');
+					var spn = document.createElement('span');
+					ele.href = "#";
+					ele.id = i;
+					spn.innerText = data[i].summary;
+					var severityName = data[i].defaultSeverity;
+					var severity = data[i].defaultSeverity;
+					var type = data[i].type;
+					var typeName = data[i].type;
+					type = getType(type);
+					severity = getSeverity(severity);
+					$(ele).append(spn);
+					$(ele).append(
+						'<br/><svg viewBox="0 0 16 16" style="position:relative;width:25px;height:25px;top:6px"><use xlink:href="#' +
+						type + '" class="svglogoBlack"></use></svg>' + typeName +
+						'<span style="position:relative;float:right;top:9px"><svg viewBox="0 0 16 16" style="position:relative;width:20px;height:20px;top:5px"><use xlink:href="#' +
+						severity + '" class="svglogoBlack"></use></svg><span style="position:relative;top:-2px">' + severityName +
+						'</span></span>'
+					);
+					$(li).append(ele);
+					$('#langRule').append(li);
+				}
 			});
-			$("#content").html(ul);
 			$('#langRule').listview().listview('refresh');
 		}
 	</script>
