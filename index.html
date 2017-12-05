@@ -73,8 +73,9 @@
 			font-weight: normal;
 		}
 
-		#langRule>ol>li>a>span {
-			overflow-wrap: break-word;
+		#langRule li a:before {
+			display: inline-block;
+			vertical-align: top;
 		}
 
 		#criteria a {
@@ -86,6 +87,12 @@
 			position: relative;
 			top: -10px;
 			left: -5px;
+		}
+
+		.rule {
+			white-space: pre-wrap;
+			word-wrap: break-word;
+			display: inline-block;
 		}
 	</style>
 	<script type="text/javascript">
@@ -351,6 +358,7 @@
 					ele.href = "#";
 					ele.id = i;
 					spn.innerText = data[i].summary;
+					spn.className = "rule"
 					var severityName = data[i].defaultSeverity;
 					var severity = data[i].defaultSeverity;
 					var type = data[i].type;
