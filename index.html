@@ -58,7 +58,8 @@
 				var dataLength = content.rules.length;
 				for (var i = 0; i < dataLength; i++) {
 					var rule = content.rules[i];
-					if ((filterParams.searchText.length != 0 && rule.description.indexOf(filterParams.searchText) != -1) ||
+					if ((filterParams.searchText.length != 0 && rule.description.toLowerCase().indexOf(filterParams.searchText.toLowerCase()) !=
+							-1) ||
 						filterParams
 						.severity.indexOf(
 							rule
