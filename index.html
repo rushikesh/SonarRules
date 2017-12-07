@@ -8,106 +8,14 @@
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.2.min.css" />
 	<link rel="stylesheet" href="themes/css/animation.css">
+	<link rel="stylesheet" href="themes/sonar.css" />
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
-	<style type="text/css">
-		body.ui-mobile-viewport,
-		div.ui-mobile-viewport,
-		.ui-content {
-			overflow-x: scroll;
-			overflow-y: scroll;
-		}
-
-		.ui-body-a {
-			background-color: #22282f;
-		}
-
-		.ui-title {
-			margin: 0 1% !important;
-		}
-
-		.ui-panel-inner {
-			position: absolute;
-			top: 1px;
-			left: 0;
-			right: 0;
-			bottom: 0px;
-			overflow: auto;
-			-webkit-overflow-scrolling: touch;
-			background-color: black;
-			color: antiquewhite;
-		}
-
-		img.center {
-			width: 100%;
-			height: 100%;
-			display: block;
-			margin: 0 auto;
-		}
-
-		.hidden {
-			display: none;
-		}
-
-		#criteria {
-			text-align: center;
-		}
-
-		.svglogoBlack {
-			fill: gray;
-		}
-
-		.svglogo {
-			width: 17px;
-			height: 17px;
-			fill: aqua;
-		}
-
-		.svglogoDisable {
-			width: 17px;
-			height: 17px;
-			fill: gray;
-		}
-
-		#langRule a {
-			font-weight: normal;
-		}
-
-		#langRule li a:before {
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		#criteria a {
-			color: white;
-			text-decoration: none !important;
-		}
-
-		#criteria sup {
-			position: relative;
-			top: -10px;
-			left: -5px;
-		}
-
-		.rule {
-			white-space: pre-wrap;
-			word-wrap: normal;
-			word-break: keep-all;
-			text-align: left;
-			display: block;
-		}
-
-		.ruleMeta {
-			display: inline-block;
-			width: 100%;
-			position: relative;
-			top: -11px;
-		}
-	</style>
 	<script type="text/javascript">
 		var titleTxt = "Sonar Rules Explorer";
 		var content;
 		var filterContent;
+		var filterParams = {};
 		var curEle;
 		var startIndex = 0,
 			endIndex = 0,
@@ -127,6 +35,40 @@
 				}
 				return false;
 			};
+
+			$('#filterResetBtn').on('click', function () {
+				$('form')[0].reset();
+				$('#hsrc').click();
+			});
+
+			$('#filterBtn').on('click', function () {
+				filterParams = {};
+				var formObj = $('form').serialize().split('&');
+				var severityArr = $('input:checked[name="severityCheckbox"]').map(function () {
+					return $(this).val();
+				});
+				filterParams.searchText = $('#srchTerm').val().trim();
+				filterParams.severity = (severityArr.get().length == 0) ? [] :
+					severityArr.get();
+				var data = {
+					rules: []
+				};
+				startIndex = 0;
+				endIndex = loadFactor;
+				var dataLength = content.rules.length;
+				for (var i = 0; i < dataLength; i++) {
+					var rule = content.rules[i];
+					if ((filterParams.searchText.length != 0 && rule.description.indexOf(filterParams.searchText) != -1) ||
+						filterParams
+						.severity.indexOf(
+							rule
+							.defaultSeverity) != -1) {
+						data.rules.push(rule);
+					}
+				}
+				filterContent = data;
+				updateContent(filterContent);
+			});
 
 			$(window).on("navigate", function (event, data) {
 				var direction = data.state.direction;
@@ -253,6 +195,7 @@
 				updateContent(filterContent);
 			});
 
+
 			$('#content').on('click', '#langRule a', function () {
 				var id = $(this).attr('id');
 				curEle = $(this);
@@ -293,6 +236,7 @@
 				var target = '_blank';
 				cordova.InAppBrowser.open($this.attr('href'), target, 'location=no');
 			});
+
 			$(document).on('resize scroll', function () {
 				if ($('#loadMore').isInViewport()) {
 					startIndex = endIndex + 1;
@@ -491,6 +435,9 @@
 		<div data-role="content" data-theme="a" id="content">
 
 		</div>
+		<a href="#popupFilter" data-position-to="window" data-transition="fade" data-rel="popup" class="filterButton filterBox">
+			<img src="img/filtericon-blue.png" alt="filter icon" width="35px" height="35px" />
+		</a>
 		<div data-role="popup" id="popupBasic" data-overlay-theme="a" class="ui-content">
 			<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 			<p>Sonar Rules Explorer App.
@@ -500,6 +447,32 @@
 			<p>Created By:
 				<a href="http://www.rushis.com">Rushi</a>
 			</p>
+		</div>
+		<div data-role="popup" id="popupFilter" data-overlay-theme="a" class="ui-content">
+			<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+			<div>
+				<h3>Filter Data:</h3>
+				<form name="filterForm">
+					<input name="searchFilterText" type="text" placeholder="Search Term" id="srchTerm" />
+					<fieldset data-role="controlgroup">
+						<legend>Severity:</legend>
+						<input type="checkbox" name="severityCheckbox" value="Blocker" id="checkbox-v-2a">
+						<label for="checkbox-v-2a">Blocker</label>
+						<input type="checkbox" name="severityCheckbox" value="Critical" id="checkbox-v-2b">
+						<label for="checkbox-v-2b">Critical</label>
+						<input type="checkbox" name="severityCheckbox" value="Major" id="checkbox-v-2c">
+						<label for="checkbox-v-2c">Major</label>
+						<input type="checkbox" name="severityCheckbox" value="Minor" id="checkbox-v-2d">
+						<label for="checkbox-v-2d">Minor</label>
+						<input type="checkbox" name="severityCheckbox" value="Info" id="checkbox-v-2e">
+						<label for="checkbox-v-2e">Info</label>
+					</fieldset>
+					<div style="text-align:center">
+						<a class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-rel="back" id="filterResetBtn">Clear</a>
+						<a class="ui-btn ui-corner-all ui-shadow ui-btn-inline" data-rel="back" id="filterBtn">Filter</a>
+					</div>
+				</form>
+			</div>
 		</div>
 		<div data-role="panel" data-position="left" data-position-fixed="true" data-display="overlay" id="nav-panel">
 			<div style="height:70px">
