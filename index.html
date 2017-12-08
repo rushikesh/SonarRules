@@ -206,7 +206,7 @@
 				var type = getType(rule.type);
 				severity = getSeverity(severity);
 				$("#content2").text(rule.summary);
-				$("#content2").append('<br/>');
+				$("#content2").append('<br/><div>');
 				$("#content2").append(
 					'<svg viewBox="0 0 16 16" style="width:17px;height:17px;position:relative;top:4px;"><use xlink:href="#' +
 					type +
@@ -217,7 +217,11 @@
 					'<span style="float:right"><svg viewBox="0 0 16 16" style="width:17px;height:17px;position:relative;top:5px;"><use xlink:href="#' +
 					severity +
 					'"></use></svg>' + severityName + '</span>');
-				$("#content2").append('<br/>' + rule.description);
+				$("#content2").append('</div>');
+				if (rule.debt) {
+					$("#content2").append('<br/><br/><div style="">Technical Debt: ' + rule.debt + '</div>');
+				}
+				$("#content2").append('<br/><div>' + rule.description + '</div>');
 				$.mobile.navigate("#imgPage", {
 					transition: "slide"
 				});
@@ -269,20 +273,20 @@
 
 		function getSeverity(severityName) {
 			var severity;
-			switch (severityName) {
-				case "Major":
+			switch (severityName.toLowerCase()) {
+				case "major":
 					severity = "maj";
 					break;
-				case "Minor":
+				case "minor":
 					severity = "min";
 					break;
-				case "Critical":
+				case "critical":
 					severity = "cri";
 					break;
-				case "Blocker":
+				case "blocker":
 					severity = "blk";
 					break;
-				case "Info":
+				case "info":
 					severity = "inf";
 					break;
 				default:
