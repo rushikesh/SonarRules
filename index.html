@@ -75,8 +75,8 @@
 				var direction = data.state.direction;
 				if (direction == 'back') {
 					setTimeout(function () {
-						$(window).scrollTop(($(curEle).offset().top) - 30);
-					}, 100)
+						$(curEle).scrollTop();
+					})
 				}
 				if (direction == 'forward') {
 					// do something else
@@ -501,7 +501,7 @@
 
 	<!-- Start of second page -->
 	<div data-role="page" id="imgPage" class="cstmPage">
-		<div data-role="header" data-position="fixed">
+		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-transition="none">
 			<a href="#" data-rel="back" data-icon="arrow-l" data-role="button" data-theme="a" data-transition="slideUp" data-iconpos="notext">Back</a>
 			<a href="#popupBasic1" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon2" data-icon="info"
 			  class="ui-btn-right" data-iconpos="notext">Info</a>
