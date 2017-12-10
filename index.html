@@ -16,7 +16,7 @@
 		var content;
 		var filterContent;
 		var filterParams = {};
-		var curEle;
+		var curEle, id;
 		var startIndex = 0,
 			endIndex = 0,
 			loadFactor = 30;
@@ -198,8 +198,12 @@
 
 
 			$('#content').on('click', '#langRule a', function () {
-				var id = $(this).attr('id');
+				id = $(this).attr('id');
 				curEle = $(this);
+				displayEntireRuleData(id);
+			});
+
+			function displayEntireRuleData(id) {
 				var rule = filterContent.rules[id];
 				var severityName = rule.defaultSeverity;
 				var severity = rule.defaultSeverity;
@@ -221,11 +225,11 @@
 				if (rule.debt) {
 					$("#content2").append('<br/><br/><div style="">Technical Debt: ' + rule.debt + '</div>');
 				}
-				$("#content2").append('<br/><div>' + rule.description + '</div>');
+				$("#s").append('<br/><div>' + rule.description + '</div>');
 				$.mobile.navigate("#imgPage", {
 					transition: "slide"
 				});
-			});
+			}
 
 			/* Handle any link start with http or https using PhoneGap (Cordova) inAppBrowser
 			 * Options you can set data-in-app-browser html attribute to one of the
@@ -249,6 +253,26 @@
 					$('#loadMore').removeAttr('id');
 					updateContent(filterContent);
 				}
+			});
+
+			$('#imgPage').on('swipeleft', function () {
+				if (id < filterContent.rules.length - 1) {
+					id++;
+					curEle = $("#" + id);
+					displayEntireRuleData(id);
+				}
+				console.log('id' + id);
+				return;
+
+			});
+
+			$('#imgPage').on('swiperight', function () {
+				id--;
+				if (id < 0) {
+					return;
+				}
+				curEle = $("#" + id);
+				displayEntireRuleData(id);
 			});
 
 		});
