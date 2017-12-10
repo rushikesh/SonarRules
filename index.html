@@ -306,7 +306,9 @@
 			}
 			if (startIndex == 0) {
 				$('#langRule').html('');
-				$(window).scrollTop(0);
+				setTimeout(function () {
+					$(window).scrollTop(0);
+				});
 			}
 			$.each(data, function (i) {
 				if (i >= startIndex && i <= endIndex) {
