@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="themes/sonar.css" />
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<script type="text/javascript">
 		var titleTxt = "Sonar Rules Explorer";
 		var content;
@@ -75,6 +76,7 @@
 				var direction = data.state.direction;
 				if (direction == 'back') {
 					setTimeout(function () {
+						console.log('id is' + $(curEle).attr('id'));
 						$(curEle).scrollTop();
 					})
 				}
@@ -139,7 +141,8 @@
 			}
 
 			$('#qlist').on('click', 'a', function () {
-				$("#headerTitle").html(titleTxt + ' For ' + $(this).text().replace(/\d+/, ''));
+				titleTxt = $(this).text().replace(/\d+/, '');
+				$("#headerTitle").html(titleTxt);
 				var fileName = $(this).attr('id');
 				$.getJSON('js/' + fileName + '.json', function (data) {
 					content = data;
@@ -198,6 +201,7 @@
 
 
 			$('#content').on('click', '#langRule a', function () {
+				$("#headerTitle2").html(titleTxt);
 				id = $(this).attr('id');
 				curEle = $(this);
 				displayEntireRuleData(id);
@@ -262,6 +266,7 @@
 				if (id < filterContent.rules.length - 1) {
 					id++;
 					curEle = $("#" + id);
+					$(window).scrollTop(0);
 					displayEntireRuleData(id);
 				}
 				return;
@@ -277,6 +282,7 @@
 					return;
 				}
 				curEle = $("#" + id);
+				$(window).scrollTop(0);
 				displayEntireRuleData(id);
 			});
 
@@ -536,7 +542,7 @@
 			<a href="#" data-rel="back" data-icon="arrow-l" data-role="button" data-theme="a" data-transition="slideUp" data-iconpos="notext">Back</a>
 			<a href="#popupBasic1" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon2" data-icon="info"
 			  class="ui-btn-right" data-iconpos="notext">Info</a>
-			<h1 id="imgTitle"></h1>
+			<h1 id="headerTitle2"></h1>
 		</div>
 		<div data-role="popup" id="popupBasic1" data-overlay-theme="a" class="ui-content">
 			<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
