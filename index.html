@@ -201,6 +201,9 @@
 				id = $(this).attr('id');
 				curEle = $(this);
 				displayEntireRuleData(id);
+				$.mobile.navigate("#imgPage", {
+					transition: "slide"
+				});
 			});
 
 			function displayEntireRuleData(id) {
@@ -225,10 +228,7 @@
 				if (rule.debt) {
 					$("#content2").append('<br/><br/><div style="">Technical Debt: ' + rule.debt + '</div>');
 				}
-				$("#s").append('<br/><div>' + rule.description + '</div>');
-				$.mobile.navigate("#imgPage", {
-					transition: "slide"
-				});
+				$("#content2").append('<br/><div>' + rule.description + '</div>');
 			}
 
 			/* Handle any link start with http or https using PhoneGap (Cordova) inAppBrowser
@@ -255,20 +255,25 @@
 				}
 			});
 
-			$('#imgPage').on('swipeleft', function () {
+			$('#imgPage').on('swipeleft', function (event) {
+				if (event.target.localName == 'pre') {
+					return;
+				}
 				if (id < filterContent.rules.length - 1) {
 					id++;
 					curEle = $("#" + id);
 					displayEntireRuleData(id);
 				}
-				console.log('id' + id);
 				return;
-
 			});
 
-			$('#imgPage').on('swiperight', function () {
+			$('#imgPage').on('swiperight', function (event) {
+				if (event.target.localName == 'pre') {
+					return;
+				}
 				id--;
 				if (id < 0) {
+					id = 0;
 					return;
 				}
 				curEle = $("#" + id);
