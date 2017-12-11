@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- info svg icon-->
+<svg 
+  xmlns="http://www.w3.org/2000/svg" class="hidden">
+  <symbol id="inf">
+    <path fill="#4b9fd5" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM7,5L5,5L5,10L7,10L7,5ZM7,2L5,2L5,4L7,4L7,2Z"></path>
+  </symbol>
+</svg>
+<!-- info svg icon-->

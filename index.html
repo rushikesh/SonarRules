@@ -12,444 +12,34 @@
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/globalData.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/viewport.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/inappbrowsercode.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/filterBtnEvents.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/readLangugeData.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/navigateEvents.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/swipeEvents.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/clickEvents.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/resizeScrollEvents.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/commonFunctions.js"></script>
 	<script type="text/javascript">
-		var titleTxt = "Sonar Rules Explorer";
-		var initialContent =
-			'<div class="iniContent1">Welcome to the SonarSource Rules Explorer :)</div><br/><br/><div class="iniContent2">Please select a language from top left menu to start browsing</div>'
-		var content;
-		var filterContent;
-		var filterParams = {};
-		var curEle, id;
-		var startIndex = 0,
-			endIndex = 0,
-			loadFactor = 30;
 		$(document).ready(function () {
 			$("#headerTitle").html(titleTxt);
 			$("#content").html(initialContent);
-			$.fn.isInViewport = function () {
-				if ($(this).length) {
-					var elementTop = $(this).offset().top;
-					var elementBottom = elementTop + $(this).outerHeight();
-
-					var viewportTop = $(window).scrollTop();
-					var viewportBottom = viewportTop + $(window).height();
-
-					return elementBottom > viewportTop && elementTop < viewportBottom;
-				}
-				return false;
-			};
-
-			$('#filterResetBtn').on('click', function () {
-				$('form')[0].reset();
-			});
-
-			$('#filterBtn').on('click', function () {
-				filterParams = {};
-				var formObj = $('form').serialize().split('&');
-				var severityArr = $('input:checked[name="severityCheckbox"]').map(function () {
-					return $(this).val();
-				});
-				filterParams.searchText = $('#srchTerm').val().trim();
-				filterParams.severity = (severityArr.get().length == 0) ? [] :
-					severityArr.get();
-				var data = {
-					rules: []
-				};
-				startIndex = 0;
-				endIndex = loadFactor;
-				var dataLength = content.rules.length;
-				for (var i = 0; i < dataLength; i++) {
-					var rule = content.rules[i];
-					if ((filterParams.searchText.length != 0 && rule.description.toLowerCase().indexOf(filterParams.searchText.toLowerCase()) !=
-							-1) ||
-						filterParams
-						.severity.indexOf(
-							rule
-							.defaultSeverity) != -1) {
-						data.rules.push(rule);
-					}
-				}
-				filterContent = data;
-				updateContent(filterContent);
-			});
-
-			$(window).on("navigate", function (event, data) {
-				var direction = data.state.direction;
-				if (direction == 'back') {
-					setTimeout(function () {
-						// console.log('id is' + $(curEle).attr('id'));
-						$(curEle).scrollTop();
-					})
-				}
-				if (direction == 'forward') {
-					// do something else
-				}
-			});
-
-			$.getJSON('js/languages.json', function (data) {
-				$.each(data, function (i) {
-					var li = document.createElement('li');
-					var ele = document.createElement('a');
-					ele.href = "#";
-					ele.id = data[i].key;
-					var cnt = getTotalRuleCount(data[i]);
-					ele.innerHTML = data[i].name + "<span class='ui-li-count'>" + cnt + "</span>";
-					$(li).append(ele);
-					$("#qlist").append(li);
-				});
-				$('#qlist').listview().listview('refresh');
-				$("#nav-panel").panel("open");
-			});
-
-			function getTotalRuleCount(data) {
-				var sum = 0;
-				for (var key in data.types) {
-					if (data.types.hasOwnProperty(key))
-						sum += data.types[key]
-				}
-				return sum;
-			}
-
-			function setCntValuesInHeader(data) {
-				var types = data.types;
-				var sum = 0,
-					sml = 0,
-					bug = 0,
-					vul = 0;
-				for (var type in types) {
-					if (types.hasOwnProperty(type)) {
-						sum += types[type];
-						switch (type) {
-							case "Code Smell":
-								sml += types[type];
-								break;
-							case "Vulnerability":
-								vul += types[type];
-								break;
-							case "Bug":
-								bug += types[type];
-								break;
-							default:
-								break;
-						}
-					}
-				}
-				$('#cntSml').text(sml);
-				$('#cntBug').text(bug);
-				$('#cntVul').text(vul);
-				$('#cntSrc').text(sum);
-
-			}
-
-			$('#qlist').on('click', 'a', function () {
-				titleTxt = $(this).text().replace(/\d+/, '');
-				$("#headerTitle").html(titleTxt);
-				var fileName = $(this).attr('id');
-				$.getJSON('js/' + fileName + '.json', function (data) {
-					content = data;
-					filterContent = data;
-					setCntValuesInHeader(data);
-					$.each('#hsrc,#hbug,#hsml,#hvul'.split(','), function (i, ele) {
-						$($(ele).find('use')[0]).attr('class', 'svglogoDisable');
-					});
-					$($('#hsrc').find('use')[0]).attr('class', 'svglogo');
-					startIndex = 0;
-					endIndex = loadFactor;
-					updateContent(data);
-				});
-				$("#nav-panel").panel("close");
-			});
-
-			$('#criteria').on('click', '#hsrc,#hbug,#hsml,#hvul', function () {
-				$.each('#hsrc,#hbug,#hsml,#hvul'.split(','), function (i, ele) {
-					$($(ele).find('use')[0]).attr('class', 'svglogoDisable');
-				});
-
-				var data = {
-					rules: []
-				};
-				var id = $(this)[0].id;
-				$($('#' + id).find('use')[0]).attr('class', 'svglogo');
-				var val;
-				switch (id) {
-					case "hbug":
-						val = "Bug";
-						break;
-					case "hvul":
-						val = "Vulnerability";
-						break;
-					case "hsml":
-						val = "Code Smell";
-						break;
-					default:
-						val = "All";
-				}
-				var rules = content.rules;
-				if (val !== "All") {
-					$.each(rules, function (i, rule) {
-						if (rule.type === val) {
-							data.rules.push(rule);
-						}
-					});
-				} else {
-					data.rules = rules;
-				}
-				startIndex = 0;
-				endIndex = loadFactor;
-				filterContent = data;
-				updateContent(filterContent);
-			});
-
-
-			$('#content').on('click', '#langRule a', function () {
-				$("#headerTitle2").html(titleTxt);
-				id = $(this).attr('id');
-				curEle = $(this);
-				displayEntireRuleData(id);
-				$.mobile.navigate("#imgPage", {
-					transition: "slide"
-				});
-			});
-
-			function displayEntireRuleData(id) {
-				var rule = filterContent.rules[id];
-				var severityName = rule.defaultSeverity;
-				var severity = rule.defaultSeverity;
-				var type = getType(rule.type);
-				severity = getSeverity(severity);
-				$("#content2").text(rule.summary);
-				$("#content2").append('<br/><div>');
-				$("#content2").append(
-					'<svg viewBox="0 0 16 16" style="width:17px;height:17px;position:relative;top:4px;"><use xlink:href="#' +
-					type +
-					'"  class="svglogo"></use></svg>');
-				$("#content2").append('&nbsp;&nbsp;');
-				$("#content2").append(rule.type);
-				$("#content2").append(
-					'<span style="float:right"><svg viewBox="0 0 16 16" style="width:17px;height:17px;position:relative;top:5px;"><use xlink:href="#' +
-					severity +
-					'"></use></svg>' + severityName + '</span>');
-				$("#content2").append('</div>');
-				if (rule.debt) {
-					$("#content2").append('<br/><br/><div style="">Technical Debt: ' + rule.debt + '</div>');
-				}
-				$("#content2").append('<br/><div>' + rule.description + '</div>');
-			}
-
-			/* Handle any link start with http or https using PhoneGap (Cordova) inAppBrowser
-			 * Options you can set data-in-app-browser html attribute to one of the
-			 * following options: 
-			 * _self - opens in the Cordova WebView if url is in the white-list, else it opens in the InAppBrowser 
-			 * _blank - always open in the InAppBrowser 
-			 * _system - always open in the system web browse
-			 */
-
-			$(document).on('click', 'a[href^=http], a[href^=https]', function (e) {
-				e.preventDefault();
-				var $this = $(this);
-				var target = '_blank';
-				cordova.InAppBrowser.open($this.attr('href'), target, 'location=no');
-			});
-
-			$(document).on('resize scroll', function () {
-				if ($('#loadMore').isInViewport()) {
-					startIndex = endIndex + 1;
-					endIndex = endIndex + loadFactor;
-					$('#loadMore').removeAttr('id');
-					updateContent(filterContent);
-				}
-			});
-
-			$('#imgPage').on('swipeleft', function (event) {
-				if (event.target.localName == 'pre') {
-					return;
-				}
-				if (id < filterContent.rules.length - 1) {
-					id++;
-					curEle = $("#" + id);
-					$(window).scrollTop(0);
-					displayEntireRuleData(id);
-				}
-				return;
-			});
-
-			$('#imgPage').on('swiperight', function (event) {
-				if (event.target.localName == 'pre') {
-					return;
-				}
-				id--;
-				if (id < 0) {
-					id = 0;
-					return;
-				}
-				curEle = $("#" + id);
-				$(window).scrollTop(0);
-				displayEntireRuleData(id);
-			});
-
+			initializeViewportCheckCode();
+			initInappBrowser();
+			initFilterBtnEvents();
+			initNavigateEvent();
+			initSwipeEvents();
+			initClickEvents();
+			initResizeScrollEvents();
+			populateLanguageData();
 		});
-
-		function getType(type) {
-			var retrnVal;
-			switch (type) {
-				case "Bug":
-					retrnVal = "bug";
-					break;
-				case "Code Smell":
-					retrnVal = "sml";
-					break;
-				case "Vulnerability":
-					retrnVal = "vul";
-					break;
-				default:
-					retrnVal = "bug";
-			}
-			return retrnVal;
-		}
-
-		function getSeverity(severityName) {
-			var severity;
-			switch (severityName.toLowerCase()) {
-				case "major":
-					severity = "maj";
-					break;
-				case "minor":
-					severity = "min";
-					break;
-				case "critical":
-					severity = "cri";
-					break;
-				case "blocker":
-					severity = "blk";
-					break;
-				case "info":
-					severity = "inf";
-					break;
-				default:
-					severity = "maj";
-			}
-			return severity;
-		}
-
-		function updateContent(content) {
-			var data = content.rules;
-			var ul;
-			if ($('#langRule').length == 0) {
-				ul = document.createElement('ol');
-				ul.id = "langRule";
-				ul["data-role"] = "listview";
-				$("#content").html(ul);
-			}
-			if (startIndex == 0) {
-				$('#langRule').html('');
-				setTimeout(function () {
-					$(window).scrollTop(0);
-				});
-			}
-			$.each(data, function (i) {
-				if (i >= startIndex && i <= endIndex) {
-					var li = document.createElement('li');
-					if (i == endIndex) {
-						li.id = 'loadMore';
-					}
-					var ele = document.createElement('a');
-					var spn = document.createElement('span');
-					ele.href = "#";
-					ele.id = i;
-					spn.innerText = data[i].summary;
-					spn.className = "rule"
-					var severityName = data[i].defaultSeverity;
-					var severity = data[i].defaultSeverity;
-					var type = data[i].type;
-					var typeName = data[i].type;
-					type = getType(type);
-					severity = getSeverity(severity);
-					$(ele).append(
-						'<span class="ruleMeta"><svg viewBox="0 0 16 16" style="position:relative;width:25px;height:25px;top:6px"><use xlink:href="#' +
-						type + '" class="svglogoBlack"></use></svg>' + typeName +
-						'<span style="position:relative;float:right;top:9px"><svg viewBox="0 0 16 16" style="position:relative;width:20px;height:20px;top:5px"><use xlink:href="#' +
-						severity + '" class="svglogoBlack"></use></svg><span style="position:relative;top:-2px">' + severityName +
-						'</span></span><span>'
-					);
-					$(ele).append(spn);
-					$(li).append(ele);
-					$('#langRule').append(li);
-				}
-			});
-			$('#langRule').listview().listview('refresh');
-		}
 	</script>
 </head>
 
 <body>
-	<!-- sonarsource -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="src" viewBox="0 0 162.07 156.33">
-			<path d="M124.42,134.29h-6.27c0-50.44-41.62-91.48-92.78-91.48V36.55C80,36.55,124.42,80.4,124.42,134.29Z"></path>
-			<path d="M128.75,100.66C121.23,69,95.59,42.59,63.44,33.37l1.44-5c33.93,9.74,61,37.65,68.95,71.1Z"></path>
-			<path d="M133.57,71A96,96,0,0,0,96.4,29.47l2.17-3.57a100.24,100.24,0,0,1,38.8,43.31Z"></path>
-		</symbol>
-	</svg>
-	<!-- sonarsource -->
-	<!-- bug -->
-	<svg xmlns="http://www.w3.org/2000/svg">
-		<symbol id="bug" viewBox="0 0 16 16">
-			<path d="M10.5,9.5h1.3l0.5,0.8L13,9.7l-0.7-1.2h-1.8V8.2l2-2.3V3.5h-1v2l-1,1.2V5.5h0C10.4,4.6,9.8,3.9,9,3.6l1.5-1.3 L9.8,1.5L8,3.2L6.2,1.5L5.5,2.3L7,3.6c-0.8,0.3-1.3,1-1.4,1.9h0v1.1l-1-1.2v-2h-1v2.3l2,2.3v0.3H3.7L3,9.7l0.8,0.5l0.5-0.8h1.3v0.3 l-2,1.9v2.8h1v-2.4l1-1c0,1.3,1.1,2.3,2.4,2.3h0.8c0.7,0,1.4-0.3,1.8-0.9c0.3-0.4,0.3-0.9,0.2-1.4l0.9,0.9v2.4h1v-2.8l-2-1.9V9.5z M8.5,11.5h-1v-5h1V11.5z"></path>
-		</symbol>
-	</svg>
-	<!-- bug -->
-	<!-- Vulnerability -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="vul" viewBox="0 0 16 16">
-			<path d="M10.8,6.1H6V5c0-1.4,0.9-2.5,2-2.5c0.7,0,1.4,0.5,1.8,1.2C9.9,4,10.2,4.1,10.5,4s0.4-0.4,0.2-0.7 C10.2,2.2,9.2,1.5,8,1.5C6.4,1.5,5,3.1,5,5v1.2C3.9,6.2,3,7.2,3,8.3v4.4C3,14,4,15,5.2,15h5.6c1.2,0,2.2-1,2.2-2.2V8.3 C13,7.1,12,6.1,10.8,6.1z M8.6,11.6v1.2H7.4v-1.2c-0.6-0.2-1.1-0.8-1.1-1.6c0-0.9,0.7-1.7,1.7-1.7S9.7,9.1,9.7,10 C9.7,10.7,9.2,11.3,8.6,11.6z"></path>
-		</symbol>
-	</svg>
-	<!-- Vulnerability -->
-	<!-- code smell -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="sml" viewBox="0 0 16 16">
-			<path d="M8,2C4.7,2,2,4.7,2,8s2.7,6,6,6s6-2.7,6-6S11.3,2,8,2z M7.5,7.5h0.9v0.9H7.5V7.5z M3.7,7.7 c-0.1,0-0.2-0.1-0.2-0.2c0-0.4,0.1-1.2,0.6-2l0,0c0.5-0.8,1.2-1.3,1.5-1.5C5.8,4,5.9,4,5.9,4.1l1.3,2.3c0,0.1,0,0.2-0.1,0.2 C7,6.8,6.9,6.9,6.8,7.1C6.7,7.3,6.6,7.5,6.6,7.6c0,0.1-0.1,0.2-0.2,0.2L3.7,7.7z M9.9,12c-0.3,0.2-1.1,0.5-2,0.5h0 c-0.9,0-1.7-0.3-2-0.5c-0.1,0-0.1-0.2-0.1-0.3l1.3-2.3c0-0.1,0.1-0.1,0.2-0.1c0.2,0.1,0.3,0.1,0.5,0.1c0.2,0,0.4,0,0.5-0.1 c0.1,0,0.2,0,0.2,0.1l1.3,2.3C10,11.9,10,12,9.9,12z M12.4,7.9L9.7,8C9.6,8,9.5,7.9,9.5,7.8c0-0.2-0.1-0.4-0.2-0.5 C9.3,7.2,9.1,7,9,6.9C8.9,6.9,8.9,6.8,8.9,6.7l1.3-2.3c0.1-0.1,0.2-0.1,0.3-0.1c0.3,0.2,1,0.7,1.5,1.5l0,0c0.5,0.8,0.6,1.6,0.6,2 C12.6,7.8,12.5,7.9,12.4,7.9z"></path>
-		</symbol>
-	</svg>
-	<!-- code smell -->
-	<!-- Blocker -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="blk" viewBox="0 0 16 16">
-			<g transform="matrix(-1,1.22465e-16,-1.22465e-16,-1,12,12)">
-				<path fill="#d4333f" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM7,5L5,5L5,10L7,10L7,5ZM7,2L5,2L5,4L7,4L7,2Z"></path>
-			</g>
-		</symbol>
-	</svg>
-	<!-- Blocker -->
-	<!-- critical -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="cri" viewBox="0 0 16 16">
-			<path fill="#d4333f" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM7,10L7,5.414L8.893,7.307C9.023,7.431 9.175,7.523 9.35,7.568C9.717,7.663 10.116,7.537 10.361,7.248C10.43,7.167 10.486,7.075 10.526,6.977C10.573,6.861 10.598,6.738 10.6,6.613C10.602,6.489 10.58,6.365 10.536,6.248C10.485,6.113 10.406,5.997 10.307,5.893C9.095,4.681 7.913,3.437 6.669,2.257C6.616,2.211 6.561,2.169 6.5,2.134C6.362,2.054 6.211,2.014 6.052,2.001C6,2 6,2 5.948,2.001C5.772,2.015 5.604,2.065 5.455,2.161C5.396,2.2 5.344,2.245 5.293,2.293C4.08,3.505 2.836,4.687 1.656,5.932C1.563,6.041 1.49,6.161 1.447,6.299C1.409,6.417 1.394,6.542 1.402,6.667C1.409,6.773 1.433,6.878 1.474,6.977C1.507,7.059 1.551,7.136 1.605,7.207C1.813,7.478 2.153,7.627 2.493,7.596C2.691,7.577 2.871,7.498 3.028,7.378C3.069,7.343 3.068,7.344 3.107,7.307L5,5.414L5,10L7,10Z"></path>
-		</symbol>
-	</svg>
-	<!-- critical -->
-	<!-- major -->
-	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.w3.org/1999/xlink"
-	  class="hidden">
-		<symbol id="maj" viewBox="0 0 16 16" style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 1.41421;">
-			<path fill="#d4333f" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM6.08,2.903C6.151,2.911 6.22,2.922 6.288,2.942C6.426,2.984 6.548,3.056 6.658,3.147C7.902,4.293 9.084,5.504 10.297,6.683C10.397,6.786 10.478,6.901 10.531,7.035C10.576,7.151 10.6,7.275 10.6,7.399C10.6,7.524 10.577,7.648 10.532,7.763C10.493,7.863 10.438,7.956 10.37,8.038C10.129,8.33 9.732,8.461 9.363,8.372C9.188,8.329 9.035,8.239 8.903,8.117L6,5.295L3.097,8.117C3.058,8.153 3.058,8.153 3.017,8.187C2.902,8.273 2.777,8.337 2.637,8.372C2.516,8.401 2.39,8.408 2.267,8.391C1.928,8.345 1.63,8.124 1.489,7.813C1.452,7.732 1.427,7.646 1.413,7.558C1.396,7.453 1.396,7.345 1.413,7.24C1.445,7.044 1.535,6.87 1.666,6.721C2.847,5.51 4.09,4.362 5.303,3.183C5.355,3.135 5.409,3.09 5.47,3.052C5.623,2.956 5.794,2.91 5.973,2.9C6.027,2.9 6.027,2.9 6.08,2.903Z"></path>
-		</symbol>
-	</svg>
-	<!-- major -->
-	<!-- minor -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="min">
-			<path fill="#87bb43" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM7,6.586L7,2L5,2L5,6.586L3.107,4.693C3.055,4.644 3.002,4.598 2.942,4.559C2.79,4.461 2.619,4.413 2.44,4.401C2.386,4.4 2.334,4.402 2.28,4.407C2.121,4.431 1.97,4.482 1.836,4.574C1.748,4.634 1.67,4.708 1.605,4.793C1.398,5.064 1.344,5.432 1.464,5.752C1.515,5.887 1.594,6.003 1.693,6.107C2.905,7.319 4.087,8.563 5.331,9.743C5.425,9.823 5.526,9.889 5.642,9.934C5.904,10.034 6.203,10.019 6.454,9.891C6.548,9.843 6.631,9.78 6.707,9.707C7.92,8.495 9.164,7.313 10.344,6.068C10.437,5.959 10.51,5.839 10.553,5.701C10.591,5.583 10.606,5.458 10.598,5.333C10.591,5.227 10.567,5.122 10.526,5.023C10.493,4.941 10.449,4.864 10.395,4.793C10.187,4.522 9.847,4.373 9.507,4.404C9.309,4.423 9.129,4.502 8.972,4.622C8.932,4.656 8.932,4.656 8.893,4.693L7,6.586Z"></path>
-		</symbol>
-	</svg>
-	<!-- minor -->
-	<!-- info -->
-	<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
-		<symbol id="inf">
-			<path fill="#4b9fd5" d="M6,0C9.311,0 12,2.689 12,6C12,9.311 9.311,12 6,12C2.689,12 0,9.311 0,6C0,2.689 2.689,0 6,0ZM7,5L5,5L5,10L7,10L7,5ZM7,2L5,2L5,4L7,4L7,2Z"></path>
-		</symbol>
-	</svg>
-	<!-- info -->
+
 	<div data-role="page" data-theme="a" id="page">
 		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-transition="none">
 			<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
@@ -459,26 +49,26 @@
 			<div id="criteria">
 				<a href="#" id="hsrc">
 					<svg viewBox="0 0 16 16" width="35px" height="35px">
-						<use xlink:href="#src" class="svglogo"></use>
+						<use xlink:href="./img/sonarsource.svg#src" class="svglogo"></use>
 					</svg>
 					<sup id="cntSrc" class="rcnt"></sup>
 				</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="#" id="hbug">
 					<svg viewBox="0 0 16 16" width="35px" height="35px">
-						<use xlink:href="#bug" class="svglogoDisable"></use>
+						<use xlink:href="./img/bug.svg#bug" class="svglogoDisable"></use>
 					</svg>
 					<sup id="cntBug" class="rcnt"></sup>
 				</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="#" id="hvul">
 					<svg viewBox="0 0 16 16" width="35px" height="35px">
-						<use xlink:href="#vul" class="svglogoDisable"></use>
+						<use xlink:href="./img/vulnerability.svg#vul" class="svglogoDisable"></use>
 					</svg>
 					<sup id="cntVul" class="rcnt"></sup>
 				</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="#" id="hsml">
 					<svg viewBox="0 0 16 16" width="35px" height="35px">
-						<use xlink:href="#sml" class="svglogoDisable"></use>
+						<use xlink:href="./img/codesmell.svg#sml" class="svglogoDisable"></use>
 					</svg>
 					<sup id="cntSml" class="rcnt"></sup>
 				</a>
@@ -497,7 +87,7 @@
 			<p>A handy app to keep your coding knowledge fresh and in compliance with best practices.
 			</p>
 			<p>Created By:
-				<a href="http://www.rushis.com">Rushi</a>
+				<a href="http://rushikesh.github.io/">Rushi</a>
 			</p>
 		</div>
 		<div data-role="popup" id="popupFilter" data-overlay-theme="a" class="ui-content">
