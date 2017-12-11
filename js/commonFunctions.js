@@ -123,19 +123,19 @@ function getType(type) {
   switch (type) {
     case "Bug":
       retrnVal.type = "bug";
-      retrnVal.svg = "../img/bug.svg"
+      retrnVal.svg = "img/bug.svg"
       break;
     case "Code Smell":
       retrnVal.type = "sml";
-      retrnVal.svg = "../img/codesmell.svg"
+      retrnVal.svg = "img/codesmell.svg"
       break;
     case "Vulnerability":
       retrnVal.type = "vul";
-      retrnVal.svg = "../img/vulnerability.svg"
+      retrnVal.svg = "img/vulnerability.svg"
       break;
     default:
       retrnVal.type = "bug";
-      retrnVal.svg = "../img/bug.svg"
+      retrnVal.svg = "img/bug.svg"
   }
   return retrnVal;
 }
@@ -148,27 +148,27 @@ function getSeverity(severityName) {
   switch (severityName.toLowerCase()) {
     case "major":
       retrnVal.severity = "maj";
-      retrnVal.svg = "../img/major.svg"
+      retrnVal.svg = "img/major.svg"
       break;
     case "minor":
       retrnVal.severity = "min";
-      retrnVal.svg = "../img/minor.svg"
+      retrnVal.svg = "img/minor.svg"
       break;
     case "critical":
       retrnVal.severity = "cri";
-      retrnVal.svg = "../img/critical.svg"
+      retrnVal.svg = "img/critical.svg"
       break;
     case "blocker":
       retrnVal.severity = "blk";
-      retrnVal.svg = "../img/blocker.svg"
+      retrnVal.svg = "img/blocker.svg"
       break;
     case "info":
       retrnVal.severity = "inf";
-      retrnVal.svg = "../img/info.svg"
+      retrnVal.svg = "img/info.svg"
       break;
     default:
       retrnVal.severity = "maj";
-      retrnVal.svg = "../img/major.svg"
+      retrnVal.svg = "img/major.svg"
   }
   return retrnVal;
 }

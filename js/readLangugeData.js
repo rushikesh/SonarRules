@@ -1,5 +1,5 @@
 function populateLanguageData() {
-  $.getJSON('../json/languages.json', function (data) {
+  $.getJSON('json/languages.json', function (data) {
     $.each(data, function (i) {
       var li = document.createElement('li');
       var ele = document.createElement('a');

@@ -3,7 +3,7 @@ function initClickEvents() {
     titleTxt = $(this).text().replace(/\d+/, '');
     $("#headerTitle").html(titleTxt);
     var fileName = $(this).attr('id');
-    $.getJSON('../json/' + fileName + '.json', function (data) {
+    $.getJSON('json/' + fileName + '.json', function (data) {
       content = data;
       filterContent = data;
       setCntValuesInHeader(data);
