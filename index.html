@@ -39,7 +39,6 @@
 
 			$('#filterResetBtn').on('click', function () {
 				$('form')[0].reset();
-				$('#hsrc').click();
 			});
 
 			$('#filterBtn').on('click', function () {
@@ -76,7 +75,7 @@
 				var direction = data.state.direction;
 				if (direction == 'back') {
 					setTimeout(function () {
-						console.log('id is' + $(curEle).attr('id'));
+						// console.log('id is' + $(curEle).attr('id'));
 						$(curEle).scrollTop();
 					})
 				}
@@ -504,7 +503,7 @@
 			<div>
 				<h3>Filter Data:</h3>
 				<form name="filterForm">
-					<input name="searchFilterText" type="text" placeholder="Search Term" id="srchTerm" />
+					<input name="searchFilterText" type="search" placeholder="Search Term" id="srchTerm" />
 					<fieldset data-role="controlgroup">
 						<legend>Severity:</legend>
 						<input type="checkbox" name="severityCheckbox" value="Blocker" id="checkbox-v-2a">
