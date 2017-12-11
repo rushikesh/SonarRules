@@ -123,3 +123,15 @@ img.center {
 pre {
   overflow-x: scroll;
 }
+
+.iniContent1 {
+  color: white;
+  font-weight: lighter;
+  font-size: 1.3em;
+}
+
+.iniContent2 {
+  color: white;
+  font-weight: lighter;
+  font-size: 1.1em;
+}
